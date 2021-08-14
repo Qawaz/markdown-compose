@@ -17,6 +17,7 @@ import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.focus.onFocusChanged
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.layout.onSizeChanged
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -25,6 +26,7 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.wakaztahir.timeline.blockly.R
 import com.wakaztahir.timeline.blockly.model.ListItem
+import kotlinx.coroutines.CoroutineScope
 
 @Composable
 fun ListItem(
@@ -33,11 +35,14 @@ fun ListItem(
     onAdd: () -> Unit,
     onUpdate: () -> Unit,
     onRemove: () -> Unit,
-    onVerticalDragged: (Dp) -> Unit,
+    onVerticalDragged: (Dp) -> Unit = {},
+    onVerticalDragStopped: suspend CoroutineScope.(Float) -> Unit = {}
 ) {
 
     val focusRequester = remember(item) { FocusRequester() }
     var draggedPadding by remember(item) { mutableStateOf(0.dp) }
+
+    val density = LocalDensity.current
 
     LaunchedEffect(key1 = item.isIndented, block = {
         draggedPadding = if (item.isIndented) {
@@ -47,7 +52,6 @@ fun ListItem(
         }
     })
 
-    val density = LocalDensity.current
     val horizontalDraggableState = rememberDraggableState {
         val padding = with(density) { draggedPadding + it.toDp() }
         if (padding > 0.dp && padding < 28.dp) {
@@ -60,15 +64,22 @@ fun ListItem(
         onVerticalDragged(with(density) { it.toDp() })
     }
 
-
     Row(
-        modifier = modifier.padding(start = 8.dp + draggedPadding, end = 8.dp),
+        modifier = modifier
+            .padding(start = 8.dp + draggedPadding, end = 8.dp)
+            .onSizeChanged {
+                item.itemHeight = with(density) { it.height.toDp() }
+            },
         verticalAlignment = Alignment.CenterVertically
     ) {
         Icon(
             modifier = Modifier
                 .draggable(horizontalDraggableState, Orientation.Horizontal)
-                .draggable(verticalDraggableState, Orientation.Vertical),
+                .draggable(
+                    verticalDraggableState,
+                    Orientation.Vertical,
+                    onDragStopped = onVerticalDragStopped
+                ),
             painter = painterResource(id = R.drawable.drag_indicator),
             contentDescription = stringResource(id = R.string.drag_icon)
         )

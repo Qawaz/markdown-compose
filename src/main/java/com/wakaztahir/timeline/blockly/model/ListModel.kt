@@ -4,6 +4,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.unit.dp
 import com.wakaztahir.timeline.blockly.serializers.BlockSerializer
 import kotlinx.serialization.Serializable
 
@@ -14,6 +15,10 @@ class ListItem {
     var isChecked by mutableStateOf(false)
 
     var isIndented by mutableStateOf(false)
+
+    //Transient Properties
+    var topOffset by mutableStateOf(0.dp)
+    var itemHeight by mutableStateOf(0.dp)
 }
 
 
