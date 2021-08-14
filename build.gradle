@@ -55,6 +55,11 @@ dependencies {
     implementation "androidx.compose.material:material:$compose_version"
     implementation "androidx.compose.compiler:compiler:$compose_version"
 
+    //Common Mark
+    implementation "org.commonmark:commonmark:0.18.0"
+    implementation "org.commonmark:commonmark-ext-gfm-tables:0.18.0"
+    implementation "org.commonmark:commonmark-ext-gfm-strikethrough:0.18.0"
+
     //Markdown Library
     implementation "io.noties.markwon:core:4.6.2"
     implementation 'io.noties.markwon:html:4.6.2'
