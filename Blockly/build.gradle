@@ -2,6 +2,8 @@ plugins {
     id 'com.android.library'
     id 'org.jetbrains.kotlin.android'
 
+    id 'maven-publish'
+
     //Kotlin Serialization
     id 'org.jetbrains.kotlin.plugin.serialization'
 }
@@ -72,7 +74,7 @@ afterEvaluate {
                 from components.release
                 groupId = "com.wakaztahir"
                 artifactId = "blockly"
-                version = "0.3.5"
+                version = "0.1.1"
             }
         }
     }
