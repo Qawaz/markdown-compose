@@ -38,7 +38,9 @@ class ListBlock : Block() {
     override fun exportMarkdown(): String {
         var markdown = ""
         items.forEach {
-            markdown += (if (it.isIndented) "    " else "") + " - " + (if (it.isChecked) "[x]" else "[ ]") + " " + it.text + "\n"
+            if (it.text.isNotEmpty()) {
+                markdown += (if (it.isIndented) "    " else "") + " - " + (if (it.isChecked) "[x]" else "[ ]") + " " + it.text + "\n"
+            }
         }
         return markdown
     }
