@@ -22,7 +22,7 @@ fun ListBlock(
     modifier = modifier,
     items = block.items,
     onAdd = {
-        block.items.add(ListItem())
+        block.items.add(it,ListItem())
     },
     onUpdate = onUpdate,
     onRemove = {
@@ -48,7 +48,7 @@ fun ListBlock(
 private fun ListItems(
     modifier: Modifier = Modifier,
     items: List<ListItem>,
-    onAdd: () -> Unit,
+    onAdd: (Int) -> Unit,
     onUpdate: () -> Unit,
     onRemove: (ListItem) -> Unit,
     onReplace: (index: Int, newIndex: Int) -> Unit,
@@ -120,7 +120,7 @@ private fun ListItems(
         animationsEnabled = true
     }
 
-    Column {
+    Column(modifier = modifier) {
         items.forEachIndexed { index, item ->
 
             val topOffset by animateDpAsState(targetValue = item.topOffset)
@@ -129,7 +129,7 @@ private fun ListItems(
             ListItem(
                 modifier = Modifier.offset(y = yOffset + topOffset),
                 item = item,
-                onAdd = onAdd,
+                onAdd = { onAdd(index + 1) },
                 onUpdate = onUpdate,
                 onRemove = { onRemove(item) },
                 onVerticalDragged = {

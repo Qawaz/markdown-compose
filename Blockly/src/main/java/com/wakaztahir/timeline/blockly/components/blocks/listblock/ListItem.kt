@@ -5,6 +5,7 @@ import androidx.compose.foundation.gestures.draggable
 import androidx.compose.foundation.gestures.rememberDraggableState
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.*
@@ -81,10 +82,13 @@ fun ListItem(
                     onDragStopped = onVerticalDragStopped
                 ),
             painter = painterResource(id = R.drawable.drag_indicator),
+            tint = MaterialTheme.colors.onBackground,
             contentDescription = stringResource(id = R.string.drag_icon)
         )
         Checkbox(
-            modifier = Modifier.padding(start = 8.dp),
+            modifier = Modifier
+                .padding(start = 8.dp)
+                .size(24.dp),
             checked = item.isChecked,
             onCheckedChange = {
                 item.isChecked = it
@@ -106,22 +110,30 @@ fun ListItem(
             },
             colors = TextFieldDefaults.outlinedTextFieldColors(
                 focusedBorderColor = Color.Transparent,
-                unfocusedBorderColor = Color.Transparent
+                unfocusedBorderColor = Color.Transparent,
+                textColor = MaterialTheme.colors.onBackground
             ),
             keyboardOptions = KeyboardOptions(imeAction = ImeAction.Next),
             keyboardActions = KeyboardActions(onNext = {
+                focusRequester.freeFocus()
                 onAdd()
             }),
         )
-        IconButton(onClick = { onRemove() }) {
+        IconButton(
+            modifier = Modifier.size(20.dp),
+            onClick = { onRemove() }
+        ) {
             Icon(
                 imageVector = Icons.Default.Close,
+                tint = MaterialTheme.colors.onBackground,
                 contentDescription = stringResource(id = R.string.delete_icon)
             )
         }
     }
 
     LaunchedEffect(key1 = null, block = {
-        focusRequester.requestFocus()
+        if(item.text.isEmpty()) {
+            focusRequester.requestFocus()
+        }
     })
 }

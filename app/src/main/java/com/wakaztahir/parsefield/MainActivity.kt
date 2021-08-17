@@ -6,7 +6,9 @@ import androidx.activity.compose.setContent
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.material.MaterialTheme
 import androidx.compose.material.OutlinedTextField
+import androidx.compose.material.TextField
 import androidx.compose.material.TextFieldDefaults
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -37,11 +39,13 @@ class MainActivity : ComponentActivity() {
                         items.add(ListItem().apply { text = "Fifth Item" })
                     }
                 }
-                ListBlock(
-                    block = listBlock,
-                    onUpdate = { /*TODO*/ },
-                    onRemove = { /*TODO*/ }
-                )
+                Column {
+                    ListBlock(
+                        block = listBlock,
+                        onUpdate = { /*TODO*/ },
+                        onRemove = { /*TODO*/ }
+                    )
+                }
             }
         }
     }
