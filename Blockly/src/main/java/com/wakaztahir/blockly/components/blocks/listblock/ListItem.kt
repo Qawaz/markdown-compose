@@ -1,4 +1,4 @@
-package com.wakaztahir.timeline.blockly.components.blocks.listblock
+package com.wakaztahir.blockly.components.blocks.listblock
 
 import androidx.compose.foundation.gestures.Orientation
 import androidx.compose.foundation.gestures.draggable
@@ -25,8 +25,8 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
-import com.wakaztahir.blockly.model.ListItem
 import com.wakaztahir.blockly.R
+import com.wakaztahir.blockly.model.ListItem
 import kotlinx.coroutines.CoroutineScope
 
 @Composable
@@ -131,9 +131,10 @@ fun ListItem(
         }
     }
 
-    LaunchedEffect(key1 = null, block = {
-        if(item.text.isEmpty()) {
+    LaunchedEffect(key1 = item.requestFocus, block = {
+        if (item.requestFocus) {
             focusRequester.requestFocus()
+            item.requestFocus = false
         }
     })
 }

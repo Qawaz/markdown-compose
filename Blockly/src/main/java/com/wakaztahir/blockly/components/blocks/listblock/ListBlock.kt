@@ -8,6 +8,7 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
+import com.wakaztahir.blockly.components.blocks.listblock.ListItem
 import com.wakaztahir.blockly.model.ListBlock
 import com.wakaztahir.blockly.model.ListItem
 import kotlinx.coroutines.launch
@@ -22,7 +23,7 @@ fun ListBlock(
     modifier = modifier,
     items = block.items,
     onAdd = {
-        block.items.add(it,ListItem())
+        block.items.add(it, ListItem().apply { requestFocus = true })
     },
     onUpdate = onUpdate,
     onRemove = {
@@ -116,18 +117,21 @@ private fun ListItems(
 
         //Changing Indexes of Items
         onReplace(index, newIndex)
-
-        animationsEnabled = true
     }
 
     Column(modifier = modifier) {
         items.forEachIndexed { index, item ->
 
-            val topOffset by animateDpAsState(targetValue = item.topOffset)
+            val topOffset by animateDpAsState(
+                targetValue = item.topOffset,
+                finishedListener = {
+                    animationsEnabled = true
+                }
+            )
             var yOffset by remember { mutableStateOf(0.dp) }
 
             ListItem(
-                modifier = Modifier.offset(y = yOffset + topOffset),
+                modifier = Modifier.offset(y = yOffset + if (animationsEnabled) topOffset else item.topOffset),
                 item = item,
                 onAdd = { onAdd(index + 1) },
                 onUpdate = onUpdate,

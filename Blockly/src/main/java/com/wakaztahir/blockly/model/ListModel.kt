@@ -19,6 +19,7 @@ class ListItem {
     //Transient Properties
     var topOffset by mutableStateOf(0.dp)
     var itemHeight by mutableStateOf(0.dp)
+    var requestFocus by mutableStateOf(false)
 }
 
 
