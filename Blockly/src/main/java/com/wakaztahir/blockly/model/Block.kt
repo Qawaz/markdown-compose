@@ -1,6 +1,6 @@
-package com.wakaztahir.timeline.blockly.model
+package com.wakaztahir.blockly.model
 
-import com.wakaztahir.timeline.blockly.serializers.BlockSerializer
+import com.wakaztahir.blockly.serializers.BlockSerializer
 import kotlinx.serialization.Serializable
 
 @Serializable(with = BlockSerializer::class)

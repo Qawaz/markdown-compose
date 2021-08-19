@@ -8,8 +8,8 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
-import com.wakaztahir.timeline.blockly.model.ListBlock
-import com.wakaztahir.timeline.blockly.model.ListItem
+import com.wakaztahir.blockly.model.ListBlock
+import com.wakaztahir.blockly.model.ListItem
 import kotlinx.coroutines.launch
 
 @Composable

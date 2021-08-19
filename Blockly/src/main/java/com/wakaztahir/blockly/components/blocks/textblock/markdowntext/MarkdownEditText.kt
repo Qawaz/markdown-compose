@@ -1,4 +1,4 @@
-package com.wakaztahir.timeline.blockly.components.blocks.textblock.markdowntext
+package com.wakaztahir.blockly.components.blocks.textblock.markdowntext
 
 import android.content.Context
 import android.text.*
@@ -8,8 +8,8 @@ import android.text.style.StrikethroughSpan
 import android.view.View
 import androidx.appcompat.widget.AppCompatEditText
 import androidx.core.text.getSpans
-import com.wakaztahir.timeline.blockly.components.blocks.textblock.markdowntext.model.EnhancedMovementMethod
-import com.wakaztahir.timeline.blockly.states.TextState
+import com.wakaztahir.blockly.components.blocks.textblock.markdowntext.model.EnhancedMovementMethod
+import com.wakaztahir.blockly.states.TextState
 import io.noties.markwon.*
 import io.noties.markwon.core.spans.BulletListItemSpan
 import io.noties.markwon.core.spans.EmphasisSpan

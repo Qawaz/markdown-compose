@@ -1,9 +1,9 @@
-package com.wakaztahir.timeline.blockly.states
+package com.wakaztahir.blockly.states
 
 import androidx.compose.runtime.*
-import com.wakaztahir.timeline.blockly.components.blocks.textblock.markdowntext.MarkdownEditText
-import com.wakaztahir.timeline.blockly.components.blocks.textblock.markdowntext.TextStyle
-import com.wakaztahir.timeline.blockly.components.blocks.textblock.markdowntext.UndoRedoHelper
+import com.wakaztahir.blockly.components.blocks.textblock.markdowntext.MarkdownEditText
+import com.wakaztahir.blockly.components.blocks.textblock.markdowntext.TextStyle
+import com.wakaztahir.blockly.components.blocks.textblock.markdowntext.UndoRedoHelper
 
 class TextState {
 

@@ -1,4 +1,4 @@
-package com.wakaztahir.timeline.blockly
+package com.wakaztahir.blockly
 
 import org.junit.Test
 

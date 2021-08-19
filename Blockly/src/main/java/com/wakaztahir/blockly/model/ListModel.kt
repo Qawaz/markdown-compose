@@ -1,11 +1,11 @@
-package com.wakaztahir.timeline.blockly.model
+package com.wakaztahir.blockly.model
 
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.unit.dp
-import com.wakaztahir.timeline.blockly.serializers.BlockSerializer
+import com.wakaztahir.blockly.serializers.BlockSerializer
 import kotlinx.serialization.Serializable
 
 

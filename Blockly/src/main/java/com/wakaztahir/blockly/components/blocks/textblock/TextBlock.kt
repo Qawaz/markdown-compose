@@ -1,13 +1,13 @@
-package com.wakaztahir.timeline.blockly.components.blocks.textblock
+package com.wakaztahir.blockly.components.blocks.textblock
 
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.viewinterop.AndroidView
-import com.wakaztahir.timeline.blockly.components.blocks.textblock.markdowntext.MarkdownEditText
-import com.wakaztahir.timeline.blockly.states.TextState
-import com.wakaztahir.timeline.blockly.states.rememberBlocklyTextState
-import com.wakaztahir.timeline.blockly.utils.toViewColor
+import com.wakaztahir.blockly.components.blocks.textblock.markdowntext.MarkdownEditText
+import com.wakaztahir.blockly.states.TextState
+import com.wakaztahir.blockly.states.rememberBlocklyTextState
+import com.wakaztahir.blockly.utils.toViewColor
 
 @Composable
 fun TextBlock(

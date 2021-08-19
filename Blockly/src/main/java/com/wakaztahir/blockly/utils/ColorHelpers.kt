@@ -1,4 +1,4 @@
-package com.wakaztahir.timeline.blockly.utils
+package com.wakaztahir.blockly.utils
 
 import android.graphics.Color
 import androidx.compose.ui.graphics.toArgb

@@ -1,4 +1,4 @@
-package com.wakaztahir.timeline.blockly.states
+package com.wakaztahir.blockly.states
 
 import android.os.Build
 import android.text.Html

@@ -1,7 +1,7 @@
-package com.wakaztahir.timeline.blockly.serializers
+package com.wakaztahir.blockly.serializers
 
-import com.wakaztahir.timeline.blockly.model.Block
-import com.wakaztahir.timeline.blockly.model.ListBlock
+import com.wakaztahir.blockly.model.Block
+import com.wakaztahir.blockly.model.ListBlock
 import kotlinx.serialization.*
 import kotlinx.serialization.descriptors.SerialDescriptor
 import kotlinx.serialization.encoding.Decoder

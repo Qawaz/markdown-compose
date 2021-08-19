@@ -1,4 +1,4 @@
-package com.wakaztahir.timeline.blockly.utils
+package com.wakaztahir.blockly.utils
 
 import android.content.ContentResolver
 import android.content.Context

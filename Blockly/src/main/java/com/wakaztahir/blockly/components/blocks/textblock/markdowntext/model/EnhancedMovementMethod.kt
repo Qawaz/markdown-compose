@@ -1,4 +1,4 @@
-package com.wakaztahir.timeline.blockly.components.blocks.textblock.markdowntext.model
+package com.wakaztahir.blockly.components.blocks.textblock.markdowntext.model
 
 import android.text.Selection
 import android.text.Spannable

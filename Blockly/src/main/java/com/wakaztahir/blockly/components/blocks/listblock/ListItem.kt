@@ -25,8 +25,8 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
-import com.wakaztahir.timeline.blockly.R
-import com.wakaztahir.timeline.blockly.model.ListItem
+import com.wakaztahir.blockly.model.ListItem
+import com.wakaztahir.blockly.R
 import kotlinx.coroutines.CoroutineScope
 
 @Composable

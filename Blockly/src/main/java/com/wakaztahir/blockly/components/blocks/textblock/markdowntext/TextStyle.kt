@@ -1,4 +1,4 @@
-package com.wakaztahir.timeline.blockly.components.blocks.textblock.markdowntext
+package com.wakaztahir.blockly.components.blocks.textblock.markdowntext
 
 enum class TextStyle {
     BOLD,

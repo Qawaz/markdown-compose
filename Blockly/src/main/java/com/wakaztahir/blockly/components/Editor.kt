@@ -1,11 +1,11 @@
-package com.wakaztahir.timeline.blockly.components
+package com.wakaztahir.blockly.components
 
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.staticCompositionLocalOf
-import com.wakaztahir.timeline.blockly.states.EditorState
-import com.wakaztahir.timeline.blockly.states.TextState
+import com.wakaztahir.blockly.states.EditorState
+import com.wakaztahir.blockly.states.TextState
 
 val LocalEditor = staticCompositionLocalOf { EditorState(text = TextState()) }
 
