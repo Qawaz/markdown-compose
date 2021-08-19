@@ -1,4 +1,4 @@
-package com.wakaztahir.timeline.blockly.components.blocks.listblock
+package com.wakaztahir.blockly.components.blocks.listblock
 
 import android.util.Log
 import androidx.compose.animation.core.animateDpAsState
@@ -8,7 +8,6 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
-import com.wakaztahir.blockly.components.blocks.listblock.ListItem
 import com.wakaztahir.blockly.model.ListBlock
 import com.wakaztahir.blockly.model.ListItem
 import kotlinx.coroutines.launch
