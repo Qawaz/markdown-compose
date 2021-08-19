@@ -67,7 +67,7 @@ dependencies {
     implementation 'org.jetbrains.kotlinx:kotlinx-serialization-json:1.2.2'
 }
 
-def versionName = "0.1.4"
+def versionName = "0.1.5"
 def artifactName = "blockly"
 
 def githubProperties = new Properties()
