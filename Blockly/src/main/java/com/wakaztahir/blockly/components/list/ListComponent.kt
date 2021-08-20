@@ -1,4 +1,4 @@
-package com.wakaztahir.blockly.components.blocks.listblock
+package com.wakaztahir.blockly.components.list
 
 import android.util.Log
 import androidx.compose.animation.core.animateDpAsState
@@ -13,7 +13,7 @@ import com.wakaztahir.blockly.model.ListItem
 import kotlinx.coroutines.launch
 
 @Composable
-fun ListBlock(
+fun ListComponent(
     modifier: Modifier = Modifier,
     block: ListBlock,
     onUpdate: () -> Unit,
@@ -21,8 +21,11 @@ fun ListBlock(
 ) = ListItems(
     modifier = modifier,
     items = block.items,
-    onAdd = {
-        block.items.add(it, ListItem().apply { requestFocus = true })
+    onAdd = { index, initText ->
+        block.items.add(index, ListItem().apply {
+            text = initText
+            requestFocus = true
+        })
     },
     onUpdate = onUpdate,
     onRemove = {
@@ -48,7 +51,7 @@ fun ListBlock(
 private fun ListItems(
     modifier: Modifier = Modifier,
     items: List<ListItem>,
-    onAdd: (Int) -> Unit,
+    onAdd: (Int, String) -> Unit,
     onUpdate: () -> Unit,
     onRemove: (ListItem) -> Unit,
     onReplace: (index: Int, newIndex: Int) -> Unit,
@@ -129,10 +132,10 @@ private fun ListItems(
             )
             var yOffset by remember { mutableStateOf(0.dp) }
 
-            ListItem(
+            ListItemComponent(
                 modifier = Modifier.offset(y = yOffset + if (animationsEnabled) topOffset else item.topOffset),
                 item = item,
-                onAdd = { onAdd(index + 1) },
+                onAdd = { onAdd(index + 1, it) },
                 onUpdate = onUpdate,
                 onRemove = { onRemove(item) },
                 onVerticalDragged = {

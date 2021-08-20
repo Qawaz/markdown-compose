@@ -1,4 +1,4 @@
-package com.wakaztahir.blockly.components.blocks.listblock
+package com.wakaztahir.blockly.components.list
 
 import androidx.compose.foundation.gestures.Orientation
 import androidx.compose.foundation.gestures.draggable
@@ -22,7 +22,10 @@ import androidx.compose.ui.layout.onSizeChanged
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.input.ImeAction
+import androidx.compose.ui.text.input.TextFieldValue
+import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.wakaztahir.blockly.R
@@ -30,15 +33,19 @@ import com.wakaztahir.blockly.model.ListItem
 import kotlinx.coroutines.CoroutineScope
 
 @Composable
-fun ListItem(
+fun ListItemComponent(
     modifier: Modifier = Modifier,
     item: ListItem,
-    onAdd: () -> Unit,
+    onAdd: (String) -> Unit,
     onUpdate: () -> Unit,
     onRemove: () -> Unit,
     onVerticalDragged: (Dp) -> Unit = {},
-    onVerticalDragStopped: suspend CoroutineScope.(Float) -> Unit = {}
+    onVerticalDragStopped: suspend CoroutineScope.(Float) -> Unit = {},
+    strikeChecked: Boolean = true,
 ) {
+
+    var textFieldValueState by remember { mutableStateOf(TextFieldValue(text = item.text)) }
+    val textFieldValue = textFieldValueState.copy(text = item.text)
 
     val focusRequester = remember(item) { FocusRequester() }
     var draggedPadding by remember(item) { mutableStateOf(0.dp) }
@@ -104,19 +111,47 @@ fun ListItem(
                         onUpdate()
                     }
                 },
-            value = item.text,
+            value = textFieldValue,
             onValueChange = {
-                item.text = it
+                textFieldValueState = it
+                if (item.text != it.text) {
+                    item.text = it.text
+                }
             },
             colors = TextFieldDefaults.outlinedTextFieldColors(
                 focusedBorderColor = Color.Transparent,
                 unfocusedBorderColor = Color.Transparent,
-                textColor = MaterialTheme.colors.onBackground
+                textColor = if(item.isChecked){
+                    MaterialTheme.colors.onBackground.copy(.6f)
+                }else{
+                    MaterialTheme.colors.onBackground
+                }
             ),
+            textStyle = TextStyle(textDecoration = if (item.isChecked && strikeChecked) TextDecoration.LineThrough else null),
             keyboardOptions = KeyboardOptions(imeAction = ImeAction.Next),
             keyboardActions = KeyboardActions(onNext = {
                 focusRequester.freeFocus()
-                onAdd()
+                // Adding Text After Selection To New Item
+                onAdd(
+                    if (textFieldValue.selection.collapsed) {
+                        if (textFieldValue.selection.end < textFieldValue.text.length) {
+                            textFieldValue.text.substring(
+                                textFieldValue.selection.end,
+                                textFieldValue.text.length
+                            )
+                        } else {
+                            ""
+                        }
+                    } else {
+                        ""
+                    }
+                )
+                // Removing Added Text From Current Item
+                if (textFieldValue.selection.collapsed) {
+                    if (textFieldValue.selection.end < textFieldValue.text.length) {
+                        item.text = item.text.substring(0, textFieldValue.selection.end)
+                    }
+                }
             }),
         )
         IconButton(
