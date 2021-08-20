@@ -10,7 +10,7 @@ import com.wakaztahir.blockly.states.rememberBlocklyTextState
 import com.wakaztahir.blockly.utils.toViewColor
 
 @Composable
-fun TextBlock(
+fun TextComponent(
     modifier: Modifier = Modifier,
     textState: TextState = rememberBlocklyTextState(),
     hint: String = "",
