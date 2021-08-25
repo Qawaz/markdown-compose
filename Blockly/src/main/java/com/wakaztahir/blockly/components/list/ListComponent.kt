@@ -138,6 +138,11 @@ private fun ListItems(
                 onAdd = { onAdd(index + 1, it) },
                 onUpdate = onUpdate,
                 onRemove = { onRemove(item) },
+                onBackspaceRemove = {
+                    if (items.size > 1) {
+                        onRemove(item)
+                    }
+                },
                 onVerticalDragged = {
                     var aboveHeight = 0.dp
                     items.subList(0, index).forEach { item -> aboveHeight -= item.itemHeight }

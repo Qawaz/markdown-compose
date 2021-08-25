@@ -4,8 +4,10 @@ import androidx.compose.foundation.gestures.Orientation
 import androidx.compose.foundation.gestures.draggable
 import androidx.compose.foundation.gestures.rememberDraggableState
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.*
@@ -13,6 +15,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Close
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
+import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
@@ -32,6 +35,7 @@ import com.wakaztahir.blockly.R
 import com.wakaztahir.blockly.model.ListItem
 import kotlinx.coroutines.CoroutineScope
 
+@OptIn(ExperimentalComposeUiApi::class)
 @Composable
 fun ListItemComponent(
     modifier: Modifier = Modifier,
@@ -39,6 +43,7 @@ fun ListItemComponent(
     onAdd: (String) -> Unit,
     onUpdate: () -> Unit,
     onRemove: () -> Unit,
+    onBackspaceRemove: () -> Unit = {},
     onVerticalDragged: (Dp) -> Unit = {},
     onVerticalDragStopped: suspend CoroutineScope.(Float) -> Unit = {},
     strikeChecked: Boolean = true,
@@ -111,6 +116,15 @@ fun ListItemComponent(
                         onUpdate()
                     }
                 },
+//                .onKeyEvent {
+//                    Log.d("BL_KeyEvent",it.type.toString())
+//                    if (it.key.keyCode == Key.Backspace.keyCode) {
+//                        if (item.text.isEmpty()) {
+//                            onBackspaceRemove()
+//                        }
+//                    }
+//                    false
+//                }
             value = textFieldValue,
             onValueChange = {
                 textFieldValueState = it
@@ -121,9 +135,9 @@ fun ListItemComponent(
             colors = TextFieldDefaults.outlinedTextFieldColors(
                 focusedBorderColor = Color.Transparent,
                 unfocusedBorderColor = Color.Transparent,
-                textColor = if(item.isChecked){
+                textColor = if (item.isChecked) {
                     MaterialTheme.colors.onBackground.copy(.6f)
-                }else{
+                } else {
                     MaterialTheme.colors.onBackground
                 }
             ),
@@ -155,7 +169,9 @@ fun ListItemComponent(
             }),
         )
         IconButton(
-            modifier = Modifier.size(20.dp),
+            modifier = Modifier
+                .padding(end = 8.dp)
+                .size(20.dp),
             onClick = { onRemove() }
         ) {
             Icon(
