@@ -1,7 +1,6 @@
 package com.wakaztahir.parsefield
 
 import android.os.Bundle
-import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.layout.Column
@@ -10,12 +9,12 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.material.MaterialTheme
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.focus.onFocusChanged
 import androidx.compose.ui.unit.dp
 import com.wakaztahir.blockly.components.blocks.textblock.TextComponent
 import com.wakaztahir.blockly.components.code.CodeComponent
 import com.wakaztahir.blockly.components.code.ace.AceEditor
 import com.wakaztahir.blockly.components.list.ListComponent
+import com.wakaztahir.blockly.components.math.MathComponent
 import com.wakaztahir.blockly.model.ListBlock
 import com.wakaztahir.blockly.model.ListItem
 import com.wakaztahir.parsefield.ui.theme.ParseFieldTheme
@@ -36,6 +35,9 @@ class MainActivity : ComponentActivity() {
                     }
                 }
                 Column {
+                    MathComponent(
+                        latext = "\\(x=\\frac{-b\\pm\\sqrt{b^2-4ac}}{2a}\\)"
+                    )
                     CodeComponent(
                         mode = AceEditor.Mode.HTML,
                         theme = if (MaterialTheme.colors.isLight) {

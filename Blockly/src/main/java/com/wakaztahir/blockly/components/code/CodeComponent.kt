@@ -20,7 +20,7 @@ fun CodeComponent(
     val setProperties: AceEditor.() -> Unit = {
         setMode(mode)
         setTheme(theme)
-        layoutParams.height = height
+//        layoutParams.height = height
         this.onChange = onChange
     }
 
