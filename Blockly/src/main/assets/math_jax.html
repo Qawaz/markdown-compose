@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Math Jax</title>
+</head>
+<script>
+    MathJax = {
+        options: {
+            enableMenu: false,
+        },
+        svg: {
+            scale: Bridge.getOutputScale(),
+            minScale: Bridge.getMinScale(),
+        },
+    };
+</script>
+
+<body>
+    <div id="math"></div>
+    <div id="error"></div>
+    <style>
+        html,
+        body {
+            margin: 0;
+            padding: 0;
+        }
+
+        #math {
+            width: 100%;
+        }
+
+        #error {
+            color: red;
+        }
+    </style>
+    <script src="MathJax/tex-svg.js"></script>
+    <script>
+        // Updates The Tex Value
+        function setTex(value) {
+            try {
+                document.getElementById("math").innerHTML = value
+                MathJax.typesetPromise().then((e) => {
+                    Bridge.onRendered()
+                })
+            } catch (e) {
+                showError(e)
+            }
+        }
+
+        // Updates The Text Color
+        function setTexColor(value) {
+            try {
+                document.getElementById("math").style.color = value
+            } catch (e) {
+                showError(e)
+            }
+        }
+
+        //Displays Error
+        function showError(value) {
+            document.getElementById("error").innerHTML = value
+        }
+    </script>
+</body>
+
+</html>

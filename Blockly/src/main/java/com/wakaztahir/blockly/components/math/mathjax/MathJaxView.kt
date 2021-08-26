@@ -2,99 +2,81 @@ package com.wakaztahir.blockly.components.math.mathjax
 
 import android.annotation.SuppressLint
 import android.content.Context
-import android.text.TextUtils
 import android.webkit.WebView
 import android.webkit.WebViewClient
 
 
-class MathJaxView : WebView {
+@SuppressLint("SetJavaScriptEnabled", "ViewConstructor")
+class MathJaxView(
+    context: Context,
+    outputScale: Int = 1,
+    minScale: Int = 1,
+) : WebView(context) {
+
+    companion object {
+        private const val HTML_LOCATION = "file:///android_asset/math_jax.html"
+    }
+
     private var inputText: String? = null
-    protected var mBridge: MathJaxJavaScriptBridge? = null
+    private var onLoaded: () -> Unit = {}
+    private var onRendered: () -> Unit = {}
 
-    /**
-     * laTex can only be rendered when WebView is already loaded
-     */
-    private var webViewLoaded = false
-
-    interface OnMathJaxRenderListener {
-        fun onRendered()
-    }
-
-    private var onMathJaxRenderListener: OnMathJaxRenderListener? = null
-
-    constructor(context: Context, config: MathJaxConfig? = null) : super(context) {
-        init(context, config)
-    }
-
-    fun setRenderListener(onMathJaxRenderListener: OnMathJaxRenderListener?) {
-        this.onMathJaxRenderListener = onMathJaxRenderListener
-    }
-
-    @SuppressLint("SetJavaScriptEnabled", "AddJavascriptInterface")
-    private fun init(context: Context, config: MathJaxConfig?) {
-        val verticalScrollbarsEnabled = false
-        val horizontalScrollbarsEnabled = false
-
-        // callback when WebView is loading completed
-        webViewLoaded = false
+    init {
         webViewClient = object : WebViewClient() {
             override fun onPageFinished(view: WebView, url: String) {
                 super.onPageFinished(view, url)
-                if (webViewLoaded) {
-                    // WebView was already finished
-                    // do not load content again
-                    return
-                }
-                webViewLoaded = true
-                if (!TextUtils.isEmpty(inputText)) {
+                if (inputText != null && inputText?.isNotEmpty() == true) {
                     setInputText(inputText)
                 }
+                onLoaded()
             }
         }
-        mBridge = MathJaxJavaScriptBridge(this)
-        addJavascriptInterface(mBridge!!, "Bridge")
-        addJavascriptInterface(config ?: MathJaxConfig(), "BridgeConfig")
+        addJavascriptInterface(
+            MathJaxBridge(
+                mathJax = this,
+                outputScale = outputScale,
+                minScale = minScale,
+                onRendered = { onRendered() }
+            ), "Bridge"
+        )
 
         // be careful, we do not need internet access
         settings.blockNetworkLoads = true
         settings.javaScriptEnabled = true
         loadUrl(HTML_LOCATION)
-        isVerticalScrollBarEnabled = verticalScrollbarsEnabled
-        isHorizontalScrollBarEnabled = horizontalScrollbarsEnabled
+        isHorizontalScrollBarEnabled = false
         setBackgroundColor(0)
     }
 
-    /**
-     * called when webView is ready with rendering LaTex
-     */
-    fun rendered() {
-        onMathJaxRenderListener!!.onRendered()
+    // External Functions
+
+    fun setOnLoadedListener(onLoad: () -> Unit) {
+        onLoaded = onLoad
     }
 
-    /**
-     * change the displayed LaTex
-     *
-     * @param inputText formatted string
-     */
+    fun setOnRenderedListener(onRender: () -> Unit) {
+        onRendered = onRender
+    }
+
     fun setInputText(inputText: String?) {
         this.inputText = inputText
-
-        //wait for WebView to finish loading
-        if (!webViewLoaded) {
-            return
-        }
         val laTexString: String = inputText?.let { doubleEscapeTeX(it) } ?: ""
-        val javascriptCommand = "changeLatexText(\"$laTexString\")"
-        evaluateJavascript(javascriptCommand, null)
+        evaluateJavascript("setTex(\"$laTexString\")") {
+            // do something
+        }
     }
 
-    /**
-     * @return the current laTex-String
-     * null if not set
-     */
+    fun setTexColor(colorStr : String){
+        evaluateJavascript("setTexColor(\"$colorStr\")"){
+            // do something
+        }
+    }
+
     fun getInputText(): String? {
         return inputText
     }
+
+    // Private Functions
 
     private fun doubleEscapeTeX(s: String): String {
         var t = ""
@@ -104,10 +86,5 @@ class MathJaxView : WebView {
             if (s[i] != '\n') t += s[i]
         }
         return t
-    }
-
-    companion object {
-        private const val HTML_LOCATION =
-            "file:///android_asset/mathjax_android.html"
     }
 }

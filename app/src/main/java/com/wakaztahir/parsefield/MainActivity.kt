@@ -36,7 +36,8 @@ class MainActivity : ComponentActivity() {
                 }
                 Column {
                     MathComponent(
-                        latext = "\\(x=\\frac{-b\\pm\\sqrt{b^2-4ac}}{2a}\\)"
+                        latext = "\$\$\\frac{dX_{SS}}{dt}=\\Lambda-\\mu X_{SS}-\\frac{\\beta\\bigg(X_{HS}+X_{HT}+X_{H+{T_T^{(1)}}}+X_{H+T_T^{(2)}}\n" +
+                                "+X_{H+T_T^{(3)}}\\bigg)}{N}-\\frac{\\tau(X_{ST}+X_{HT})X_{SS}}{N}\$\$"
                     )
                     CodeComponent(
                         mode = AceEditor.Mode.HTML,
