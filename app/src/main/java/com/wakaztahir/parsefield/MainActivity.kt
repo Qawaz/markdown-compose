@@ -8,7 +8,6 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Text
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
@@ -22,6 +21,7 @@ import com.wakaztahir.blockly.model.ListBlock
 import com.wakaztahir.blockly.model.ListItem
 import com.wakaztahir.parsefield.ui.theme.ParseFieldTheme
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.cancelChildren
 import kotlinx.coroutines.launch
 
 class MainActivity : ComponentActivity() {
@@ -59,9 +59,9 @@ class MainActivity : ComponentActivity() {
                         },
                         value = initialLatex,
                         onValueChange = {
+                            scope.coroutineContext.cancelChildren()
                             scope.launch(Dispatchers.Main) {
                                 requestText {
-                                    Log.d("TL_CodeCompo", it)
                                     latex = it.removeSurrounding("\"")
                                 }
                             }
