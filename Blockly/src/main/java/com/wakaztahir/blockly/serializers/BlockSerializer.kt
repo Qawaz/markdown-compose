@@ -1,7 +1,9 @@
 package com.wakaztahir.blockly.serializers
 
 import com.wakaztahir.blockly.model.Block
+import com.wakaztahir.blockly.model.CodeBlock
 import com.wakaztahir.blockly.model.ListBlock
+import com.wakaztahir.blockly.model.MathBlock
 import kotlinx.serialization.*
 import kotlinx.serialization.descriptors.SerialDescriptor
 import kotlinx.serialization.encoding.Decoder
@@ -27,6 +29,12 @@ object BlockSerializer : KSerializer<Block> {
             is ListBlockSurrogate -> {
                 surrogate.toListBlock()
             }
+            is CodeBlockSurrogate -> {
+                surrogate.toCodeBlock()
+            }
+            is MathBlockSurrogate -> {
+                surrogate.toMathBlock()
+            }
             else -> {
                 ListBlock()
             }
@@ -36,6 +44,12 @@ object BlockSerializer : KSerializer<Block> {
     override fun serialize(encoder: Encoder, value: Block) {
         when (value) {
             is ListBlock -> {
+                encoder.encodeSerializableValue(serializer, value.toSurrogate())
+            }
+            is CodeBlock -> {
+                encoder.encodeSerializableValue(serializer, value.toSurrogate())
+            }
+            is MathBlock -> {
                 encoder.encodeSerializableValue(serializer, value.toSurrogate())
             }
         }
@@ -48,6 +62,8 @@ object BlockSerializer : KSerializer<Block> {
 private val module = SerializersModule {
     polymorphic(BlockSurrogate::class) {
         subclass(ListBlockSurrogate::class)
+        subclass(CodeBlockSurrogate::class)
+        subclass(MathBlockSurrogate::class)
     }
 }
 

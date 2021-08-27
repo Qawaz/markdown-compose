@@ -1,7 +1,6 @@
 package com.wakaztahir.parsefield
 
 import android.os.Bundle
-import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.layout.Column
@@ -48,7 +47,7 @@ class MainActivity : ComponentActivity() {
                     var latex by remember { mutableStateOf(initialLatex) }
 
                     MathComponent(
-                        latext = latex
+                        latex = latex
                     )
                     CodeComponent(
                         mode = AceEditor.Mode.LaTeX,
