@@ -2,42 +2,20 @@ package com.wakaztahir.blockly.components.code.ace
 
 import android.annotation.SuppressLint
 import android.content.Context
-import android.util.AttributeSet
-import android.view.KeyEvent
-import android.view.inputmethod.BaseInputConnection
-import android.view.inputmethod.EditorInfo
-import android.view.inputmethod.InputConnection
 import android.webkit.JavascriptInterface
 import android.webkit.WebView
 import android.webkit.WebViewClient
 
-class AceEditor : WebView {
-    var c: Context
+@SuppressLint("ViewConstructor")
+class AceEditor(context: Context, val minLines: Int,val maxLines: Int) : WebView(context) {
+    var c: Context = context
     private var loadedUI: Boolean
     internal var onLoaded: () -> Unit = {}
     internal var onChange: () -> Unit = {}
 
-    constructor(context: Context) : super(context) {
+    init {
         loadedUI = false
-        this.c = context
         initialize()
-    }
-
-    constructor(context: Context, attrs: AttributeSet? = null) : super(context, attrs) {
-        loadedUI = false
-        this.c = context
-        initialize()
-    }
-
-    override fun onCreateInputConnection(outAttrs: EditorInfo): InputConnection {
-        return BaseInputConnection(
-            this,
-            false
-        ) //this is needed for #dispatchKeyEvent() to be notified.
-    }
-
-    override fun dispatchKeyEvent(event: KeyEvent): Boolean {
-        return super.dispatchKeyEvent(event)
     }
 
     @SuppressLint("SetJavaScriptEnabled")
@@ -56,7 +34,7 @@ class AceEditor : WebView {
         }
         settings.javaScriptEnabled = true
         loadUrl("file:///android_asset/index.html")
-        addJavascriptInterface(EditorInterface(this), "Android")
+        addJavascriptInterface(EditorInterface(this,minLines = minLines,maxLines = maxLines), "Android")
     }
 
     enum class Theme {
@@ -68,7 +46,11 @@ class AceEditor : WebView {
     }
 }
 
-private class EditorInterface(val editor: AceEditor) {
+private class EditorInterface(
+    val editor: AceEditor,
+    @get:JavascriptInterface val minLines: Int,
+    @get:JavascriptInterface val maxLines: Int,
+) {
     @JavascriptInterface
     fun onChange() {
         editor.onChange()

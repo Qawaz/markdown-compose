@@ -14,6 +14,8 @@ fun CodeComponent(
     mode: AceEditor.Mode,
     theme: AceEditor.Theme,
     value: String = "",
+    minLines: Int = 5,
+    maxLines: Int = 30,
     onValueChange: AceEditor.() -> Unit = {},
 ) {
 
@@ -26,7 +28,7 @@ fun CodeComponent(
     AndroidView(
         modifier = modifier,
         factory = {
-            AceEditor(it, null).apply {
+            AceEditor(it, minLines = minLines, maxLines = maxLines).apply {
                 onLoaded = {
                     setProperties()
                 }

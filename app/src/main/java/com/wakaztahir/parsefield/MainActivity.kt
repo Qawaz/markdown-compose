@@ -43,14 +43,10 @@ class MainActivity : ComponentActivity() {
 
                     val scope = rememberCoroutineScope()
 
-                    var latex by remember {
-                        mutableStateOf(
-                            "\$\$\\frac{dX_{SS}}{dt}=\\Lambda-\\mu X_{SS}-\\frac{\\beta\\bigg(X_{HS}+X_{HT}+X_{H+{T_T^{(1)}}}+X_{H+T_T^{(2)}}\n" +
-                                    "+X_{H+T_T^{(3)}}\\bigg)}{N}-\\frac{\\tau(X_{ST}+X_{HT})X_{SS}}{N}\$\$"
-                        )
-                    }
+                    val initialLatex = """$$\\ x + 3 \\$$"""
 
-                    Text(text = latex)
+                    var latex by remember { mutableStateOf(initialLatex) }
+
                     MathComponent(
                         latext = latex
                     )
@@ -61,6 +57,7 @@ class MainActivity : ComponentActivity() {
                         } else {
                             AceEditor.Theme.MONOKAI
                         },
+                        value = initialLatex,
                         onValueChange = {
                             scope.launch(Dispatchers.Main) {
                                 requestText {

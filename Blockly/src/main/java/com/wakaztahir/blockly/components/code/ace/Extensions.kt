@@ -1,6 +1,7 @@
 package com.wakaztahir.blockly.components.code.ace
 
 import android.util.Log
+import androidx.compose.ui.res.stringResource
 import java.util.*
 
 fun AceEditor.setMode(mode: AceEditor.Mode) {
@@ -24,7 +25,12 @@ fun AceEditor.setSoftWrap(enabled: Boolean) {
 }
 
 fun AceEditor.setText(text: String) {
-    evaluateJavascript("editor.getSession().setValue(\"$text\");") {}
+    val stringBuilder = StringBuilder()
+    stringBuilder.append("editor.session.setValue(\"")
+    stringBuilder.append(text)
+    stringBuilder.append("\")")
+    Log.d("TL_CodeComponent",stringBuilder.toString())
+    evaluateJavascript(stringBuilder.toString()) {}
 }
 
 fun AceEditor.insertTextAtCursor(text: String) {

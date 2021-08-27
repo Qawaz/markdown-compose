@@ -10,26 +10,25 @@
     #editor {
         width: 100%;
     }
-
-
-
     </style>
 </head>
 <body>
 <div id="editor"></div>
+<div id="error"></div>
 <script src="./src/ace.js" type="text/javascript" charset="utf-8"></script>
 <script>
     var editor = ace.edit("editor");
-    editor.setOptions({
-        minLines:5,
-        maxLines:60
-    });
+    try{
+        editor.setOptions({
+            minLines:Android.getMinLines(),
+            maxLines:Android.getMaxLines()
+        });
+    }catch(e){}
     editor.on("change",(e)=>{
         try{
             Android.onChange();
         }catch(e){}
     })
-
 </script>
 </body>
 </html>
