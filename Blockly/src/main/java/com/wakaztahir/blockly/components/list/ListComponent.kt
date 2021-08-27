@@ -10,6 +10,7 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.wakaztahir.blockly.model.ListBlock
 import com.wakaztahir.blockly.model.ListItem
+import kotlinx.coroutines.cancelChildren
 import kotlinx.coroutines.launch
 
 @Composable
@@ -157,6 +158,7 @@ private fun ListItems(
                     }
                 },
                 onVerticalDragStopped = {
+                    scope.coroutineContext.cancelChildren()
                     scope.launch {
                         fixedResetOffset(yOffset, index, item)
                         yOffset = 0.dp
