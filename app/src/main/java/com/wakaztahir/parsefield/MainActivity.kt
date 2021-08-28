@@ -13,15 +13,13 @@ import androidx.compose.ui.unit.dp
 import com.wakaztahir.blockly.components.blocks.textblock.TextComponent
 import com.wakaztahir.blockly.components.code.CodeComponent
 import com.wakaztahir.blockly.components.code.ace.AceEditor
-import com.wakaztahir.blockly.components.code.ace.requestText
 import com.wakaztahir.blockly.components.list.ListComponent
 import com.wakaztahir.blockly.components.math.MathComponent
-import com.wakaztahir.blockly.model.ListBlock
-import com.wakaztahir.blockly.model.ListItem
+import com.wakaztahir.blockly.model.*
+import com.wakaztahir.blockly.serializers.deserialize
+import com.wakaztahir.blockly.serializers.serialize
 import com.wakaztahir.parsefield.ui.theme.ParseFieldTheme
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.cancelChildren
-import kotlinx.coroutines.launch
+import kotlinx.coroutines.delay
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -44,28 +42,53 @@ class MainActivity : ComponentActivity() {
 
                     val initialLatex = """$$\\ x + 3 \\$$"""
 
-                    var latex by remember { mutableStateOf(initialLatex) }
+                    val mathBlock = remember {
+                        MathBlock().apply {
+                            latex = initialLatex
+                        }
+                    }
+
+                    var codeBlock by remember {
+                        mutableStateOf(CodeBlock().apply {
+                            value = "<div><b>Hello</b></div>"
+                        })
+                    }
 
                     MathComponent(
-                        latex = latex
+                        block = mathBlock
                     )
+//                    CodeComponent(
+//                        mode = AceEditor.Mode.LaTeX,
+//                        theme = if (MaterialTheme.colors.isLight) {
+//                            AceEditor.Theme.TEXTMATE
+//                        } else {
+//                            AceEditor.Theme.MONOKAI
+//                        },
+//                        value = initialLatex,
+//                        onValueChange = {
+//                            scope.coroutineContext.cancelChildren()
+//                            scope.launch(Dispatchers.Main) {
+//                                requestText {
+//                                    mathBlock.latex = it
+//                                }
+//                            }
+//                        }
+//                    )
                     CodeComponent(
-                        mode = AceEditor.Mode.LaTeX,
+                        block = codeBlock,
                         theme = if (MaterialTheme.colors.isLight) {
                             AceEditor.Theme.TEXTMATE
                         } else {
                             AceEditor.Theme.MONOKAI
                         },
-                        value = initialLatex,
-                        onValueChange = {
-                            scope.coroutineContext.cancelChildren()
-                            scope.launch(Dispatchers.Main) {
-                                requestText {
-                                    latex = it.removeSurrounding("\"")
-                                }
-                            }
-                        }
+                        onUpdate = {}
                     )
+
+                    LaunchedEffect(key1 = codeBlock, block = {
+                        delay(10000)
+                        codeBlock = Block.deserialize(Block.serialize(codeBlock)) as CodeBlock
+                    })
+
                     TextComponent(
                         modifier = Modifier
                             .fillMaxWidth()
