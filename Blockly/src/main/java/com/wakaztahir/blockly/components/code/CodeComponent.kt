@@ -16,6 +16,7 @@ fun CodeComponent(
     modifier: Modifier = Modifier,
     block: CodeBlock,
     theme: AceEditor.Theme,
+    showContextMenu: Boolean = false,
     minLines: Int = 5,
     maxLines: Int = 30,
     onUpdate: () -> Unit,
@@ -28,6 +29,7 @@ fun CodeComponent(
         mode = block.mode,
         theme = theme,
         value = block.value,
+        showContextMenu = showContextMenu,
         minLines = minLines,
         maxLines = maxLines,
         onValueChange = {
@@ -51,6 +53,7 @@ fun CodeComponent(
     mode: AceEditor.Mode,
     theme: AceEditor.Theme,
     value: String = "",
+    showContextMenu: Boolean = false,
     minLines: Int = 5,
     maxLines: Int = 30,
     onValueChange: AceEditor.() -> Unit = {},
@@ -60,6 +63,11 @@ fun CodeComponent(
         setMode(mode)
         setTheme(theme)
         setText(value)
+        if (showContextMenu) {
+            showMenu()
+        } else {
+            hideMenu()
+        }
     }
 
     AndroidView(

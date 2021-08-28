@@ -7,7 +7,11 @@ import android.webkit.WebView
 import android.webkit.WebViewClient
 
 @SuppressLint("ViewConstructor")
-class AceEditor(context: Context, val minLines: Int,val maxLines: Int) : WebView(context) {
+class AceEditor(
+    context: Context,
+    val minLines: Int,
+    val maxLines: Int,
+) : WebView(context) {
     var c: Context = context
     private var loadedUI: Boolean
     internal var onLoaded: () -> Unit = {}
@@ -34,7 +38,10 @@ class AceEditor(context: Context, val minLines: Int,val maxLines: Int) : WebView
         }
         settings.javaScriptEnabled = true
         loadUrl("file:///android_asset/index.html")
-        addJavascriptInterface(EditorInterface(this,minLines = minLines,maxLines = maxLines), "Android")
+        addJavascriptInterface(
+            EditorInterface(this, minLines = minLines, maxLines = maxLines),
+            "Android"
+        )
     }
 
     enum class Theme {

@@ -92,3 +92,30 @@ fun AceEditor.requestSelectedText(onReceived: (String) -> Unit) {
 fun AceEditor.replace(text: String, replace: String) {
     evaluateJavascript("editor.replace(\"$text\",\"$replace\");") {}
 }
+
+fun AceEditor.hideMenu() {
+    evaluateJavascript(
+        """
+            var hider = document.getElementById("menu-hider")
+            if(hider!=null){
+                document.body.removeChild(hider)
+            }
+            
+            var newStyle = document.createElement("style")
+            newStyle.id = "menu-hider"
+            newStyle.innerHTML = ".ace_mobile-menu {display : none !important;}"
+            document.body.appendChild(newStyle)
+        """.trimIndent()
+    ) {}
+}
+
+fun AceEditor.showMenu() {
+    evaluateJavascript(
+        """
+        var hider = document.getElementById("menu-hider")
+        if(hider!=null){
+            document.body.removeChild(hider)
+        }
+    """.trimIndent()
+    ) {}
+}
