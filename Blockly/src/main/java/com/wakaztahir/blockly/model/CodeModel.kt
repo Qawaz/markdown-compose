@@ -12,6 +12,7 @@ import java.util.*
 class CodeBlock : Block() {
 
     var mode by mutableStateOf(AceEditor.Mode.Text)
+    var theme by mutableStateOf<AceEditor.Theme?>(null)
     var value: String = ""
 
     override fun exportText(): String {

@@ -27,7 +27,7 @@ fun CodeComponent(
     CodeComponent(
         modifier = modifier,
         mode = block.mode,
-        theme = theme,
+        theme = block.theme ?: theme,
         value = block.value,
         showContextMenu = showContextMenu,
         minLines = minLines,
