@@ -17,6 +17,6 @@ dependencyResolutionManagement {
         mavenCentral()
     }
 }
-rootProject.name = "ParseField"
+rootProject.name = "ComposeMarkdown"
 include ':app'
-include ':Blockly'
+include ':MarkdownText'
