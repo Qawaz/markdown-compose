@@ -7,31 +7,64 @@ import org.commonmark.ext.gfm.strikethrough.Strikethrough
 import org.commonmark.ext.gfm.tables.*
 import org.commonmark.node.*
 
-fun AnnotatedString.Builder.appendMarkdownContent(marker: Marker,input : String) = appendMarkdownContent(
-    marker = marker,
-    parent = marker.parse(input)
-)
+fun AnnotatedString.Builder.appendMarkdownContent(marker: Marker, input: String) =
+    appendMarkdownContent(
+        marker = marker,
+        parent = marker.parse(input)
+    )
 
 fun AnnotatedString.Builder.appendMarkdownContent(marker: Marker, parent: Node) {
     var node = parent.firstChild
     while (node != null) {
         when (node) {
-            is BulletList -> {
-            }
-            is Code -> {
-            }
+
+            // Line Breaks
             is HardLineBreak -> append("\n")
+            is SoftLineBreak -> {
+
+            }
+            is ThematicBreak -> {
+
+            }
+
+            // Text Styling
             is Paragraph -> appendParagraph(marker, node)
             is Text -> appendText(node)
             is Emphasis -> appendEmphasis(marker, node)
             is StrongEmphasis -> appendStrongEmphasis(marker, node)
             is Heading -> appendHeading(marker, node)
             is Strikethrough -> appendStrikethrough(marker, node)
-            is Image -> appendImage(marker, node)
+            is Link -> {
+//            AstLink(
+//                title = node.title ?: "",
+//                destination = node.destination
+//            )
+            }
             is BlockQuote -> {
 
             }
+            is Image -> appendImage(marker, node)
 
+            // Lists
+            is BulletList -> {
+            }
+            is OrderedList -> {
+//            AstOrderedList(
+//                startNumber = node.startNumber,
+//                delimiter = node.delimiter
+//            )
+            }
+            is ListItem -> {
+            }
+
+            // Code Blocks
+            is Code -> {
+            }
+            is IndentedCodeBlock -> {
+//            AstIndentedCodeBlock(
+//                literal = node.literal
+//            )
+            }
             is FencedCodeBlock -> {
 //            AstFencedCodeBlock(
 //                literal = node.literal,
@@ -42,12 +75,6 @@ fun AnnotatedString.Builder.appendMarkdownContent(marker: Marker, parent: Node) 
 //            )
             }
 
-            is SoftLineBreak -> {
-
-            }
-            is ThematicBreak -> {
-
-            }
             is HtmlInline -> {
 //            AstHtmlInline(
 //                literal = node.literal
@@ -56,25 +83,6 @@ fun AnnotatedString.Builder.appendMarkdownContent(marker: Marker, parent: Node) 
             is HtmlBlock -> {
 //            AstHtmlBlock(
 //                literal = node.literal
-//            )
-            }
-            is IndentedCodeBlock -> {
-//            AstIndentedCodeBlock(
-//                literal = node.literal
-//            )
-            }
-            is Link -> {
-//            AstLink(
-//                title = node.title ?: "",
-//                destination = node.destination
-//            )
-            }
-            is ListItem -> {
-            }
-            is OrderedList -> {
-//            AstOrderedList(
-//                startNumber = node.startNumber,
-//                delimiter = node.delimiter
 //            )
             }
             is LinkReferenceDefinition -> {

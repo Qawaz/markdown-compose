@@ -18,7 +18,7 @@ internal fun createDefaultInlineTextContent(blocks : MutableMap<String, BlockDat
         ImageTag to InlineTextContent(
             placeholder = Placeholder(
                 TextUnit(10f, TextUnitType.Em),
-                TextUnit(20f, TextUnitType.Em),
+                TextUnit(10f, TextUnitType.Em),
                 PlaceholderVerticalAlign.TextCenter
             ),
             children = {
