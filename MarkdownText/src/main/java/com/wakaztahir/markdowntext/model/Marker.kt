@@ -5,10 +5,7 @@ import androidx.compose.ui.text.SpanStyle
 import com.wakaztahir.markdowntext.core.createDefaultInlineTextContent
 import com.wakaztahir.markdowntext.utils.*
 import org.commonmark.ext.gfm.strikethrough.Strikethrough
-import org.commonmark.node.Emphasis
-import org.commonmark.node.Heading
-import org.commonmark.node.Node
-import org.commonmark.node.StrongEmphasis
+import org.commonmark.node.*
 import org.commonmark.parser.Parser
 
 /**
@@ -24,10 +21,12 @@ class Marker constructor(
     // Default Variables
     internal val parser: Parser = createDefaultParser(),
     // Span Creating Functions
-    internal val emphasisSpan: (Emphasis) -> SpanStyle = ::defaultEmphasisSpan,
-    internal val strongEmphasisSpan: (StrongEmphasis) -> SpanStyle = ::defaultStrongEmphasisSpan,
-    internal val headingSpan: (Heading) -> SpanStyle = ::defaultHeadingSpan,
-    internal val strikethroughSpan: (Strikethrough) -> SpanStyle = ::defaultStrikethroughSpan,
+    internal val emphasisStyle: (Emphasis) -> SpanStyle = ::defaultEmphasisStyle,
+    internal val strongEmphasisStyle: (StrongEmphasis) -> SpanStyle = ::defaultStrongEmphasisStyle,
+    internal val linkStyle : (Link)->SpanStyle = ::defaultLinkStyle,
+    internal val headingStyle: (Heading) -> SpanStyle = ::defaultHeadingStyle,
+    internal val strikethroughStyle: (Strikethrough) -> SpanStyle = ::defaultStrikethroughStyle,
+    internal val blockQuoteStyle : (BlockQuote) -> SpanStyle = ::defaultBlockQuoteStyle,
     // Inline Text Content
     var blocks: MutableMap<String, BlockData> = mutableMapOf(),
     var inlineContent: Map<String, InlineTextContent> = createDefaultInlineTextContent(blocks)

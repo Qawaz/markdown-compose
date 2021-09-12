@@ -18,32 +18,46 @@ internal fun AnnotatedString.Builder.appendParagraph(marker: Marker, node: Parag
 }
 
 internal fun AnnotatedString.Builder.appendEmphasis(marker: Marker, node: Emphasis) {
-    pushStyle(marker.emphasisSpan(node))
+    pushStyle(marker.emphasisStyle(node))
     appendMarkdownContent(marker, node)
     pop()
 }
 
 internal fun AnnotatedString.Builder.appendStrongEmphasis(marker: Marker, node: StrongEmphasis) {
-    pushStyle(marker.strongEmphasisSpan(node))
+    pushStyle(marker.strongEmphasisStyle(node))
     appendMarkdownContent(marker, node)
     pop()
 }
 
 internal fun AnnotatedString.Builder.appendHeading(marker: Marker, node: Heading) {
-    pushStyle(marker.headingSpan(node))
+    pushStyle(marker.headingStyle(node))
     appendMarkdownContent(marker, node)
     pop()
     append("\n")
 }
 
 internal fun AnnotatedString.Builder.appendStrikethrough(marker: Marker, node: Strikethrough) {
-    pushStyle(marker.strikethroughSpan(node))
+    pushStyle(marker.strikethroughStyle(node))
     appendMarkdownContent(marker, node)
     pop()
 }
 
-internal fun AnnotatedString.Builder.appendImage(marker: Marker,node : Image){
+internal fun AnnotatedString.Builder.appendLink(marker: Marker, node: Link) {
+    pushStyle(marker.linkStyle(node))
+    pushStringAnnotation(URLTag, node.destination ?: "")
+    appendMarkdownContent(marker, node)
+    pop()
+    pop()
+}
+
+internal fun AnnotatedString.Builder.appendBlockquote(marker: Marker, node: BlockQuote) {
+    pushStyle(marker.blockQuoteStyle(node))
+    appendMarkdownContent(marker,node)
+    pop()
+}
+
+internal fun AnnotatedString.Builder.appendImage(marker: Marker, node: Image) {
     val id = UUID.randomUUID().toString()
-    marker.blocks[id] = ImageBlockData(node.title ?: "Untitled Image",node.destination)
-    appendInlineContent(ImageTag,id)
+    marker.blocks[id] = ImageBlockData(node.title ?: "Untitled Image", node.destination ?: "")
+    appendInlineContent(ImageTag, id)
 }

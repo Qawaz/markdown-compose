@@ -34,15 +34,8 @@ fun AnnotatedString.Builder.appendMarkdownContent(marker: Marker, parent: Node) 
             is StrongEmphasis -> appendStrongEmphasis(marker, node)
             is Heading -> appendHeading(marker, node)
             is Strikethrough -> appendStrikethrough(marker, node)
-            is Link -> {
-//            AstLink(
-//                title = node.title ?: "",
-//                destination = node.destination
-//            )
-            }
-            is BlockQuote -> {
-
-            }
+            is Link -> appendLink(marker,node)
+            is BlockQuote -> appendBlockquote(marker,node)
             is Image -> appendImage(marker, node)
 
             // Lists

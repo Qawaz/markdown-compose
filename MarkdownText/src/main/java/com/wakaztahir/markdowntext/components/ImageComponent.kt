@@ -9,8 +9,10 @@ class ImageBlockData(val title: String, val url: String) : BlockData()
 
 @Composable
 fun ImageComponent(data: ImageBlockData) {
-    Image(
-        painter = rememberImagePainter(data.url),
-        contentDescription = data.title
-    )
+    if (data.url.isNotEmpty()) {
+        Image(
+            painter = rememberImagePainter(data.url),
+            contentDescription = data.title
+        )
+    }
 }

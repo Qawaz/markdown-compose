@@ -11,6 +11,7 @@ import com.wakaztahir.markdowntext.components.ImageComponent
 import com.wakaztahir.markdowntext.model.BlockData
 
 internal const val ImageTag = "marker - image"
+internal const val URLTag = "marker - url"
 
 @OptIn(ExperimentalUnitApi::class)
 internal fun createDefaultInlineTextContent(blocks : MutableMap<String, BlockData> ): Map<String, InlineTextContent> {

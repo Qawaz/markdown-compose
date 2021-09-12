@@ -16,7 +16,6 @@ import androidx.compose.ui.unit.ExperimentalUnitApi
 import com.wakaztahir.example.ui.theme.MarkdownTextFieldTheme
 import com.wakaztahir.markdowntext.core.appendMarkdownContent
 import com.wakaztahir.markdowntext.model.Marker
-import com.wakaztahir.markdowntext.model.parse
 
 class MainActivity : ComponentActivity() {
     @OptIn(ExperimentalUnitApi::class)
@@ -35,7 +34,6 @@ class MainActivity : ComponentActivity() {
                             toAnnotatedString()
                         }
                     }
-
 
                     SelectionContainer {
                         Text(
