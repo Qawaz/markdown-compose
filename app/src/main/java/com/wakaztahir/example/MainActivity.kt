@@ -12,22 +12,25 @@ import androidx.compose.material.Text
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.buildAnnotatedString
-import com.wakaztahir.example.testing.appendMarkdownContent
-import com.wakaztahir.example.testing.createDefaultParser
+import androidx.compose.ui.unit.ExperimentalUnitApi
 import com.wakaztahir.example.ui.theme.MarkdownTextFieldTheme
+import com.wakaztahir.markdowntext.core.appendMarkdownContent
+import com.wakaztahir.markdowntext.model.Marker
+import com.wakaztahir.markdowntext.model.parse
 
 class MainActivity : ComponentActivity() {
+    @OptIn(ExperimentalUnitApi::class)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
             MarkdownTextFieldTheme {
                 Column(modifier = Modifier.verticalScroll(rememberScrollState())) {
 
-                    val parser = remember { createDefaultParser() }
+                    val marker = remember { Marker() }
 
                     val annotatedString = remember {
                         buildAnnotatedString {
-                            appendMarkdownContent(parser.parse(SampleText))
+                            appendMarkdownContent(marker, SampleText)
 
                             toAnnotatedString()
                         }
@@ -37,7 +40,8 @@ class MainActivity : ComponentActivity() {
                     SelectionContainer {
                         Text(
                             text = annotatedString,
-                            color = MaterialTheme.colors.onBackground
+                            color = MaterialTheme.colors.onBackground,
+                            inlineContent = marker.inlineContent
                         )
                     }
                 }

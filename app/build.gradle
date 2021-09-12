@@ -27,8 +27,8 @@ android {
         }
     }
     compileOptions {
-        sourceCompatibility JavaVersion.VERSION_1_8
-        targetCompatibility JavaVersion.VERSION_1_8
+        sourceCompatibility JavaVersion.VERSION_11
+        targetCompatibility JavaVersion.VERSION_11
     }
     kotlinOptions {
         jvmTarget = '1.8'
@@ -58,7 +58,7 @@ dependencies {
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.4.0'
     androidTestImplementation "androidx.compose.ui:ui-test-junit4:$compose_version"
 
-//    Common Mark
+    // Common  Mark
     implementation "org.commonmark:commonmark:0.18.0"
     implementation "org.commonmark:commonmark-ext-gfm-tables:0.18.0"
     implementation "org.commonmark:commonmark-ext-gfm-strikethrough:0.18.0"

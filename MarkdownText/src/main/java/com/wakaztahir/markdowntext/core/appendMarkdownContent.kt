@@ -1,12 +1,18 @@
-package com.wakaztahir.example.testing
+package com.wakaztahir.markdowntext.core
 
 import androidx.compose.ui.text.AnnotatedString
-import com.wakaztahir.example.builders.*
+import com.wakaztahir.markdowntext.model.Marker
+import com.wakaztahir.markdowntext.model.parse
 import org.commonmark.ext.gfm.strikethrough.Strikethrough
 import org.commonmark.ext.gfm.tables.*
 import org.commonmark.node.*
 
-fun AnnotatedString.Builder.appendMarkdownContent(parent: Node) {
+fun AnnotatedString.Builder.appendMarkdownContent(marker: Marker,input : String) = appendMarkdownContent(
+    marker = marker,
+    parent = marker.parse(input)
+)
+
+fun AnnotatedString.Builder.appendMarkdownContent(marker: Marker, parent: Node) {
     var node = parent.firstChild
     while (node != null) {
         when (node) {
@@ -14,11 +20,18 @@ fun AnnotatedString.Builder.appendMarkdownContent(parent: Node) {
             }
             is Code -> {
             }
-            is Paragraph -> this appendParagraph node
-            is Text -> this appendText node
-            is Emphasis -> this appendEmphasis node
-            is StrongEmphasis -> this appendStrongEmphasis node
-            is BlockQuote -> this appendBlockquote node
+            is HardLineBreak -> append("\n")
+            is Paragraph -> appendParagraph(marker, node)
+            is Text -> appendText(node)
+            is Emphasis -> appendEmphasis(marker, node)
+            is StrongEmphasis -> appendStrongEmphasis(marker, node)
+            is Heading -> appendHeading(marker, node)
+            is Strikethrough -> appendStrikethrough(marker, node)
+            is Image -> appendImage(marker, node)
+            is BlockQuote -> {
+
+            }
+
             is FencedCodeBlock -> {
 //            AstFencedCodeBlock(
 //                literal = node.literal,
@@ -28,9 +41,12 @@ fun AnnotatedString.Builder.appendMarkdownContent(parent: Node) {
 //                info = node.info
 //            )
             }
-            is HardLineBreak -> this appendHardLineBreak node
-            is Heading -> this appendHeading node
+
+            is SoftLineBreak -> {
+
+            }
             is ThematicBreak -> {
+
             }
             is HtmlInline -> {
 //            AstHtmlInline(
@@ -40,12 +56,6 @@ fun AnnotatedString.Builder.appendMarkdownContent(parent: Node) {
             is HtmlBlock -> {
 //            AstHtmlBlock(
 //                literal = node.literal
-//            )
-            }
-            is Image -> {
-//            AstImage(
-//                title = node.title,
-//                destination = node.destination
 //            )
             }
             is IndentedCodeBlock -> {
@@ -66,8 +76,6 @@ fun AnnotatedString.Builder.appendMarkdownContent(parent: Node) {
 //                startNumber = node.startNumber,
 //                delimiter = node.delimiter
 //            )
-            }
-            is SoftLineBreak -> {
             }
             is LinkReferenceDefinition -> {
 //            AstLinkReferenceDefinition(
@@ -93,11 +101,6 @@ fun AnnotatedString.Builder.appendMarkdownContent(parent: Node) {
 //                    RIGHT -> AstTableCellAlignment.RIGHT
 //                    null -> AstTableCellAlignment.LEFT
 //                }
-//            )
-            }
-            is Strikethrough -> {
-//            AstStrikethrough(
-//                node.openingDelimiter
 //            )
             }
             is CustomNode -> {

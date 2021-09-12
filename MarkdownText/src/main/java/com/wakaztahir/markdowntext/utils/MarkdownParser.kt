@@ -1,10 +1,10 @@
-package com.wakaztahir.example.testing
+package com.wakaztahir.markdowntext.utils
 
 import org.commonmark.ext.gfm.strikethrough.StrikethroughExtension
 import org.commonmark.ext.gfm.tables.TablesExtension
 import org.commonmark.parser.Parser
 
-fun createDefaultParser(): Parser {
+internal fun createDefaultParser(): Parser {
     return Parser.builder()
         .extensions(
             listOf(
