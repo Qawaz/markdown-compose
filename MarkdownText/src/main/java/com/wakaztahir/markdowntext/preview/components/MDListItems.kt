@@ -1,6 +1,5 @@
 package com.wakaztahir.markdowntext.preview.components
 
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
@@ -16,7 +15,7 @@ fun MDListItems(
 ) {
     val bottom = if (listBlock.parent is Document) 8.dp else 0.dp
     val start = if (listBlock.parent is Document) 0.dp else 8.dp
-    Column(modifier = modifier.padding(bottom = bottom,start = start)) {
+    Column(modifier = modifier.padding(bottom = bottom, start = start)) {
         var listItem = listBlock.firstChild
         while (listItem != null) {
             var child = listItem.firstChild

@@ -18,10 +18,12 @@ fun MDBulletList(bulletList: BulletList, modifier: Modifier = Modifier) {
         val text = buildAnnotatedString {
             pushStyle(body1.toSpanStyle())
             append("$marker ")
-            appendMarkdownContent(mdMarker,it)
+            appendMarkdownContent(mdMarker, it)
             pop()
             toAnnotatedString()
+
         }
+        // todo check for task list item marker
         MarkdownText(text, MaterialTheme.typography.body1, modifier)
     }
 }

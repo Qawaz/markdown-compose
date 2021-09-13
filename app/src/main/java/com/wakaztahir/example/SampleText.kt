@@ -94,8 +94,8 @@ val SampleText = """
     Task List
     
     - [ ] This is an unchecked item
-    - []  This is a checked item
-       - This is a bullet item
+    - [x]  This is a checked item
+       - This is a indented bullet item
     - [ ] This is an unchecked item
        - [ ] This is an unchecked indented item
        - [x] This is a checked indented item
