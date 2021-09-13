@@ -1,7 +1,10 @@
-package com.wakaztahir.markdowntext.core
+package com.wakaztahir.markdowntext.annotation
 
 import androidx.compose.foundation.text.appendInlineContent
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.AnnotatedString
+import androidx.compose.ui.text.SpanStyle
+import androidx.compose.ui.text.font.FontFamily
 import com.wakaztahir.markdowntext.components.ImageBlockData
 import com.wakaztahir.markdowntext.model.Marker
 import org.commonmark.ext.gfm.strikethrough.Strikethrough
@@ -52,7 +55,7 @@ internal fun AnnotatedString.Builder.appendLink(marker: Marker, node: Link) {
 
 internal fun AnnotatedString.Builder.appendBlockquote(marker: Marker, node: BlockQuote) {
     pushStyle(marker.blockQuoteStyle(node))
-    appendMarkdownContent(marker,node)
+    appendMarkdownContent(marker, node)
     pop()
 }
 
@@ -60,4 +63,15 @@ internal fun AnnotatedString.Builder.appendImage(marker: Marker, node: Image) {
     val id = UUID.randomUUID().toString()
     marker.blocks[id] = ImageBlockData(node.title ?: "Untitled Image", node.destination ?: "")
     appendInlineContent(ImageTag, id)
+}
+
+internal fun AnnotatedString.Builder.appendCode(marker: Marker, node: Code) {
+    pushStyle(
+        SpanStyle(
+            background = Color.White.copy(.4f),
+            fontFamily = FontFamily.Monospace
+        )
+    )
+    append(node.literal)
+    pop()
 }

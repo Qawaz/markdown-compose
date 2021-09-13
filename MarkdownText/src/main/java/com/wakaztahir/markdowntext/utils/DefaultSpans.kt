@@ -1,9 +1,11 @@
 package com.wakaztahir.markdowntext.utils
 
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.ParagraphStyle
 import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.text.style.TextGeometricTransform
 import androidx.compose.ui.unit.ExperimentalUnitApi
@@ -43,5 +45,5 @@ internal fun defaultLinkStyle(node: Link): SpanStyle {
 }
 
 internal fun defaultBlockQuoteStyle(node: BlockQuote): SpanStyle {
-    return SpanStyle(background = Color.White.copy(.4f),)
+    return SpanStyle(fontStyle = FontStyle.Italic)
 }

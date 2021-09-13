@@ -91,6 +91,14 @@ val SampleText = """
     57. foo
     1. bar
 
+    Task List
+    
+    - [ ] This is an unchecked item
+    - []  This is a checked item
+       - This is a bullet item
+    - [ ] This is an unchecked item
+       - [ ] This is an unchecked indented item
+       - [x] This is a checked indented item
 
     ## Code
 

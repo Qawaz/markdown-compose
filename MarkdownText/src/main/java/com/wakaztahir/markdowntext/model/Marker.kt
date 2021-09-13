@@ -1,8 +1,9 @@
 package com.wakaztahir.markdowntext.model
 
 import androidx.compose.foundation.text.InlineTextContent
+import androidx.compose.ui.text.ParagraphStyle
 import androidx.compose.ui.text.SpanStyle
-import com.wakaztahir.markdowntext.core.createDefaultInlineTextContent
+import com.wakaztahir.markdowntext.annotation.createDefaultInlineTextContent
 import com.wakaztahir.markdowntext.utils.*
 import org.commonmark.ext.gfm.strikethrough.Strikethrough
 import org.commonmark.node.*
