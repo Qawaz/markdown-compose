@@ -6,6 +6,7 @@ import androidx.activity.compose.setContent
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.text.selection.SelectionContainer
+import androidx.compose.material.TextField
 import androidx.compose.ui.unit.ExperimentalUnitApi
 import com.wakaztahir.example.ui.theme.MarkdownTextFieldTheme
 import com.wakaztahir.markdowntext.preview.MarkdownPreview

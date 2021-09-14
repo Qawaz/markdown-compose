@@ -1,22 +1,22 @@
 package com.wakaztahir.markdowntext.preview.components
 
 import androidx.compose.foundation.ExperimentalFoundationApi
-import androidx.compose.foundation.background
 import androidx.compose.foundation.border
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.padding
 import androidx.compose.material.MaterialTheme
-import androidx.compose.runtime.*
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.layout.onSizeChanged
-import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.unit.dp
 import com.wakaztahir.markdowntext.annotation.appendMarkdownContent
 import com.wakaztahir.markdowntext.preview.LocalMarker
 import com.wakaztahir.markdowntext.preview.MarkdownText
+import com.wakaztahir.markdowntext.utils.SimpleTableLayout
 import org.commonmark.ext.gfm.tables.*
 import org.commonmark.node.Node
 
@@ -54,64 +54,25 @@ internal fun MDTable(node: TableBlock) {
             node,
             foundSection = { section ->
                 extractNodes(section, foundRow = { row ->
-                    var colNum = 0
+                    val list = mutableListOf<TableCell>()
                     extractNodes(row, foundCell = {
-                        val currentColumn = if (colNum < rows.size) {
-                            rows[colNum]
-                        } else {
-                            val col = mutableListOf<TableCell>()
-                            rows.add(col)
-                            col
-                        }
-                        currentColumn.add(it)
-                        colNum++
+                        list.add(it)
                     })
+                    rows.add(list)
                 })
             },
         )
 
-        val density = LocalDensity.current
-        var tableHeight by remember { mutableStateOf(0.dp) }
-
-        Row(modifier = Modifier.onSizeChanged {
-            tableHeight = with(density) { it.height.toDp() }
-        }) {
-            rows.forEachIndexed { rowIndex, row ->
-                Column(
-                    modifier = Modifier
-                        .then(
-                            if (tableHeight > 0.dp) {
-                                Modifier.height(tableHeight)
-                            } else {
-                                Modifier
-                            }
-                        )
-                        .border(width = 1.5.dp, color = MaterialTheme.colors.onBackground.copy(.3f))
-                ) {
-                    row.forEachIndexed { index, tableCell ->
-                        if (index == 0) {
-                            // head
-                            MDTableCell(
-                                node = tableCell,
-                                modifier = Modifier
-                                    .then(
-                                        if (rowIndex + 1 == rows.size) {
-                                            Modifier.fillMaxWidth()
-                                        } else {
-                                            Modifier
-                                        }
-                                    )
-                                    .background(
-                                        color = MaterialTheme.colors.primary
-                                    )
-                                    .padding(end = 4.dp,start = 4.dp),
-                                color = MaterialTheme.colors.onPrimary
-                            )
-                        } else {
-                            MDTableCell(node = tableCell,modifier = Modifier.padding(end = 4.dp,start = 4.dp))
-                        }
-                    }
-                }
+        if (rows.isNotEmpty()) {
+            SimpleTableLayout(
+                columns = rows.first().size,
+                rows = rows,
+                drawDecorations = {
+                    Modifier
+                },
+                cellSpacing = 8f
+            ) {
+                MDTableCell(node = it, modifier = Modifier.padding(end = 4.dp, start = 4.dp))
             }
         }
     }
