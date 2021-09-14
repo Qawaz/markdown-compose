@@ -5,16 +5,18 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Text
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.remember
+import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.layout.onSizeChanged
+import androidx.compose.ui.platform.LocalDensity
+import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.unit.dp
 import com.wakaztahir.markdowntext.annotation.appendMarkdownContent
 import com.wakaztahir.markdowntext.preview.LocalMarker
+import com.wakaztahir.markdowntext.preview.MarkdownText
 import org.commonmark.ext.gfm.tables.*
 import org.commonmark.node.Node
 
@@ -40,7 +42,7 @@ private fun extractNodes(
 internal fun MDTable(node: TableBlock) {
     Column(
         modifier = Modifier
-            .padding(16.dp)
+            .padding(8.dp)
             .clip(MaterialTheme.shapes.medium)
             .border(width = 2.dp, color = MaterialTheme.colors.onBackground.copy(.3f))
     ) {
@@ -68,26 +70,45 @@ internal fun MDTable(node: TableBlock) {
             },
         )
 
-        Row {
-            rows.forEachIndexed { rowIndex, row->
-                Column {
+        val density = LocalDensity.current
+        var tableHeight by remember { mutableStateOf(0.dp) }
+
+        Row(modifier = Modifier.onSizeChanged {
+            tableHeight = with(density) { it.height.toDp() }
+        }) {
+            rows.forEachIndexed { rowIndex, row ->
+                Column(
+                    modifier = Modifier
+                        .then(
+                            if (tableHeight > 0.dp) {
+                                Modifier.height(tableHeight)
+                            } else {
+                                Modifier
+                            }
+                        )
+                        .border(width = 1.5.dp, color = MaterialTheme.colors.onBackground.copy(.3f))
+                ) {
                     row.forEachIndexed { index, tableCell ->
                         if (index == 0) {
                             // head
                             MDTableCell(
                                 node = tableCell,
-                                modifier = Modifier.then(
-                                    if(rowIndex+1 == rows.size){
-                                        Modifier.fillMaxWidth()
-                                    }else{
-                                        Modifier
-                                    }
-                                ).background(
-                                    color = MaterialTheme.colors.onBackground.copy(.4f)
-                                )
+                                modifier = Modifier
+                                    .then(
+                                        if (rowIndex + 1 == rows.size) {
+                                            Modifier.fillMaxWidth()
+                                        } else {
+                                            Modifier
+                                        }
+                                    )
+                                    .background(
+                                        color = MaterialTheme.colors.primary
+                                    )
+                                    .padding(end = 4.dp,start = 4.dp),
+                                color = MaterialTheme.colors.onPrimary
                             )
                         } else {
-                            MDTableCell(node = tableCell)
+                            MDTableCell(node = tableCell,modifier = Modifier.padding(end = 4.dp,start = 4.dp))
                         }
                     }
                 }
@@ -99,7 +120,12 @@ internal fun MDTable(node: TableBlock) {
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
-internal fun MDTableCell(node: TableCell, modifier: Modifier = Modifier) {
+internal fun MDTableCell(
+    node: TableCell,
+    modifier: Modifier = Modifier,
+    style: TextStyle = MaterialTheme.typography.body1,
+    color: Color = MaterialTheme.colors.onBackground,
+) {
 
     val marker = LocalMarker.current
     val text = remember(node) {
@@ -109,10 +135,13 @@ internal fun MDTableCell(node: TableCell, modifier: Modifier = Modifier) {
         }
     }
 
-    Text(
+
+
+    MarkdownText(
         modifier = modifier.padding(4.dp),
         text = text,
-        color = MaterialTheme.colors.onBackground
+        style = style,
+        color = color
     )
 
 }

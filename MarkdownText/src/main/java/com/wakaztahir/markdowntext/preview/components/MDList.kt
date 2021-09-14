@@ -34,14 +34,14 @@ internal fun MDListItems(
                     is BulletList -> MDBulletList(child, modifier)
                     is OrderedList -> MDOrderedList(child, modifier)
                     else -> {
-                        if(child is TaskListItemMarker && child.next !is BulletList && child.next !is OrderedList){
+                        if (child is TaskListItemMarker && child.next !is BulletList && child.next !is OrderedList) {
                             Row {
                                 item(child)
                                 marker.preventBulletMarker = true
                                 item(child.next)
                             }
                             child = child.next
-                        }else{
+                        } else {
                             item(child)
                         }
                     }
@@ -63,9 +63,9 @@ fun MDBulletList(bulletList: BulletList, modifier: Modifier = Modifier) {
         if (it !is TaskListItemMarker) {
             val text = remember(it, body1) {
                 buildAnnotatedString {
-                    if(!mdMarker.preventBulletMarker) {
+                    if (!mdMarker.preventBulletMarker) {
                         append("$marker ")
-                    }else{
+                    } else {
                         append("\t")
                         mdMarker.preventBulletMarker = false
                     }
@@ -73,7 +73,7 @@ fun MDBulletList(bulletList: BulletList, modifier: Modifier = Modifier) {
                     toAnnotatedString()
                 }
             }
-            MarkdownText(text, MaterialTheme.typography.body1)
+            MarkdownText(text, style = MaterialTheme.typography.body1)
         } else {
             Checkbox(
                 checked = it.isChecked,
@@ -98,6 +98,6 @@ fun MDOrderedList(orderedList: OrderedList, modifier: Modifier = Modifier) {
             appendMarkdownContent(marker, it)
             pop()
         }
-        MarkdownText(text, MaterialTheme.typography.body1, modifier)
+        MarkdownText(text,modifier, style = MaterialTheme.typography.body1)
     }
 }

@@ -29,7 +29,7 @@ internal fun MDParagraph(paragraph: Paragraph, modifier: Modifier = Modifier) {
                 pop()
                 toAnnotatedString()
             }
-            MarkdownText(styledText, MaterialTheme.typography.body1)
+            MarkdownText(styledText,style= MaterialTheme.typography.body1)
         }
     }
 }

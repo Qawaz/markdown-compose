@@ -5,6 +5,7 @@ import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.platform.LocalUriHandler
 import androidx.compose.ui.text.AnnotatedString
@@ -15,8 +16,9 @@ import com.wakaztahir.markdowntext.annotation.URLTag
 @Composable
 fun MarkdownText(
     text: AnnotatedString,
+    modifier: Modifier = Modifier,
     style: TextStyle,
-    modifier: Modifier = Modifier
+    color : Color = MaterialTheme.colors.onBackground,
 ) {
     val uriHandler = LocalUriHandler.current
     var layoutResult by remember { mutableStateOf<TextLayoutResult?>(null) }
@@ -37,7 +39,7 @@ fun MarkdownText(
                 }
             }
         },
-        color = MaterialTheme.colors.onBackground,
+        color = color,
         style = style,
         inlineContent = marker.inlineContent,
         onTextLayout = {
