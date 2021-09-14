@@ -9,13 +9,14 @@ import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.compositionLocalOf
 import androidx.compose.runtime.remember
 import com.wakaztahir.codeeditor.highlight.prettify.PrettifyParser
-import com.wakaztahir.codeeditor.highlight.theme.CodeTheme
 import com.wakaztahir.codeeditor.highlight.theme.CodeThemeType
 import com.wakaztahir.markdowntext.model.Marker
 import com.wakaztahir.markdowntext.preview.components.*
-import com.wakaztahir.markdowntext.utils.createDefaultParser
+import org.commonmark.ext.gfm.strikethrough.StrikethroughExtension
 import org.commonmark.ext.gfm.tables.*
+import org.commonmark.ext.task.list.items.TaskListItemsExtension
 import org.commonmark.node.*
+import org.commonmark.parser.Parser
 
 val LocalCommonMarkParser = compositionLocalOf { createDefaultParser() }
 
@@ -79,16 +80,17 @@ fun MDBlock(node: Node) {
         is HtmlBlock -> {
 
         }
-        is TableBlock -> {
-        }
-        is TableHead -> {
-        }
-        is TableBody -> {
-        }
-        is TableRow -> {
-        }
-        is TableCell -> {
-        }
+        is TableBlock -> MDTable(node = node)
     }
 }
 
+internal fun createDefaultParser(): Parser {
+    return Parser.builder()
+        .extensions(
+            listOf(
+                TablesExtension.create(),
+                StrikethroughExtension.create(),
+                TaskListItemsExtension.create(),
+            )
+        ).build()
+}
