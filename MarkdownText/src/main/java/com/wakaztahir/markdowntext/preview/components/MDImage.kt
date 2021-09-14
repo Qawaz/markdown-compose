@@ -9,9 +9,11 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import coil.compose.rememberImagePainter
 import org.commonmark.node.Image
+import org.commonmark.node.Node
+import org.commonmark.node.Visitor
 
 @Composable
-fun MDImage(node: Image,modifier: Modifier = Modifier) {
+internal fun MDImage(node: Image,modifier: Modifier = Modifier) {
     if (node.destination.isNotEmpty()) {
         Row(modifier = modifier.fillMaxWidth(), horizontalArrangement = Arrangement.Center) {
             Image(

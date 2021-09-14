@@ -1,32 +1,42 @@
 package com.wakaztahir.markdowntext.preview
 
 import androidx.compose.foundation.layout.Column
+import androidx.compose.material.Colors
+import androidx.compose.material.MaterialTheme
+import androidx.compose.material.Typography
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.compositionLocalOf
 import androidx.compose.runtime.remember
 import com.wakaztahir.markdowntext.model.Marker
-import com.wakaztahir.markdowntext.model.parse
 import com.wakaztahir.markdowntext.preview.components.*
+import com.wakaztahir.markdowntext.utils.createDefaultParser
 import org.commonmark.ext.gfm.tables.*
 import org.commonmark.node.*
+
+val LocalPrettifyParser = compositionLocalOf { createDefaultParser() }
 
 val LocalMarker = compositionLocalOf { Marker() }
 
 @Composable
 fun MarkdownPreview(
+    colors: Colors = MaterialTheme.colors,
+    typography: Typography = MaterialTheme.typography,
+    marker: Marker = LocalMarker.current,
     markdown: String,
 ) {
-    val marker = remember { Marker() }
-    val parsed = remember(markdown) { marker.parse(markdown) }
+    val parser = LocalPrettifyParser.current
+    val parsed = remember(markdown) { parser.parse(markdown) }
 
-    CompositionLocalProvider(LocalMarker provides marker) {
+    CompositionLocalProvider(LocalMarker provides marker.apply {
+        this.colors = colors
+        this.typography = typography
+        this.preventBulletMarker = false
+    }) {
         Column {
             MDBlockChildren(parent = parsed)
         }
-
     }
-
 }
 
 
@@ -44,7 +54,9 @@ fun MDBlock(node: Node) {
     when (node) {
         is Document -> MDBlockChildren(node)
         is BlockQuote -> MDBlockQuote(node)
-        is ThematicBreak -> MDThematicBreak(node)
+        is ThematicBreak -> {
+            // ignoring
+        }
         is Heading -> MDHeading(node)
         is Paragraph -> MDParagraph(node)
         is FencedCodeBlock -> MDFencedCodeBlock(node)

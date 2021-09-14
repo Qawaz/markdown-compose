@@ -17,7 +17,7 @@ import org.commonmark.node.Document
 import org.commonmark.node.Heading
 
 @Composable
-fun MDHeading(heading: Heading) {
+internal fun MDHeading(heading: Heading) {
 
     val marker = LocalMarker.current
 

@@ -10,13 +10,25 @@ import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.unit.dp
 import org.commonmark.node.Document
 import org.commonmark.node.FencedCodeBlock
+import org.commonmark.node.IndentedCodeBlock
 
 @Composable
-fun MDFencedCodeBlock(fencedCodeBlock: FencedCodeBlock, modifier: Modifier = Modifier) {
+internal fun MDFencedCodeBlock(fencedCodeBlock: FencedCodeBlock, modifier: Modifier = Modifier) {
     val padding = if (fencedCodeBlock.parent is Document) 8.dp else 0.dp
     Text(
         modifier = modifier.padding(bottom = padding, start = 8.dp),
         text = fencedCodeBlock.literal,
+        style = TextStyle(fontFamily = FontFamily.Monospace),
+        color = MaterialTheme.colors.onBackground,
+    )
+}
+
+@Composable
+internal fun MDIndentedCodeBlock(node: IndentedCodeBlock, modifier : Modifier = Modifier) {
+    val padding = if (node.parent is Document) 8.dp else 0.dp
+    Text(
+        modifier = modifier.padding(bottom = padding, start = 8.dp),
+        text = node.literal,
         style = TextStyle(fontFamily = FontFamily.Monospace),
         color = MaterialTheme.colors.onBackground,
     )

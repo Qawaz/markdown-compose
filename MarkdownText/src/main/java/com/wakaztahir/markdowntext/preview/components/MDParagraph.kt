@@ -15,7 +15,7 @@ import org.commonmark.node.Image
 import org.commonmark.node.Paragraph
 
 @Composable
-fun MDParagraph(paragraph: Paragraph, modifier: Modifier = Modifier) {
+internal fun MDParagraph(paragraph: Paragraph, modifier: Modifier = Modifier) {
     val marker = LocalMarker.current
     if (paragraph.firstChild is Image && paragraph.firstChild == paragraph.lastChild) {
         // Paragraph with single image

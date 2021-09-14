@@ -18,19 +18,19 @@ import com.wakaztahir.markdowntext.preview.LocalMarker
 import org.commonmark.node.BlockQuote
 
 @Composable
-fun MDBlockQuote(blockQuote: BlockQuote, modifier: Modifier = Modifier) {
+internal fun MDBlockQuote(blockQuote: BlockQuote, modifier: Modifier = Modifier) {
     val color = MaterialTheme.colors.onBackground
     val marker = LocalMarker.current
     Box(modifier = modifier
         .drawBehind {
             drawLine(
                 color = color,
-                strokeWidth = 2f,
-                start = Offset(12.dp.value, 0f),
-                end = Offset(12.dp.value, size.height)
+                strokeWidth = 8f,
+                    start = Offset(36.dp.value, 0f),
+                end = Offset(36.dp.value, size.height)
             )
         }
-        .padding(start = 16.dp, top = 4.dp, bottom = 4.dp)) {
+        .padding(start = 24.dp, top = 4.dp, bottom = 4.dp)) {
 
         val body1 = MaterialTheme.typography.body1
 

@@ -1,16 +1,12 @@
 package com.wakaztahir.markdowntext.utils
 
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.text.ParagraphStyle
 import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextDecoration
-import androidx.compose.ui.text.style.TextGeometricTransform
 import androidx.compose.ui.unit.ExperimentalUnitApi
-import androidx.compose.ui.unit.TextUnit
-import androidx.compose.ui.unit.TextUnitType
+import com.wakaztahir.markdowntext.model.Marker
 import org.commonmark.ext.gfm.strikethrough.Strikethrough
 import org.commonmark.node.*
 
@@ -27,17 +23,17 @@ internal fun defaultStrikethroughStyle(node: Strikethrough): SpanStyle {
 }
 
 @OptIn(ExperimentalUnitApi::class)
-internal fun defaultHeadingStyle(node: Heading): SpanStyle {
-    val size = when (node.level) {
-        1 -> 40f
-        2 -> 36f
-        3 -> 32f
-        4 -> 28f
-        5 -> 24f
-        6 -> 20f
-        else -> 18f
+internal fun defaultHeadingStyle(marker: Marker, node: Heading): SpanStyle {
+    val textStyle = when (node.level) {
+        1 -> marker.typography.h1
+        2 -> marker.typography.h2
+        3 -> marker.typography.h3
+        4 -> marker.typography.h4
+        5 -> marker.typography.h5
+        6 -> marker.typography.h6
+        else -> marker.typography.body1
     }
-    return SpanStyle(fontSize = TextUnit(size, TextUnitType.Sp))
+    return textStyle.toSpanStyle()
 }
 
 internal fun defaultLinkStyle(node: Link): SpanStyle {

@@ -42,6 +42,6 @@ fun MarkdownText(
         inlineContent = marker.inlineContent,
         onTextLayout = {
             layoutResult = it
-        }
+        },
     )
 }

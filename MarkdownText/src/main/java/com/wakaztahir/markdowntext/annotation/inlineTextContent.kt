@@ -6,15 +6,15 @@ import androidx.compose.ui.text.PlaceholderVerticalAlign
 import androidx.compose.ui.unit.ExperimentalUnitApi
 import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.TextUnitType
-import com.wakaztahir.markdowntext.components.ImageBlockData
-import com.wakaztahir.markdowntext.components.ImageComponent
-import com.wakaztahir.markdowntext.model.BlockData
+import com.wakaztahir.markdowntext.preview.components.MDImage
+import org.commonmark.node.Image
+import org.commonmark.node.Node
 
 internal const val ImageTag = "marker - image"
 internal const val URLTag = "marker - url"
 
 @OptIn(ExperimentalUnitApi::class)
-internal fun createDefaultInlineTextContent(blocks : MutableMap<String, BlockData> ): Map<String, InlineTextContent> {
+internal fun createDefaultInlineTextContent(blocks: MutableMap<String, Node>): Map<String, InlineTextContent> {
     return mapOf(
         ImageTag to InlineTextContent(
             placeholder = Placeholder(
@@ -23,9 +23,11 @@ internal fun createDefaultInlineTextContent(blocks : MutableMap<String, BlockDat
                 PlaceholderVerticalAlign.TextCenter
             ),
             children = {
-                blocks[it]?.let { blockData ->
-                    (blockData as? ImageBlockData)?.let { imageData->
-                        ImageComponent(data = imageData)
+                blocks[it]?.let { node ->
+                    (node as? Image)?.let { imageNode ->
+                        MDImage(
+                            node = imageNode
+                        )
                     }
                 }
             }
