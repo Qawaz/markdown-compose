@@ -66,6 +66,7 @@ fun MDBulletList(bulletList: BulletList, modifier: Modifier = Modifier) {
                     if(!mdMarker.preventBulletMarker) {
                         append("$marker ")
                     }else{
+                        append("\t")
                         mdMarker.preventBulletMarker = false
                     }
                     appendMarkdownContent(mdMarker, it)
