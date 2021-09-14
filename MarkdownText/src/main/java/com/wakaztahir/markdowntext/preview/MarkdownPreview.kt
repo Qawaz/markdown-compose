@@ -8,15 +8,22 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.compositionLocalOf
 import androidx.compose.runtime.remember
+import com.wakaztahir.codeeditor.highlight.prettify.PrettifyParser
+import com.wakaztahir.codeeditor.highlight.theme.CodeTheme
+import com.wakaztahir.codeeditor.highlight.theme.CodeThemeType
 import com.wakaztahir.markdowntext.model.Marker
 import com.wakaztahir.markdowntext.preview.components.*
 import com.wakaztahir.markdowntext.utils.createDefaultParser
 import org.commonmark.ext.gfm.tables.*
 import org.commonmark.node.*
 
-val LocalPrettifyParser = compositionLocalOf { createDefaultParser() }
+val LocalCommonMarkParser = compositionLocalOf { createDefaultParser() }
 
 val LocalMarker = compositionLocalOf { Marker() }
+
+val LocalPrettifyParser = compositionLocalOf { PrettifyParser() }
+
+val LocalCodeTheme = compositionLocalOf { CodeThemeType.Default.theme() }
 
 @Composable
 fun MarkdownPreview(
@@ -25,16 +32,18 @@ fun MarkdownPreview(
     marker: Marker = LocalMarker.current,
     markdown: String,
 ) {
-    val parser = LocalPrettifyParser.current
+    val parser = LocalCommonMarkParser.current
     val parsed = remember(markdown) { parser.parse(markdown) }
 
-    CompositionLocalProvider(LocalMarker provides marker.apply {
-        this.colors = colors
-        this.typography = typography
-        this.preventBulletMarker = false
-    }) {
-        Column {
-            MDBlockChildren(parent = parsed)
+    CompositionLocalProvider(LocalCodeTheme provides if (MaterialTheme.colors.isLight) CodeThemeType.Default.theme() else CodeThemeType.Monokai.theme()) {
+        CompositionLocalProvider(LocalMarker provides marker.apply {
+            this.colors = colors
+            this.typography = typography
+            this.preventBulletMarker = false
+        }) {
+            Column {
+                MDBlockChildren(parent = parsed)
+            }
         }
     }
 }

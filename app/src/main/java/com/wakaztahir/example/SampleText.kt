@@ -1,6 +1,7 @@
 package com.wakaztahir.example
 
-val SampleText : List<String> = listOf("""
+val SampleText: List<String> = listOf(
+    """
     An h1 header
     ============
 
@@ -158,7 +159,7 @@ val SampleText : List<String> = listOf("""
 
     And note that you can backslash-escape any punctuation characters
     which you wish to be displayed literally, ex.: \`foo\`, \*bar\*, etc.
-""".trimIndent(),"""
+""".trimIndent(), """
     ---
     __Advertisement :)__
 
@@ -282,8 +283,20 @@ val SampleText : List<String> = listOf("""
     var foo = function (bar) {
       return bar++;
     };
-
+    
+    
     console.log(foo(5));
+    ```
+    
+    Here's some **HTML**
+    
+    ```html
+    <html>
+        <head><title>Hello World</title></head>
+        <body>
+            <p>This is how you create paragraph</p>
+        </body>
+    </html>
     ```
 
     ## Tables
@@ -413,4 +426,5 @@ val SampleText : List<String> = listOf("""
     *here be dragons*
     :::
 
-""".trimIndent())
+""".trimIndent()
+)
