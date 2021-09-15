@@ -12,23 +12,27 @@ import java.util.*
 fun AnnotatedString.Builder.appendMarkdownContent(marker: Marker, parent: Node) {
     var node = parent.firstChild
     while (node != null) {
-        when (node) {
-            is HardLineBreak -> append("\n")
-            is Paragraph -> appendParagraph(marker, node)
-            is Text -> appendText(node)
-            is Emphasis -> appendEmphasis(marker, node)
-            is StrongEmphasis -> appendStrongEmphasis(marker, node)
-            is Heading -> appendHeading(marker, node)
-            is Strikethrough -> appendStrikethrough(marker, node)
-            is Link -> appendLink(marker, node)
-            is BlockQuote -> appendBlockquote(marker, node)
-            is Image -> appendImage(marker, node)
-            is Code -> appendCode(marker, node)
-        }
+        appendMarkdownNode(marker,node)
         node = node.next
     }
 }
 
+
+fun AnnotatedString.Builder.appendMarkdownNode(marker: Marker,node : Node){
+    when (node) {
+        is HardLineBreak -> append("\n")
+        is Paragraph -> appendParagraph(marker, node)
+        is Text -> appendText(node)
+        is Emphasis -> appendEmphasis(marker, node)
+        is StrongEmphasis -> appendStrongEmphasis(marker, node)
+        is Heading -> appendHeading(marker, node)
+        is Strikethrough -> appendStrikethrough(marker, node)
+        is Link -> appendLink(marker, node)
+        is BlockQuote -> appendBlockquote(marker, node)
+        is Image -> appendImage(marker, node)
+        is Code -> appendCode(marker, node)
+    }
+}
 
 internal fun AnnotatedString.Builder.appendText(node: Text) {
     append(node.literal)

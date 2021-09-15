@@ -13,8 +13,8 @@ import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.unit.dp
+import com.wakaztahir.markdowntext.common.LocalMarker
 import com.wakaztahir.markdowntext.preview.annotation.appendMarkdownContent
-import com.wakaztahir.markdowntext.preview.LocalMarker
 import org.commonmark.node.BlockQuote
 
 @Composable
@@ -26,7 +26,7 @@ internal fun MDBlockQuote(blockQuote: BlockQuote, modifier: Modifier = Modifier)
             drawLine(
                 color = color,
                 strokeWidth = 8f,
-                    start = Offset(36.dp.value, 0f),
+                start = Offset(36.dp.value, 0f),
                 end = Offset(36.dp.value, size.height)
             )
         }

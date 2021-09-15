@@ -7,9 +7,9 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.unit.dp
-import com.wakaztahir.markdowntext.preview.annotation.appendMarkdownContent
-import com.wakaztahir.markdowntext.preview.LocalMarker
+import com.wakaztahir.markdowntext.common.LocalMarker
 import com.wakaztahir.markdowntext.preview.MarkdownText
+import com.wakaztahir.markdowntext.preview.annotation.appendMarkdownContent
 import org.commonmark.node.Document
 import org.commonmark.node.Image
 import org.commonmark.node.Paragraph
@@ -25,11 +25,11 @@ internal fun MDParagraph(paragraph: Paragraph, modifier: Modifier = Modifier) {
         Box(modifier = modifier.padding(bottom = padding)) {
             val styledText = buildAnnotatedString {
                 pushStyle(MaterialTheme.typography.body1.toSpanStyle())
-                appendMarkdownContent(marker,paragraph)
+                appendMarkdownContent(marker, paragraph)
                 pop()
                 toAnnotatedString()
             }
-            MarkdownText(styledText,style= MaterialTheme.typography.body1)
+            MarkdownText(styledText, style = MaterialTheme.typography.body1)
         }
     }
 }

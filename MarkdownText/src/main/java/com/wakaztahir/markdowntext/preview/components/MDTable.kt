@@ -13,7 +13,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.unit.dp
-import com.wakaztahir.markdowntext.preview.LocalMarker
+import com.wakaztahir.markdowntext.common.LocalMarker
 import com.wakaztahir.markdowntext.preview.MarkdownText
 import com.wakaztahir.markdowntext.preview.annotation.appendMarkdownContent
 import com.wakaztahir.markdowntext.utils.SimpleTableLayout

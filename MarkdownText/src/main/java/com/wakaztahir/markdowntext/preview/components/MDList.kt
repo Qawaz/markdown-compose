@@ -10,9 +10,9 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.unit.dp
-import com.wakaztahir.markdowntext.preview.annotation.appendMarkdownContent
-import com.wakaztahir.markdowntext.preview.LocalMarker
+import com.wakaztahir.markdowntext.common.LocalMarker
 import com.wakaztahir.markdowntext.preview.MarkdownText
+import com.wakaztahir.markdowntext.preview.annotation.appendMarkdownContent
 import org.commonmark.ext.task.list.items.TaskListItemMarker
 import org.commonmark.node.*
 
@@ -98,6 +98,6 @@ fun MDOrderedList(orderedList: OrderedList, modifier: Modifier = Modifier) {
             appendMarkdownContent(marker, it)
             pop()
         }
-        MarkdownText(text,modifier, style = MaterialTheme.typography.body1)
+        MarkdownText(text, modifier, style = MaterialTheme.typography.body1)
     }
 }

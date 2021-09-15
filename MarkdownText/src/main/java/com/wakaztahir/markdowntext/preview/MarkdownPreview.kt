@@ -10,6 +10,9 @@ import androidx.compose.runtime.compositionLocalOf
 import androidx.compose.runtime.remember
 import com.wakaztahir.codeeditor.highlight.prettify.PrettifyParser
 import com.wakaztahir.codeeditor.highlight.theme.CodeThemeType
+import com.wakaztahir.markdowntext.common.LocalCodeTheme
+import com.wakaztahir.markdowntext.common.LocalCommonMarkParser
+import com.wakaztahir.markdowntext.common.LocalMarker
 import com.wakaztahir.markdowntext.preview.model.Marker
 import com.wakaztahir.markdowntext.preview.components.*
 import org.commonmark.ext.gfm.strikethrough.StrikethroughExtension
@@ -18,25 +21,18 @@ import org.commonmark.ext.task.list.items.TaskListItemsExtension
 import org.commonmark.node.*
 import org.commonmark.parser.Parser
 
-val LocalCommonMarkParser = compositionLocalOf { createDefaultParser() }
-
-val LocalMarker = compositionLocalOf { Marker() }
-
-val LocalPrettifyParser = compositionLocalOf { PrettifyParser() }
-
-val LocalCodeTheme = compositionLocalOf { CodeThemeType.Default.theme() }
-
 @Composable
 fun MarkdownPreview(
+    markdown: String,
     colors: Colors = MaterialTheme.colors,
     typography: Typography = MaterialTheme.typography,
     marker: Marker = LocalMarker.current,
-    markdown: String,
+    codeTheme : CodeThemeType = if (MaterialTheme.colors.isLight) CodeThemeType.Default else CodeThemeType.Monokai,
 ) {
     val parser = LocalCommonMarkParser.current
     val parsed = remember(markdown) { parser.parse(markdown) }
 
-    CompositionLocalProvider(LocalCodeTheme provides if (MaterialTheme.colors.isLight) CodeThemeType.Default.theme() else CodeThemeType.Monokai.theme()) {
+    CompositionLocalProvider(LocalCodeTheme provides codeTheme.theme()) {
         CompositionLocalProvider(LocalMarker provides marker.apply {
             this.colors = colors
             this.typography = typography
@@ -51,7 +47,7 @@ fun MarkdownPreview(
 
 
 @Composable
-fun MDBlockChildren(parent: Node) {
+internal fun MDBlockChildren(parent: Node) {
     var child = parent.firstChild
     while (child != null) {
         MDBlock(node = child)
@@ -60,7 +56,7 @@ fun MDBlockChildren(parent: Node) {
 }
 
 @Composable
-fun MDBlock(node: Node) {
+internal fun MDBlock(node: Node) {
     when (node) {
         is Document -> MDBlockChildren(node)
         is BlockQuote -> MDBlockQuote(node)
@@ -82,15 +78,4 @@ fun MDBlock(node: Node) {
         }
         is TableBlock -> MDTable(node = node)
     }
-}
-
-internal fun createDefaultParser(): Parser {
-    return Parser.builder()
-        .extensions(
-            listOf(
-                TablesExtension.create(),
-                StrikethroughExtension.create(),
-                TaskListItemsExtension.create(),
-            )
-        ).build()
 }

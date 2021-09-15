@@ -8,10 +8,10 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.unit.dp
-import com.wakaztahir.markdowntext.preview.annotation.appendMarkdownContent
-import com.wakaztahir.markdowntext.preview.LocalMarker
+import com.wakaztahir.markdowntext.common.LocalMarker
 import com.wakaztahir.markdowntext.preview.MDBlockChildren
 import com.wakaztahir.markdowntext.preview.MarkdownText
+import com.wakaztahir.markdowntext.preview.annotation.appendMarkdownContent
 import org.commonmark.node.Document
 import org.commonmark.node.Heading
 
