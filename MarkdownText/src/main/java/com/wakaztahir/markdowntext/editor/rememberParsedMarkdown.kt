@@ -5,16 +5,18 @@ import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Typography
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateListOf
+import androidx.compose.ui.text.buildAnnotatedString
 import com.wakaztahir.markdowntext.common.LocalCommonMarkParser
 import com.wakaztahir.markdowntext.common.LocalMarker
+import com.wakaztahir.markdowntext.editor.model.*
+import com.wakaztahir.markdowntext.editor.model.ListBlock
+import com.wakaztahir.markdowntext.preview.annotation.appendMarkdownNode
 import com.wakaztahir.markdowntext.preview.model.Marker
 import org.commonmark.ext.gfm.tables.TableBlock
 import org.commonmark.node.*
 
 class ParsedMarkdown(val marker: Marker) {
-    lateinit var parent: Node
-        internal set
-    val items = mutableStateListOf<Node>()
+    val items = mutableStateListOf<EditableBlock>()
 }
 
 @Composable
@@ -32,9 +34,7 @@ fun rememberParsedMarkdown(
 
     return ParsedMarkdown(marker = marker).apply {
         val document = parser.parse(markdown)
-
-        this.parent = document
-
+        
         // Extracting blocks
         extractChildNodes(this, document)
 
@@ -42,40 +42,74 @@ fun rememberParsedMarkdown(
 }
 
 private fun extractChildNodes(
-    parsedMarkdown: ParsedMarkdown,
-    parent: Node
+    parsed: ParsedMarkdown,
+    parent: Node,
+    separateHeadingParagraph: Boolean = false
 ) {
 
     var node = parent.firstChild
     while (node != null) {
+
+        // Adding Heading & Paragraph in Text Block
+        if (separateHeadingParagraph) {
+            when (node) {
+                is Heading, is Paragraph -> {
+                    val annotatedString = buildAnnotatedString {
+                        appendMarkdownNode(parsed.marker, node)
+                        toAnnotatedString()
+                    }
+                    parsed.items.add(
+                        if (node is Heading) {
+                            HeadingBlock(annotatedString = annotatedString)
+                        } else {
+                            ParagraphBlock(annotatedString = annotatedString)
+                        }
+                    )
+                }
+            }
+        } else {
+            when (node) {
+                is Heading, is Paragraph -> {
+                    val textBlock =
+                        if (parsed.items.isNotEmpty() && parsed.items.last() is TextBlock) {
+                            parsed.items.last() as TextBlock
+                        } else {
+                            TextBlock(buildAnnotatedString { toAnnotatedString() }).apply {
+                                parsed.items.add(this)
+                            }
+                        }
+                    textBlock.text = buildAnnotatedString {
+                        append(textBlock.text)
+                        appendMarkdownNode(parsed.marker, node)
+                        toAnnotatedString()
+                    }
+                }
+            }
+        }
+
+        // Adding Other Blocks
         when (node) {
-            is Document -> extractChildNodes(parsedMarkdown = parsedMarkdown, node)
+            is Document -> extractChildNodes(parsed = parsed, node)
             is BlockQuote -> {
-                parsedMarkdown.items.add(node)
+                parsed.items.add(QuoteBlock())
             }
             is ThematicBreak -> {
                 // ignoring
             }
-            is Heading -> {
-                parsedMarkdown.items.add(node)
-            }
-            is Paragraph -> {
-                parsedMarkdown.items.add(node)
-            }
             is FencedCodeBlock -> {
-                parsedMarkdown.items.add(node)
+                parsed.items.add(CodeBlock())
             }
             is IndentedCodeBlock -> {
-                parsedMarkdown.items.add(node)
+                parsed.items.add(CodeBlock())
             }
             is Image -> {
-                parsedMarkdown.items.add(node)
+                parsed.items.add(ImageBlock())
             }
             is BulletList -> {
-                parsedMarkdown.items.add(node)
+                parsed.items.add(ListBlock())
             }
             is OrderedList -> {
-                parsedMarkdown.items.add(node)
+                parsed.items.add(ListBlock())
             }
             is HtmlInline -> {
                 //ignoring for now

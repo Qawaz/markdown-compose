@@ -1,9 +1,9 @@
 package com.wakaztahir.markdowntext.editor.blocks
 
 import androidx.compose.runtime.Composable
-import org.commonmark.node.Image
+import com.wakaztahir.markdowntext.editor.model.CodeBlock
 
 @Composable
-fun ImageBlock(node : Image){
+fun MDCodeBlock(codeBlock : CodeBlock){
 
 }

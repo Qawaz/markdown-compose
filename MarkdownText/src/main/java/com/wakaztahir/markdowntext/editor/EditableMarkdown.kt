@@ -13,12 +13,10 @@ import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.layout.RelocationRequester
 import androidx.compose.ui.layout.relocationRequester
 import androidx.compose.ui.text.TextStyle
-import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.text.input.VisualTransformation
 import com.wakaztahir.markdowntext.common.LocalMarker
-import com.wakaztahir.markdowntext.preview.annotation.appendMarkdownNode
-import org.commonmark.node.Node
+import com.wakaztahir.markdowntext.editor.model.TextBlock
 
 // todo make links clickable
 
@@ -31,7 +29,7 @@ import org.commonmark.node.Node
 @OptIn(ExperimentalComposeUiApi::class)
 @Composable
 internal fun EditableMarkdown(
-    node: Node,
+    textBlock: TextBlock,
     modifier: Modifier = Modifier,
     enabled: Boolean = true,
     readOnly: Boolean = false,
@@ -58,14 +56,7 @@ internal fun EditableMarkdown(
     val marker = LocalMarker.current
 
     var textState by remember {
-        mutableStateOf(
-            TextFieldValue(
-                buildAnnotatedString {
-                    appendMarkdownNode(marker, node)
-                    toAnnotatedString()
-                }
-            )
-        )
+        mutableStateOf(TextFieldValue(textBlock.text))
     }
 
     val relocationRequester = remember { RelocationRequester() }
