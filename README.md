@@ -4,7 +4,7 @@ Compose Markdown is a jetpack compose markdown rendering and editing library whi
 
 It boasts following features
 
-* Uses Jetpack Compose (Does not make use of any Android View / View)
+* Uses Jetpack Compose (Does not make use of any Android View)
 * Syntax Highlighting using [Compose Code Editor](https://github.com/timeline-notes/compose-code-editor)
 * Its compatible with LazyColumn , It does not initialize multiple instances of required classes when rendering in a Lazy Column
   Uses older instances but still provides a way to be able to alter the behaviour of one Preview Composable
