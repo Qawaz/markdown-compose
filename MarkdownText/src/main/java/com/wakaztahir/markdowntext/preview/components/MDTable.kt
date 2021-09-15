@@ -9,6 +9,8 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.draw.drawBehind
+import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.buildAnnotatedString
@@ -63,12 +65,14 @@ internal fun MDTable(node: TableBlock) {
             },
         )
 
+        val tableBorderColor : Color = MaterialTheme.colors.onBackground.copy(.4f)
+
         if (rows.isNotEmpty()) {
             SimpleTableLayout(
                 columns = rows.first().size,
                 rows = rows,
                 drawDecorations = {
-                    Modifier
+                    Modifier.drawTableBorders(rowOffsets = it.rowOffsets,columnOffsets = it.columnOffsets,borderColor = tableBorderColor,6f)
                 },
                 cellSpacing = 8f
             ) {
@@ -105,4 +109,31 @@ internal fun MDTableCell(
         color = color
     )
 
+}
+
+private fun Modifier.drawTableBorders(
+    rowOffsets: List<Float>,
+    columnOffsets: List<Float>,
+    borderColor: Color,
+    borderStrokeWidth: Float
+) = drawBehind {
+    // Draw horizontal borders.
+    rowOffsets.forEach { position ->
+        drawLine(
+            borderColor,
+            start = Offset(0f, position),
+            end = Offset(size.width, position),
+            borderStrokeWidth
+        )
+    }
+
+    // Draw vertical borders.
+    columnOffsets.forEach { position ->
+        drawLine(
+            borderColor,
+            Offset(position, 0f),
+            Offset(position, size.height),
+            borderStrokeWidth
+        )
+    }
 }
