@@ -8,17 +8,17 @@ import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.ui.Modifier
 import com.wakaztahir.markdowntext.common.LocalMarker
 import com.wakaztahir.markdowntext.editor.blocks.*
-import org.commonmark.node.*
+import com.wakaztahir.markdowntext.editor.model.*
 
 @Composable
 fun MarkdownEditor(
-    modifier : Modifier = Modifier,
+    modifier: Modifier = Modifier,
     parsed: ParsedMarkdown,
 ) {
     CompositionLocalProvider(LocalMarker provides parsed.marker) {
         Column(modifier = modifier) {
-            parsed.items.forEach { node ->
-                EditableBlock(node = node)
+            parsed.items.forEach { block ->
+                MDEditableBlock(block = block)
             }
         }
     }
@@ -28,24 +28,20 @@ fun MarkdownEditor(
  * Render a markdown editor with parsed markdown in a lazy list
  * Use [CompositionLocalProvider] to provide [LocalMarker] so your styles get applied according to your theme
  */
-fun LazyListScope.markdownEditor(
-    parsed: ParsedMarkdown,
-) {
-    items(parsed.items) { node ->
-        EditableBlock(node = node)
+fun LazyListScope.markdownEditor(parsed: ParsedMarkdown) {
+    items(parsed.items) { block ->
+        MDEditableBlock(block = block)
     }
 }
 
 @Composable
-internal fun EditableBlock(node: Node) {
-    when (node) {
-        is Heading -> HeadingBlock(node)
-        is Paragraph -> ParagraphBlock(node)
-        is FencedCodeBlock -> FencedCodeBlock(node)
-        is IndentedCodeBlock -> IndentedCodeBlock(node)
-        is Image -> ImageBlock(node)
-        is BulletList -> BulletListBlock(node)
-        is OrderedList -> OrderedListBlock(node)
+private fun MDEditableBlock(block: EditableBlock) {
+    when (block) {
+        is TextBlock -> MDTextBlock(block)
+        is CodeBlock -> MDCodeBlock(block)
+        is QuoteBlock -> MDQuoteBlock(block)
+        is ListBlock -> MDListBlock(block)
+        is ImageBlock -> MDImageBlock(block)
     }
 }
 

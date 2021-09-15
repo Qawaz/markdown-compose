@@ -7,13 +7,13 @@ import androidx.compose.ui.text.AnnotatedString
 
 abstract class EditableBlock
 
-open class TextBlock(annotatedString: AnnotatedString) : EditableBlock() {
+open class TextBlock(annotatedString: AnnotatedString = AnnotatedString("")) : EditableBlock() {
     var text by mutableStateOf(annotatedString)
 }
 
-class HeadingBlock(annotatedString: AnnotatedString) : TextBlock(annotatedString)
+class HeadingBlock(annotatedString: AnnotatedString = AnnotatedString("")) : TextBlock(annotatedString)
 
-class ParagraphBlock(annotatedString: AnnotatedString) : TextBlock(annotatedString)
+class ParagraphBlock(annotatedString: AnnotatedString = AnnotatedString("")) : TextBlock(annotatedString)
 
 class ImageBlock : EditableBlock()
 

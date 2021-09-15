@@ -18,11 +18,11 @@ internal fun MDTextBlock(block: TextBlock) {
 }
 
 @Composable
-internal fun MDHeadingBlock(block: HeadingBlock) {
-
+private fun MDHeadingBlock(block: HeadingBlock) {
+    EditableMarkdown(textBlock = block)
 }
 
 @Composable
-internal fun MDParagraphBlock(block: ParagraphBlock) {
-
+private fun MDParagraphBlock(block: ParagraphBlock) {
+    EditableMarkdown(textBlock = block)
 }
