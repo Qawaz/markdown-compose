@@ -1,3 +1,4 @@
+
 # Compose Markdown
 
 Compose Markdown is a jetpack compose markdown rendering and editing library which uses CommonMark (java , markdown parsing library)
@@ -20,3 +21,7 @@ MarkdownPreview(
 ```
 
 It has paramters `typography`,`colors`,`marker` (A class containing default styling) which will let you control how a node is rendered
+
+## Demo
+
+![Screenshot_1631687954](https://user-images.githubusercontent.com/42442700/133383218-f8594cc4-6745-4ae8-ad81-ea725cb2afe2.png)
