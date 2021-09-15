@@ -7,7 +7,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.unit.dp
-import com.wakaztahir.markdowntext.annotation.appendMarkdownContent
+import com.wakaztahir.markdowntext.preview.annotation.appendMarkdownContent
 import com.wakaztahir.markdowntext.preview.LocalMarker
 import com.wakaztahir.markdowntext.preview.MarkdownText
 import org.commonmark.node.Document

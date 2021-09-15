@@ -1,10 +1,10 @@
-package com.wakaztahir.markdowntext.annotation
+package com.wakaztahir.markdowntext.preview.annotation
 
 import androidx.compose.foundation.text.appendInlineContent
 import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.font.FontFamily
-import com.wakaztahir.markdowntext.model.Marker
+import com.wakaztahir.markdowntext.preview.model.Marker
 import org.commonmark.ext.gfm.strikethrough.Strikethrough
 import org.commonmark.node.*
 import java.util.*

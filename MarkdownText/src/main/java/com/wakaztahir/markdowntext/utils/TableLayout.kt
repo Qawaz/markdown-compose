@@ -4,6 +4,9 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.Immutable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.drawBehind
+import androidx.compose.ui.geometry.Offset
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.SubcomposeLayout
 import androidx.compose.ui.unit.Constraints
 import androidx.compose.ui.unit.constrain
@@ -105,5 +108,33 @@ internal fun <T> SimpleTableLayout(
                 .measure(Constraints.fixed(tableWidth, tableHeight))
                 .placeRelative(0, 0)
         }
+    }
+}
+
+
+internal fun Modifier.drawTableBorders(
+    rowOffsets: List<Float>,
+    columnOffsets: List<Float>,
+    borderColor: Color,
+    borderStrokeWidth: Float
+) = drawBehind {
+    // Draw horizontal borders.
+    rowOffsets.forEach { position ->
+        drawLine(
+            borderColor,
+            start = Offset(0f, position),
+            end = Offset(size.width, position),
+            borderStrokeWidth
+        )
+    }
+
+    // Draw vertical borders.
+    columnOffsets.forEach { position ->
+        drawLine(
+            borderColor,
+            Offset(position, 0f),
+            Offset(position, size.height),
+            borderStrokeWidth
+        )
     }
 }

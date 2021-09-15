@@ -10,7 +10,7 @@ import androidx.compose.runtime.compositionLocalOf
 import androidx.compose.runtime.remember
 import com.wakaztahir.codeeditor.highlight.prettify.PrettifyParser
 import com.wakaztahir.codeeditor.highlight.theme.CodeThemeType
-import com.wakaztahir.markdowntext.model.Marker
+import com.wakaztahir.markdowntext.preview.model.Marker
 import com.wakaztahir.markdowntext.preview.components.*
 import org.commonmark.ext.gfm.strikethrough.StrikethroughExtension
 import org.commonmark.ext.gfm.tables.*

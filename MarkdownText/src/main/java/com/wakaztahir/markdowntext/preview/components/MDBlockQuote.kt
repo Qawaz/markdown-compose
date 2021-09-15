@@ -13,7 +13,7 @@ import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.unit.dp
-import com.wakaztahir.markdowntext.annotation.appendMarkdownContent
+import com.wakaztahir.markdowntext.preview.annotation.appendMarkdownContent
 import com.wakaztahir.markdowntext.preview.LocalMarker
 import org.commonmark.node.BlockQuote
 

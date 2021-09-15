@@ -1,12 +1,15 @@
-package com.wakaztahir.markdowntext.model
+package com.wakaztahir.markdowntext.preview.model
 
 import androidx.compose.foundation.text.InlineTextContent
 import androidx.compose.material.Colors
 import androidx.compose.material.Typography
 import androidx.compose.material.lightColors
 import androidx.compose.ui.text.SpanStyle
-import com.wakaztahir.markdowntext.annotation.createDefaultInlineTextContent
-import com.wakaztahir.markdowntext.utils.*
+import com.wakaztahir.markdowntext.preview.annotation.*
+import com.wakaztahir.markdowntext.preview.annotation.createDefaultInlineTextContent
+import com.wakaztahir.markdowntext.preview.annotation.defaultEmphasisStyle
+import com.wakaztahir.markdowntext.preview.annotation.defaultStrikethroughStyle
+import com.wakaztahir.markdowntext.preview.annotation.defaultStrongEmphasisStyle
 import org.commonmark.ext.gfm.strikethrough.Strikethrough
 import org.commonmark.node.*
 

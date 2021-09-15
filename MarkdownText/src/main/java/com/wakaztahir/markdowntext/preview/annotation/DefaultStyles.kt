@@ -1,4 +1,4 @@
-package com.wakaztahir.markdowntext.utils
+package com.wakaztahir.markdowntext.preview.annotation
 
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.SpanStyle
@@ -6,7 +6,7 @@ import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.unit.ExperimentalUnitApi
-import com.wakaztahir.markdowntext.model.Marker
+import com.wakaztahir.markdowntext.preview.model.Marker
 import org.commonmark.ext.gfm.strikethrough.Strikethrough
 import org.commonmark.node.*
 

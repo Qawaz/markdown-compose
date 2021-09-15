@@ -1,4 +1,4 @@
-package com.wakaztahir.markdowntext.annotation
+package com.wakaztahir.markdowntext.preview.annotation
 
 import androidx.compose.foundation.text.InlineTextContent
 import androidx.compose.ui.text.Placeholder
