@@ -67,7 +67,7 @@ internal fun MDBlock(node: Node) {
         is Paragraph -> MDParagraph(node)
         is FencedCodeBlock -> MDFencedCodeBlock(node)
         is IndentedCodeBlock -> MDIndentedCodeBlock(node)
-        is Image -> MDImage(node)
+        is Image -> MDImage(destination = node.destination ?: "",title = node.title ?: "")
         is BulletList -> MDBulletList(node)
         is OrderedList -> MDOrderedList(node)
         is HtmlInline -> {

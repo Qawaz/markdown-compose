@@ -13,9 +13,9 @@ import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextDecoration
 import com.wakaztahir.markdowntext.preview.annotation.ImageTag
+import com.wakaztahir.markdowntext.preview.annotation.InlineBlock
+import com.wakaztahir.markdowntext.preview.annotation.InlineImage
 import com.wakaztahir.markdowntext.preview.annotation.createDefaultInlineTextContent
-import org.commonmark.node.Image
-import org.commonmark.node.Node
 import java.util.*
 
 
@@ -28,7 +28,7 @@ open class Marker constructor(
     internal var typography: Typography = Typography(),
 
     // Inline Text Content
-    var blocks: MutableMap<String, Node> = mutableMapOf(), //todo get rid of Node
+    var blocks: MutableMap<String, InlineBlock> = mutableMapOf(), //todo get rid of Node
     var inlineContent: Map<String, InlineTextContent> = createDefaultInlineTextContent(blocks),
     // Rendering Variables
     var preventBulletMarker: Boolean = false // when task list marker (checkbox) is being rendered , next bullet marker is not supposed to render
@@ -97,7 +97,7 @@ open class Marker constructor(
 
     open fun AnnotatedString.Builder.appendImage(destination: String, title: String) {
         val id = UUID.randomUUID().toString()
-        blocks[id] = Image(destination, title)
+        blocks[id] = InlineImage(title = title, destination = destination)
         appendInlineContent(ImageTag, id)
     }
 

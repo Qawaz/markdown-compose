@@ -7,14 +7,16 @@ import androidx.compose.ui.unit.ExperimentalUnitApi
 import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.TextUnitType
 import com.wakaztahir.markdowntext.preview.components.MDImage
-import org.commonmark.node.Image
-import org.commonmark.node.Node
 
 internal const val ImageTag = "marker - image"
 internal const val URLTag = "marker - url"
 
+open class InlineBlock
+
+class InlineImage(val title: String, val destination: String) : InlineBlock()
+
 @OptIn(ExperimentalUnitApi::class)
-internal fun createDefaultInlineTextContent(blocks: MutableMap<String, Node>): Map<String, InlineTextContent> {
+internal fun createDefaultInlineTextContent(blocks: MutableMap<String, InlineBlock>): Map<String, InlineTextContent> {
     return mapOf(
         ImageTag to InlineTextContent(
             placeholder = Placeholder(
@@ -23,10 +25,11 @@ internal fun createDefaultInlineTextContent(blocks: MutableMap<String, Node>): M
                 PlaceholderVerticalAlign.TextCenter
             ),
             children = {
-                blocks[it]?.let { node ->
-                    (node as? Image)?.let { imageNode ->
+                blocks[it]?.let { inlineBlock ->
+                    (inlineBlock as? InlineImage)?.let { inlineImage ->
                         MDImage(
-                            node = imageNode
+                            title = inlineImage.title,
+                            destination = inlineImage.destination
                         )
                     }
                 }

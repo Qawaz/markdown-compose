@@ -13,12 +13,12 @@ import org.commonmark.node.Node
 import org.commonmark.node.Visitor
 
 @Composable
-internal fun MDImage(node: Image,modifier: Modifier = Modifier) {
-    if (node.destination.isNotEmpty()) {
+internal fun MDImage(modifier: Modifier = Modifier,destination : String,title : String) {
+    if (destination.isNotEmpty()) {
         Row(modifier = modifier.fillMaxWidth(), horizontalArrangement = Arrangement.Center) {
             Image(
-                painter = rememberImagePainter(node.destination),
-                contentDescription = node.title ?: ""
+                painter = rememberImagePainter(destination),
+                contentDescription = title
             )
         }
     }
