@@ -23,15 +23,21 @@ class ParsedMarkdown(val marker: Marker) {
     val items = mutableStateListOf<EditableBlock>()
 }
 
+/**
+ * Parses your [markdown] into given [parsed] or creates a new instance of [ParsedMarkdown]
+ */
 @Composable
 fun rememberParsedMarkdown(
     markdown: String,
     colors: Colors = MaterialTheme.colors,
     typography: Typography = MaterialTheme.typography,
-    marker: Marker = LocalMarker.current.apply {
-        this.colors = colors
-        this.typography = typography
-    },
+    marker: Marker = LocalMarker.current,
+    parsed: ParsedMarkdown = ParsedMarkdown(
+        marker = marker.apply {
+            this.colors = colors
+            this.typography = typography
+        }
+    ),
     separateHeadingParagraph: Boolean = false,
     bulletListInsideTextBlock: Boolean = false,
     orderedListInsideTextBlock: Boolean = true,
@@ -39,7 +45,7 @@ fun rememberParsedMarkdown(
 
     val parser = LocalCommonMarkParser.current
 
-    return ParsedMarkdown(marker = marker).apply {
+    return parsed.apply {
         val document = parser.parse(markdown)
 
         // Extracting blocks
@@ -172,9 +178,13 @@ private fun extractChildNodes(
  * Appends children of node [BulletList] or [OrderedList] , if they are [ListItem]
  * to [ListBlock]
  */
-private fun ListBlock.append(marker: Marker, indentationLevel: Int = 0, list: org.commonmark.node.ListBlock) {
+private fun ListBlock.append(
+    marker: Marker,
+    indentationLevel: Int = 0,
+    list: org.commonmark.node.ListBlock
+) {
     var parent = list.firstChild
-    while(parent!=null) {
+    while (parent != null) {
         var child = parent.firstChild
         var number = if (list is OrderedList) list.startNumber else 0
         while (child != null) {
