@@ -15,7 +15,9 @@ import com.wakaztahir.markdowntext.preview.annotation.appendMarkdownContent
 import com.wakaztahir.markdowntext.preview.annotation.appendMarkdownNode
 import com.wakaztahir.markdowntext.preview.model.Marker
 import org.commonmark.ext.gfm.tables.TableBlock
+import org.commonmark.ext.task.list.items.TaskListItemMarker
 import org.commonmark.node.*
+import org.commonmark.node.ListItem
 
 class ParsedMarkdown(val marker: Marker) {
     val items = mutableStateListOf<EditableBlock>()
@@ -31,7 +33,8 @@ fun rememberParsedMarkdown(
         this.typography = typography
     },
     separateHeadingParagraph: Boolean = false,
-    orderedListInsideTextBlock: Boolean = false,
+    bulletListInsideTextBlock: Boolean = false,
+    orderedListInsideTextBlock: Boolean = true,
 ): ParsedMarkdown {
 
     val parser = LocalCommonMarkParser.current
@@ -44,6 +47,7 @@ fun rememberParsedMarkdown(
             parsed = this,
             parent = document,
             separateHeadingParagraph = separateHeadingParagraph,
+            bulletListInsideTextBlock = bulletListInsideTextBlock,
             orderedListInsideTextBlock = orderedListInsideTextBlock,
         )
     }
@@ -53,6 +57,7 @@ private fun extractChildNodes(
     parsed: ParsedMarkdown,
     parent: Node,
     separateHeadingParagraph: Boolean,
+    bulletListInsideTextBlock: Boolean,
     orderedListInsideTextBlock: Boolean,
 ) {
 
@@ -64,31 +69,51 @@ private fun extractChildNodes(
         }
     }
 
+    fun getLastListBlock(): ListBlock {
+        return if (parsed.items.isNotEmpty() && parsed.items.last() is ListBlock) {
+            parsed.items.last() as ListBlock
+        } else {
+            ListBlock().apply { parsed.items.add(this) }
+        }
+    }
+
+    fun appendToLastTextBlock(builder: AnnotatedString.Builder.() -> Unit) {
+        getLastTextBlock().let {
+            it.textValue = it.textValue.copy(buildAnnotatedString {
+                append(it.textValue.annotatedString)
+                builder()
+            })
+        }
+    }
+
     var node = parent.firstChild
     while (node != null) {
 
 
         // Adding Other Blocks
         when (node) {
-            is Document -> extractChildNodes(parsed, node, separateHeadingParagraph,orderedListInsideTextBlock)
+            is Document -> extractChildNodes(
+                parsed,
+                node,
+                separateHeadingParagraph = separateHeadingParagraph,
+                bulletListInsideTextBlock = bulletListInsideTextBlock,
+                orderedListInsideTextBlock = orderedListInsideTextBlock
+            )
             is Heading, is Paragraph -> {
                 if (separateHeadingParagraph) {
                     val annotatedString = buildAnnotatedString {
-                        appendMarkdownNode(parsed.marker, node)
+                        appendMarkdownContent(parsed.marker, node)
                     }
                     parsed.items.add(
                         if (node is Heading) {
-                            HeadingBlock(annotatedString)
+                            HeadingBlock(annotatedString, node.level)
                         } else {
                             ParagraphBlock(annotatedString)
                         }
                     )
                 } else {
-                    getLastTextBlock().let {
-                        it.text = buildAnnotatedString {
-                            append(it.text)
-                            appendMarkdownNode(parsed.marker, node)
-                        }
+                    appendToLastTextBlock {
+                        appendMarkdownNode(parsed.marker, node)
                     }
                 }
             }
@@ -108,26 +133,25 @@ private fun extractChildNodes(
                 parsed.items.add(ImageBlock())
             }
             is BulletList -> {
-                parsed.items.add(ListBlock())
+                if (bulletListInsideTextBlock) {
+                    appendToLastTextBlock {
+                        append(
+                            (node as BulletList).toAnnotatedList(parsed.marker)
+                        )
+                    }
+                } else {
+                    getLastListBlock().append(parsed.marker, list = node)
+                }
             }
             is OrderedList -> {
                 if (orderedListInsideTextBlock) {
-                    //todo if a bullet list is encountered in middle
-                    //todo the bullet list should cut the current text block and append next ordered list onto the text
-                    getLastTextBlock().let {
-                        it.text = buildAnnotatedString {
-                            append(it.text)
-                            append(
-                                (node as OrderedList).toAnnotatedString(
-                                    parsed.marker,
-                                    onBulletList = {
-                                        //todo add bullet list
-                                    })
-                            )
-                        }
+                    appendToLastTextBlock {
+                        append(
+                            (node as OrderedList).toAnnotatedList(parsed.marker)
+                        )
                     }
                 } else {
-                    // todo handle ordered list
+                    getLastListBlock().append(parsed.marker, list = node)
                 }
             }
             is HtmlInline -> {
@@ -144,23 +168,106 @@ private fun extractChildNodes(
     }
 }
 
-fun OrderedList.toAnnotatedString(
-    marker: Marker,
-    onBulletList: (BulletList) -> Unit
-): AnnotatedString {
+/**
+ * Appends children of node [BulletList] or [OrderedList] , if they are [ListItem]
+ * to [ListBlock]
+ */
+private fun ListBlock.append(marker: Marker, indentationLevel: Int = 0, list: Node) {
+    var child = list.firstChild
+    var number = if (list is OrderedList) list.startNumber else 0
+    while (child != null) {
+        when (child) {
+            is OrderedList -> append(marker, indentationLevel + 1, child)
+            is BulletList -> append(marker, indentationLevel + 1, child)
+            is ListItem -> {
+                when (list) {
+                    is BulletList -> {
+                        this.items.add(
+                            BulletListItem(
+                                indentationLevel,
+                                list.bulletMarker.toString(),
+                                annotatedString = buildAnnotatedString {
+                                    appendMarkdownContent(
+                                        marker,
+                                        child
+                                    )
+                                }
+                            )
+                        )
+                    }
+                    is OrderedList -> {
+                        this.items.add(
+                            OrderedListItem(
+                                indentationLevel,
+                                number = number,
+                                delimiter = list.delimiter.toString(),
+                                annotatedString = buildAnnotatedString {
+                                    appendMarkdownContent(
+                                        marker,
+                                        child
+                                    )
+                                }
+                            )
+                        )
+                    }
+                }
+                number++
+            }
+            is TaskListItemMarker -> {
+                if (child.next is ListItem) {
+                    this.items.add(
+                        TaskListItem(
+                            child.isChecked,
+                            indentationLevel,
+                            annotatedString = buildAnnotatedString {
+                                appendMarkdownContent(
+                                    marker,
+                                    child.next
+                                )
+                            }
+                        )
+                    )
+                    // skipping next node as it was item and has been added to list
+                    child = child.next
+                }
+            }
+        }
+        child = child.next
+    }
+}
+
+/**
+ * Converts a [BulletList] and its children [OrderedList] or [BulletList] or [ListItem] to [AnnotatedString]
+ */
+private fun BulletList.toAnnotatedList(marker: Marker): AnnotatedString {
+    val list = this
+    return buildAnnotatedString {
+        var child = list.firstChild
+        while (child != null) {
+            when (child) {
+                is BulletList -> append(child.toAnnotatedList(marker))
+                is OrderedList -> append(child.toAnnotatedList(marker))
+                is ListItem -> {
+                    append("${list.bulletMarker} ${appendMarkdownContent(marker, child)}")
+                }
+            }
+            child = child.next
+        }
+    }
+}
+
+/**
+ * Converts a [OrderedList] and its children [OrderedList] or [BulletList] or [ListItem] to [AnnotatedString]
+ */
+private fun OrderedList.toAnnotatedList(marker: Marker): AnnotatedString {
     val list = this
     return buildAnnotatedString {
         var child = list.firstChild
         var x = list.startNumber
         while (child != null) {
             when (child) {
-                is BulletList -> onBulletList(child)
-                is OrderedList -> append(
-                    child.toAnnotatedString(
-                        marker,
-                        onBulletList = onBulletList
-                    )
-                )
+                is BulletList -> append(child.toAnnotatedList(marker))
+                is OrderedList -> append(child.toAnnotatedList(marker))
                 is ListItem -> {
                     append("$x. ${appendMarkdownContent(marker, child)}")
                     x++

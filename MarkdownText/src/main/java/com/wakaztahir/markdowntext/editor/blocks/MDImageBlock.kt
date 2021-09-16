@@ -5,6 +5,6 @@ import com.wakaztahir.markdowntext.editor.model.ImageBlock
 import org.commonmark.node.Image
 
 @Composable
-fun MDImageBlock(block : ImageBlock){
+fun ImageBlock.EditableImage(){
 
 }

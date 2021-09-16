@@ -4,6 +4,6 @@ import androidx.compose.runtime.Composable
 import com.wakaztahir.markdowntext.editor.model.CodeBlock
 
 @Composable
-fun MDCodeBlock(codeBlock : CodeBlock){
+fun CodeBlock.EditableCode(){
 
 }

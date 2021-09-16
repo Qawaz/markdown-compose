@@ -9,7 +9,10 @@ import org.commonmark.ext.gfm.strikethrough.Strikethrough
 import org.commonmark.node.*
 import java.util.*
 
-fun AnnotatedString.Builder.appendMarkdownContent(marker: Marker, parent: Node) {
+/**
+ * Appends Styles for all the children nodes of the [parent]
+ */
+internal fun AnnotatedString.Builder.appendMarkdownContent(marker: Marker, parent: Node) {
     var node = parent.firstChild
     while (node != null) {
         appendMarkdownNode(marker,node)
@@ -17,8 +20,10 @@ fun AnnotatedString.Builder.appendMarkdownContent(marker: Marker, parent: Node) 
     }
 }
 
-
-fun AnnotatedString.Builder.appendMarkdownNode(marker: Marker,node : Node){
+/**
+ * Appends styles for [node] and its children
+ */
+internal fun AnnotatedString.Builder.appendMarkdownNode(marker: Marker,node : Node){
     when (node) {
         is HardLineBreak -> append("\n")
         is Paragraph -> appendParagraph(marker, node)
