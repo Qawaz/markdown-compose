@@ -18,7 +18,7 @@ class MainActivity : ComponentActivity() {
         setContent {
             MarkdownTextFieldTheme {
 
-                val parsedMarkdown = rememberParsedMarkdown(markdown = SampleText.first())
+                val parsedMarkdown = rememberParsedMarkdown(markdown = SampleText[1])
                 
                 MarkdownEditor(
                     modifier = Modifier.verticalScroll(rememberScrollState()),

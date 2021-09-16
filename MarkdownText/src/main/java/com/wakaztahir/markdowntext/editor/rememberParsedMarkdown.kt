@@ -172,67 +172,71 @@ private fun extractChildNodes(
  * Appends children of node [BulletList] or [OrderedList] , if they are [ListItem]
  * to [ListBlock]
  */
-private fun ListBlock.append(marker: Marker, indentationLevel: Int = 0, list: Node) {
-    var child = list.firstChild
-    var number = if (list is OrderedList) list.startNumber else 0
-    while (child != null) {
-        when (child) {
-            is OrderedList -> append(marker, indentationLevel + 1, child)
-            is BulletList -> append(marker, indentationLevel + 1, child)
-            is ListItem -> {
-                when (list) {
-                    is BulletList -> {
+private fun ListBlock.append(marker: Marker, indentationLevel: Int = 0, list: org.commonmark.node.ListBlock) {
+    var parent = list.firstChild
+    while(parent!=null) {
+        var child = parent.firstChild
+        var number = if (list is OrderedList) list.startNumber else 0
+        while (child != null) {
+            when (child) {
+                is OrderedList -> append(marker, indentationLevel + 1, child)
+                is BulletList -> append(marker, indentationLevel + 1, child)
+                is TaskListItemMarker -> {
+                    if (child.next !is BulletList && child.next !is OrderedList) {
                         this.items.add(
-                            BulletListItem(
+                            TaskListItem(
+                                child.isChecked,
                                 indentationLevel,
-                                list.bulletMarker.toString(),
                                 annotatedString = buildAnnotatedString {
                                     appendMarkdownContent(
                                         marker,
-                                        child
+                                        child.next
                                     )
                                 }
                             )
                         )
-                    }
-                    is OrderedList -> {
-                        this.items.add(
-                            OrderedListItem(
-                                indentationLevel,
-                                number = number,
-                                delimiter = list.delimiter.toString(),
-                                annotatedString = buildAnnotatedString {
-                                    appendMarkdownContent(
-                                        marker,
-                                        child
-                                    )
-                                }
-                            )
-                        )
+                        // skipping next node as it was item and has been added to list
+                        child = child.next
                     }
                 }
-                number++
-            }
-            is TaskListItemMarker -> {
-                if (child.next is ListItem) {
-                    this.items.add(
-                        TaskListItem(
-                            child.isChecked,
-                            indentationLevel,
-                            annotatedString = buildAnnotatedString {
-                                appendMarkdownContent(
-                                    marker,
-                                    child.next
+                else -> {
+                    when (list) {
+                        is BulletList -> {
+                            this.items.add(
+                                BulletListItem(
+                                    indentationLevel,
+                                    list.bulletMarker.toString(),
+                                    annotatedString = buildAnnotatedString {
+                                        appendMarkdownContent(
+                                            marker,
+                                            child
+                                        )
+                                    }
                                 )
-                            }
-                        )
-                    )
-                    // skipping next node as it was item and has been added to list
-                    child = child.next
+                            )
+                        }
+                        is OrderedList -> {
+                            this.items.add(
+                                OrderedListItem(
+                                    indentationLevel,
+                                    number = number,
+                                    delimiter = list.delimiter.toString(),
+                                    annotatedString = buildAnnotatedString {
+                                        appendMarkdownContent(
+                                            marker,
+                                            child
+                                        )
+                                    }
+                                )
+                            )
+                        }
+                    }
+                    number++
                 }
             }
+            child = child.next
         }
-        child = child.next
+        parent = parent.next
     }
 }
 
@@ -269,7 +273,8 @@ private fun OrderedList.toAnnotatedList(marker: Marker): AnnotatedString {
                 is BulletList -> append(child.toAnnotatedList(marker))
                 is OrderedList -> append(child.toAnnotatedList(marker))
                 is ListItem -> {
-                    append("$x. ${appendMarkdownContent(marker, child)}")
+                    append("$x. ")
+                    appendMarkdownContent(marker, child)
                     x++
                 }
             }

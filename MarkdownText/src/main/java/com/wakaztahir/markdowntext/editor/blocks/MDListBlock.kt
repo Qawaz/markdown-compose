@@ -3,6 +3,8 @@ package com.wakaztahir.markdowntext.editor.blocks
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.material.Checkbox
+import androidx.compose.material.Icon
+import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import com.wakaztahir.markdowntext.editor.EditableMarkdown
 import com.wakaztahir.markdowntext.editor.model.BulletListItem
@@ -28,7 +30,16 @@ fun ListBlock.EditableList() {
 
 @Composable
 fun BulletListItem.EditableListItem() {
-
+    val item = this
+    Row {
+        Text(text = "-> ")
+        EditableMarkdown(
+            textValue = item.textValue,
+            onUpdate = {
+                item.textValue = it
+            }
+        )
+    }
 }
 
 @Composable
