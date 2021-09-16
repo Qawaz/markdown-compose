@@ -31,8 +31,9 @@ internal fun EditableMarkdown(
     textStyle: TextStyle = LocalTextStyle.current,
     colors: TextFieldColors = TextFieldDefaults.outlinedTextFieldColors(
         textColor = MaterialTheme.colors.onBackground,
-        focusedBorderColor = Color.Transparent,
-        unfocusedBorderColor = Color.Transparent
+        //todo make borders transparent
+//        focusedBorderColor = Color.Transparent,
+//        unfocusedBorderColor = Color.Transparent
     )
 ) {
 
