@@ -6,39 +6,39 @@ import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Typography
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
-import androidx.compose.runtime.compositionLocalOf
 import androidx.compose.runtime.remember
-import com.wakaztahir.codeeditor.highlight.prettify.PrettifyParser
+import androidx.compose.ui.Modifier
 import com.wakaztahir.codeeditor.highlight.theme.CodeThemeType
 import com.wakaztahir.markdowntext.common.LocalCodeTheme
 import com.wakaztahir.markdowntext.common.LocalCommonMarkParser
 import com.wakaztahir.markdowntext.common.LocalMarker
-import com.wakaztahir.markdowntext.preview.model.Marker
 import com.wakaztahir.markdowntext.preview.components.*
-import org.commonmark.ext.gfm.strikethrough.StrikethroughExtension
-import org.commonmark.ext.gfm.tables.*
-import org.commonmark.ext.task.list.items.TaskListItemsExtension
+import com.wakaztahir.markdowntext.preview.model.Marker
+import org.commonmark.ext.gfm.tables.TableBlock
 import org.commonmark.node.*
-import org.commonmark.parser.Parser
 
 @Composable
 fun MarkdownPreview(
+    modifier : Modifier = Modifier,
     markdown: String,
     colors: Colors = MaterialTheme.colors,
     typography: Typography = MaterialTheme.typography,
     marker: Marker = LocalMarker.current,
-    codeTheme : CodeThemeType = if (MaterialTheme.colors.isLight) CodeThemeType.Default else CodeThemeType.Monokai,
 ) {
     val parser = LocalCommonMarkParser.current
     val parsed = remember(markdown) { parser.parse(markdown) }
+    val isLight = MaterialTheme.colors.isLight
+    val codeTheme = remember(isLight) {
+        if (isLight) CodeThemeType.Default.theme() else CodeThemeType.Monokai.theme()
+    }
 
-    CompositionLocalProvider(LocalCodeTheme provides codeTheme.theme()) {
+    CompositionLocalProvider(LocalCodeTheme provides codeTheme) {
         CompositionLocalProvider(LocalMarker provides marker.apply {
             this.colors = colors
             this.typography = typography
             this.preventBulletMarker = false
         }) {
-            Column {
+            Column(modifier = modifier) {
                 MDBlockChildren(parent = parsed)
             }
         }
