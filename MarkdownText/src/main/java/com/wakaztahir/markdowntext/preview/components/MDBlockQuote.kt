@@ -5,22 +5,24 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.drawBehind
 import androidx.compose.ui.geometry.Offset
+import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.unit.dp
 import com.wakaztahir.markdowntext.common.LocalMarker
-import com.wakaztahir.markdowntext.preview.annotation.appendMarkdownContent
-import org.commonmark.node.BlockQuote
 
 @Composable
-internal fun MDBlockQuote(blockQuote: BlockQuote, modifier: Modifier = Modifier) {
+internal fun MDBlockQuote(
+    modifier: Modifier = Modifier,
+    appendContent: AnnotatedString.Builder.() -> Unit,
+) {
+
     val color = MaterialTheme.colors.onBackground
-    val marker = LocalMarker.current
+
     Box(modifier = modifier
         .drawBehind {
             drawLine(
@@ -34,16 +36,15 @@ internal fun MDBlockQuote(blockQuote: BlockQuote, modifier: Modifier = Modifier)
 
         val body1 = MaterialTheme.typography.body1
 
-        val text = remember(blockQuote) {
-            buildAnnotatedString {
-                pushStyle(
-                    body1.toSpanStyle().plus(SpanStyle(fontStyle = FontStyle.Italic))
-                )
-                appendMarkdownContent(marker, blockQuote)
-                pop()
-                toAnnotatedString()
-            }
+        val text = buildAnnotatedString {
+            pushStyle(
+                body1.toSpanStyle().plus(SpanStyle(fontStyle = FontStyle.Italic))
+            )
+            appendContent()
+            pop()
+            toAnnotatedString()
         }
+
         Text(
             text,
             modifier,

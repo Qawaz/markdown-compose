@@ -12,6 +12,7 @@ import com.wakaztahir.codeeditor.highlight.theme.CodeThemeType
 import com.wakaztahir.markdowntext.common.LocalCodeTheme
 import com.wakaztahir.markdowntext.common.LocalCommonMarkParser
 import com.wakaztahir.markdowntext.common.LocalMarker
+import com.wakaztahir.markdowntext.preview.annotation.appendMarkdownContent
 import com.wakaztahir.markdowntext.preview.components.*
 import com.wakaztahir.markdowntext.preview.model.Marker
 import org.commonmark.ext.gfm.tables.TableBlock
@@ -19,7 +20,7 @@ import org.commonmark.node.*
 
 @Composable
 fun MarkdownPreview(
-    modifier : Modifier = Modifier,
+    modifier: Modifier = Modifier,
     markdown: String,
     colors: Colors = MaterialTheme.colors,
     typography: Typography = MaterialTheme.typography,
@@ -57,17 +58,54 @@ internal fun MDBlockChildren(parent: Node) {
 
 @Composable
 internal fun MDBlock(node: Node) {
+    val marker = LocalMarker.current
     when (node) {
         is Document -> MDBlockChildren(node)
-        is BlockQuote -> MDBlockQuote(node)
+        is BlockQuote -> MDBlockQuote {
+            appendMarkdownContent(marker,node)
+        }
         is ThematicBreak -> {
             // ignoring
         }
-        is Heading -> MDHeading(node)
-        is Paragraph -> MDParagraph(node)
-        is FencedCodeBlock -> MDFencedCodeBlock(node)
-        is IndentedCodeBlock -> MDIndentedCodeBlock(node)
-        is Image -> MDImage(destination = node.destination ?: "",title = node.title ?: "")
+        is Heading -> {
+            if (node.level in 0..6) {
+                MDHeading(isParentDocument = node.parent is Document, level = node.level) {
+                    appendMarkdownContent(marker, node)
+                }
+            } else {
+                // not a heading
+                MDBlockChildren(parent = node)
+            }
+        }
+        is Paragraph -> {
+            if (node.firstChild is Image && node.firstChild == node.lastChild) {
+                // Paragraph with single image
+                MDImage(
+                    destination = (node.firstChild as Image).destination ?: "",
+                    title = (node.firstChild as Image).title ?: ""
+                )
+            } else {
+                MDParagraph(isParentDocument = node.parent is Document) {
+                    appendMarkdownContent(marker, node)
+                }
+            }
+        }
+        is FencedCodeBlock -> MDFencedCodeBlock(
+            isParentDocument = node.parent is Document,
+            info = node.info ?: "",
+            literal = node.literal ?: "",
+            fenceChar = node.fenceChar,
+            fenceIndent = node.fenceIndent,
+            fenceLength = node.fenceLength
+        )
+        is IndentedCodeBlock -> MDIndentedCodeBlock(
+            isParentDocument = node.parent is Document,
+            literal = node.literal
+        )
+        is Image -> MDImage(
+            destination = node.destination ?: "",
+            title = node.title ?: ""
+        )
         is BulletList -> MDBulletList(node)
         is OrderedList -> MDOrderedList(node)
         is HtmlInline -> {

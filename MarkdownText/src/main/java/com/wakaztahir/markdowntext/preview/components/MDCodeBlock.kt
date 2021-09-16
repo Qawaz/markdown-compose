@@ -12,12 +12,19 @@ import com.wakaztahir.codeeditor.highlight.utils.parseCodeAsAnnotatedString
 import com.wakaztahir.markdowntext.common.LocalCodeTheme
 import com.wakaztahir.markdowntext.common.LocalPrettifyParser
 import org.commonmark.node.Document
-import org.commonmark.node.FencedCodeBlock
 import org.commonmark.node.IndentedCodeBlock
 
 @Composable
-internal fun MDFencedCodeBlock(fencedCodeBlock: FencedCodeBlock, modifier: Modifier = Modifier) {
-    val padding = if (fencedCodeBlock.parent is Document) 8.dp else 0.dp
+internal fun MDFencedCodeBlock(
+    modifier: Modifier = Modifier,
+    isParentDocument: Boolean,
+    info: String,
+    literal: String,
+    fenceChar: Char,
+    fenceIndent: Int,
+    fenceLength: Int,
+) {
+    val padding = if (isParentDocument) 8.dp else 0.dp
     val prettifyParser = LocalPrettifyParser.current
     val codeTheme = LocalCodeTheme.current
     Text(
@@ -25,8 +32,8 @@ internal fun MDFencedCodeBlock(fencedCodeBlock: FencedCodeBlock, modifier: Modif
         text = parseCodeAsAnnotatedString(
             prettifyParser,
             codeTheme,
-            fencedCodeBlock.info,
-            fencedCodeBlock.literal
+            info,
+            literal
         ),
         style = TextStyle(fontFamily = FontFamily.Monospace),
         color = MaterialTheme.colors.onBackground,
@@ -34,13 +41,17 @@ internal fun MDFencedCodeBlock(fencedCodeBlock: FencedCodeBlock, modifier: Modif
 }
 
 @Composable
-internal fun MDIndentedCodeBlock(node: IndentedCodeBlock, modifier: Modifier = Modifier) {
-    val padding = if (node.parent is Document) 8.dp else 0.dp
+internal fun MDIndentedCodeBlock(
+    modifier: Modifier = Modifier,
+    isParentDocument: Boolean,
+    literal : String,
+) {
+    val padding = if (isParentDocument) 8.dp else 0.dp
     val prettifyParser = LocalPrettifyParser.current
     val codeTheme = LocalCodeTheme.current
     Text(
         modifier = modifier.padding(bottom = padding, start = 8.dp),
-        text = parseCodeAsAnnotatedString(prettifyParser, codeTheme, "js", node.literal),
+        text = parseCodeAsAnnotatedString(prettifyParser, codeTheme, "js", literal),
         style = TextStyle(fontFamily = FontFamily.Monospace),
         color = MaterialTheme.colors.onBackground,
     )
