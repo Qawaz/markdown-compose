@@ -10,7 +10,6 @@ import androidx.compose.ui.unit.ExperimentalUnitApi
 import com.wakaztahir.example.ui.theme.MarkdownTextFieldTheme
 import com.wakaztahir.markdowntext.editor.MarkdownEditor
 import com.wakaztahir.markdowntext.editor.rememberParsedMarkdown
-import com.wakaztahir.markdowntext.preview.MarkdownPreview
 
 class MainActivity : ComponentActivity() {
     @OptIn(ExperimentalUnitApi::class, androidx.compose.ui.text.InternalTextApi::class)
@@ -20,7 +19,7 @@ class MainActivity : ComponentActivity() {
             MarkdownTextFieldTheme {
 
                 val parsedMarkdown = rememberParsedMarkdown(markdown = SampleText[1])
-                
+
                 MarkdownEditor(
                     modifier = Modifier.verticalScroll(rememberScrollState()),
                     parsed = parsedMarkdown

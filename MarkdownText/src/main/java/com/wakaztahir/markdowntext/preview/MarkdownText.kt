@@ -15,7 +15,7 @@ import com.wakaztahir.markdowntext.common.LocalMarker
 import com.wakaztahir.markdowntext.preview.annotation.URLTag
 
 @Composable
-fun MarkdownText(
+internal fun MarkdownText(
     text: AnnotatedString,
     modifier: Modifier = Modifier,
     style: TextStyle,
