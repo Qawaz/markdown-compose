@@ -7,7 +7,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.TextStyle
-import com.wakaztahir.markdowntext.preview.components.MDText
 import com.wakaztahir.markdowntext.preview.components.*
 
 internal val LocalPreviewRenderer = compositionLocalOf { PreviewRenderer() }
@@ -19,8 +18,8 @@ open class PreviewRenderer {
         text: AnnotatedString,
         modifier: Modifier = Modifier,
         style: TextStyle,
-        color : Color = MaterialTheme.colors.onBackground,
-    ) = MDText(text = text,modifier = modifier,style = style,color = color)
+        color: Color = MaterialTheme.colors.onBackground,
+    ) = MDText(text = text, modifier = modifier, style = style, color = color)
 
     @Composable
     open fun PreviewHeading(
@@ -70,10 +69,11 @@ open class PreviewRenderer {
     )
 
     @Composable
-    open fun PreviewIndentedCodeBlock(isParentDocument: Boolean, literal: String) = MDIndentedCodeBlock(
-        isParentDocument = isParentDocument,
-        literal = literal
-    )
+    open fun PreviewIndentedCodeBlock(isParentDocument: Boolean, literal: String) =
+        MDIndentedCodeBlock(
+            isParentDocument = isParentDocument,
+            literal = literal
+        )
 
     @Composable
     open fun PreviewBulletList(
@@ -86,4 +86,10 @@ open class PreviewRenderer {
         isParentDocument: Boolean,
         content: @Composable OrderedListScope.() -> Unit
     ) = MDOrderedList(isParentDocument = isParentDocument, content = content)
+
+    @Composable
+    open fun PreviewTable(
+        isParentDocument: Boolean,
+        rows: MutableList<MutableList<AnnotatedString>>
+    ) = MDTable(rows = rows)
 }

@@ -8,17 +8,18 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.text.AnnotatedString
+import androidx.compose.ui.text.buildAnnotatedString
 import com.wakaztahir.markdowntext.common.LocalCommonMarkParser
 import com.wakaztahir.markdowntext.common.LocalMarker
 import com.wakaztahir.markdowntext.preview.annotation.appendMarkdownContent
 import com.wakaztahir.markdowntext.preview.components.BulletListScope
-import com.wakaztahir.markdowntext.preview.components.MDTable
 import com.wakaztahir.markdowntext.preview.components.OrderedListScope
 import com.wakaztahir.markdowntext.preview.components.PreviewListScope
 import com.wakaztahir.markdowntext.preview.model.LocalPreviewRenderer
 import com.wakaztahir.markdowntext.preview.model.Marker
 import com.wakaztahir.markdowntext.preview.model.PreviewRenderer
-import org.commonmark.ext.gfm.tables.TableBlock
+import org.commonmark.ext.gfm.tables.*
 import org.commonmark.ext.task.list.items.TaskListItemMarker
 import org.commonmark.node.*
 
@@ -122,10 +123,40 @@ internal fun MDBlock(node: Node) {
         is HtmlBlock -> {
             //todo something with this
         }
-        is TableBlock -> MDTable(node = node)
+        is TableBlock -> {
+
+            // rows contain list of columns
+            val rows = mutableListOf<MutableList<AnnotatedString>>()
+
+            extractNodes(
+                node,
+                foundSection = { section ->
+                    extractNodes(section, foundRow = { row ->
+                        val list = mutableListOf<AnnotatedString>()
+                        extractNodes(row, foundCell = {
+                            list.add(
+                                buildAnnotatedString {
+                                    appendMarkdownContent(marker, it)
+                                }
+                            )
+                        })
+                        rows.add(list)
+                    })
+                },
+            )
+
+            renderer.PreviewTable(
+                isParentDocument = node.parent is Document,
+                rows = rows
+            )
+        }
     }
 }
 
+/**
+ * Traverses [ListBlock] children and calls respective
+ * Composable functions to render its children
+ */
 @Composable
 internal fun PreviewListScope.MDListItems(listBlock: ListBlock) {
     val marker = LocalMarker.current
@@ -174,5 +205,27 @@ internal fun PreviewListScope.MDListItems(listBlock: ListBlock) {
             child = child.next
         }
         listItem = listItem.next
+    }
+}
+
+/**
+ * A helper function to recursively extract children nodes
+ * from a table
+ */
+private fun extractNodes(
+    node: Node,
+    foundSection: (Node) -> Unit = {},
+    foundRow: (TableRow) -> Unit = {},
+    foundCell: (TableCell) -> Unit = {}
+) {
+    var child = node.firstChild
+    while (child != null) {
+        when (child) {
+            is TableHead -> foundSection(child)
+            is TableBody -> foundSection(child)
+            is TableRow -> foundRow(child)
+            is TableCell -> foundCell(child)
+        }
+        child = child.next
     }
 }

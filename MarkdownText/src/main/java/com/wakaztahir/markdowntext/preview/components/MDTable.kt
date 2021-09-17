@@ -6,63 +6,24 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.MaterialTheme
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.TextStyle
-import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.unit.dp
-import com.wakaztahir.markdowntext.common.LocalMarker
-import com.wakaztahir.markdowntext.preview.annotation.appendMarkdownContent
 import com.wakaztahir.markdowntext.preview.model.LocalPreviewRenderer
 import com.wakaztahir.markdowntext.utils.SimpleTableLayout
 import com.wakaztahir.markdowntext.utils.drawTableBorders
-import org.commonmark.ext.gfm.tables.*
-import org.commonmark.node.Node
-
-private fun extractNodes(
-    node: Node,
-    foundSection: (Node) -> Unit = {},
-    foundRow: (TableRow) -> Unit = {},
-    foundCell: (TableCell) -> Unit = {}
-) {
-    var child = node.firstChild
-    while (child != null) {
-        when (child) {
-            is TableHead -> foundSection(child)
-            is TableBody -> foundSection(child)
-            is TableRow -> foundRow(child)
-            is TableCell -> foundCell(child)
-        }
-        child = child.next
-    }
-}
 
 @Composable
-internal fun MDTable(node: TableBlock) {
+internal fun MDTable(rows: MutableList<MutableList<AnnotatedString>>) {
     Column(
         modifier = Modifier
             .padding(8.dp)
             .clip(MaterialTheme.shapes.medium)
             .border(width = 2.dp, color = MaterialTheme.colors.onBackground.copy(.3f))
     ) {
-
-        // rows contain list of columns
-        val rows = mutableListOf<MutableList<TableCell>>()
-
-        extractNodes(
-            node,
-            foundSection = { section ->
-                extractNodes(section, foundRow = { row ->
-                    val list = mutableListOf<TableCell>()
-                    extractNodes(row, foundCell = {
-                        list.add(it)
-                    })
-                    rows.add(list)
-                })
-            },
-        )
 
         val tableBorderColor: Color = MaterialTheme.colors.onBackground.copy(.4f)
 
@@ -80,7 +41,10 @@ internal fun MDTable(node: TableBlock) {
                 },
                 cellSpacing = 8f
             ) {
-                MDTableCell(node = it, modifier = Modifier.padding(end = 4.dp, start = 4.dp))
+                MDTableCell(
+                    modifier = Modifier.padding(end = 4.dp, start = 4.dp),
+                    tableContent = it,
+                )
             }
         }
     }
@@ -90,25 +54,17 @@ internal fun MDTable(node: TableBlock) {
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
 internal fun MDTableCell(
-    node: TableCell,
     modifier: Modifier = Modifier,
     style: TextStyle = MaterialTheme.typography.body1,
     color: Color = MaterialTheme.colors.onBackground,
+    tableContent: AnnotatedString,
 ) {
 
     val renderer = LocalPreviewRenderer.current
 
-    val marker = LocalMarker.current
-    val text = remember(node) {
-        buildAnnotatedString {
-            appendMarkdownContent(marker, node)
-            toAnnotatedString()
-        }
-    }
-
     renderer.PreviewText(
         modifier = modifier.padding(4.dp),
-        text = text,
+        text = tableContent,
         style = style,
         color = color
     )
