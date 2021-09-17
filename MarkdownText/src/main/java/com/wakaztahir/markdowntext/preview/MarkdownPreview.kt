@@ -11,11 +11,11 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.buildAnnotatedString
 import com.wakaztahir.markdowntext.common.LocalCommonMarkParser
-import com.wakaztahir.markdowntext.common.LocalMarker
 import com.wakaztahir.markdowntext.preview.annotation.appendMarkdownContent
 import com.wakaztahir.markdowntext.preview.components.BulletListScope
 import com.wakaztahir.markdowntext.preview.components.OrderedListScope
 import com.wakaztahir.markdowntext.preview.components.PreviewListScope
+import com.wakaztahir.markdowntext.preview.model.LocalMarker
 import com.wakaztahir.markdowntext.preview.model.LocalPreviewRenderer
 import com.wakaztahir.markdowntext.preview.model.Marker
 import com.wakaztahir.markdowntext.preview.model.PreviewRenderer

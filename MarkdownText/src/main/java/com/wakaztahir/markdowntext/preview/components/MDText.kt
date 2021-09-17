@@ -11,21 +11,22 @@ import androidx.compose.ui.platform.LocalUriHandler
 import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.TextLayoutResult
 import androidx.compose.ui.text.TextStyle
-import com.wakaztahir.markdowntext.common.LocalMarker
 import com.wakaztahir.markdowntext.preview.annotation.URLTag
+import com.wakaztahir.markdowntext.preview.model.LocalMarker
 
 @Composable
 internal fun MDText(
     text: AnnotatedString,
     modifier: Modifier = Modifier,
     style: TextStyle,
-    color : Color = MaterialTheme.colors.onBackground,
+    color: Color = MaterialTheme.colors.onBackground,
 ) {
     val uriHandler = LocalUriHandler.current
     var layoutResult by remember { mutableStateOf<TextLayoutResult?>(null) }
     val marker = LocalMarker.current
 
-    Text(text = text,
+    Text(
+        text = text,
         modifier = modifier.pointerInput(layoutResult) {
             layoutResult?.let {
                 detectTapGestures { pos ->

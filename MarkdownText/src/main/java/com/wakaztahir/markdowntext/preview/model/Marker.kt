@@ -5,6 +5,7 @@ import androidx.compose.foundation.text.appendInlineContent
 import androidx.compose.material.Colors
 import androidx.compose.material.Typography
 import androidx.compose.material.lightColors
+import androidx.compose.runtime.compositionLocalOf
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.SpanStyle
@@ -17,6 +18,8 @@ import com.wakaztahir.markdowntext.preview.annotation.InlineBlock
 import com.wakaztahir.markdowntext.preview.annotation.InlineImage
 import com.wakaztahir.markdowntext.preview.annotation.createDefaultInlineTextContent
 import java.util.*
+
+val LocalMarker = compositionLocalOf { Marker() }
 
 
 /**

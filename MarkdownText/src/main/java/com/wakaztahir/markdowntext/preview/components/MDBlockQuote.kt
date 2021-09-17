@@ -13,7 +13,6 @@ import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.unit.dp
-import com.wakaztahir.markdowntext.common.LocalMarker
 
 @Composable
 internal fun MDBlockQuote(

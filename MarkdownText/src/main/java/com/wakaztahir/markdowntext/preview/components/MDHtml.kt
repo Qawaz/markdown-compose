@@ -7,7 +7,6 @@ import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.viewinterop.AndroidView
 
-@Suppress("Deprecation")
 @Composable
 fun MDHtmlInline(literal: String) {
     Text(text = literal)

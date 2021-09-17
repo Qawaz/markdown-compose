@@ -4,20 +4,23 @@ import androidx.compose.material.Colors
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Typography
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.compositionLocalOf
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.buildAnnotatedString
 import com.wakaztahir.markdowntext.common.LocalCommonMarkParser
-import com.wakaztahir.markdowntext.common.LocalMarker
 import com.wakaztahir.markdowntext.editor.model.*
 import com.wakaztahir.markdowntext.editor.model.ListBlock
 import com.wakaztahir.markdowntext.preview.annotation.appendMarkdownContent
 import com.wakaztahir.markdowntext.preview.annotation.appendMarkdownNode
+import com.wakaztahir.markdowntext.preview.model.LocalMarker
 import com.wakaztahir.markdowntext.preview.model.Marker
 import org.commonmark.ext.gfm.tables.TableBlock
 import org.commonmark.ext.task.list.items.TaskListItemMarker
 import org.commonmark.node.*
 import org.commonmark.node.ListItem
+
+val LocalParsedMarkdown = compositionLocalOf { ParsedMarkdown(Marker()) }
 
 class ParsedMarkdown(val marker: Marker) {
     val items = mutableStateListOf<EditableBlock>()

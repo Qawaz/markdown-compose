@@ -6,10 +6,9 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.ui.Modifier
-import com.wakaztahir.markdowntext.common.LocalMarker
-import com.wakaztahir.markdowntext.common.LocalParsedMarkdown
 import com.wakaztahir.markdowntext.editor.blocks.*
 import com.wakaztahir.markdowntext.editor.model.*
+import com.wakaztahir.markdowntext.preview.model.LocalMarker
 
 @Composable
 fun MarkdownEditor(

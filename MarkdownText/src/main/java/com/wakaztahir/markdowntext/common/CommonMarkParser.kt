@@ -8,9 +8,6 @@ import org.commonmark.ext.gfm.tables.TablesExtension
 import org.commonmark.ext.task.list.items.TaskListItemsExtension
 import org.commonmark.parser.Parser
 
-val LocalParsedMarkdown = compositionLocalOf { ParsedMarkdown(Marker()) }
-
-val LocalMarker = compositionLocalOf { Marker() }
 
 internal val LocalCommonMarkParser = compositionLocalOf { createDefaultParser() }
 
