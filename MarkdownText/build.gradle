@@ -54,9 +54,6 @@ dependencies {
 
     // Coil Compose
     implementation "io.coil-kt:coil-compose:1.3.2"
-
-    // Code Editor
-    implementation "com.github.timeline-notes:compose-code-editor:2.0.3"
 }
 
 def versionName = "0.1.1"

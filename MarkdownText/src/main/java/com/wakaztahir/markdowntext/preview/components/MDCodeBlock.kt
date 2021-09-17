@@ -8,11 +8,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.unit.dp
-import com.wakaztahir.codeeditor.highlight.utils.parseCodeAsAnnotatedString
-import com.wakaztahir.markdowntext.common.LocalCodeTheme
-import com.wakaztahir.markdowntext.common.LocalPrettifyParser
-import org.commonmark.node.Document
-import org.commonmark.node.IndentedCodeBlock
 
 @Composable
 internal fun MDFencedCodeBlock(
@@ -25,16 +20,9 @@ internal fun MDFencedCodeBlock(
     fenceLength: Int,
 ) {
     val padding = if (isParentDocument) 8.dp else 0.dp
-    val prettifyParser = LocalPrettifyParser.current
-    val codeTheme = LocalCodeTheme.current
     Text(
         modifier = modifier.padding(bottom = padding, start = 8.dp),
-        text = parseCodeAsAnnotatedString(
-            prettifyParser,
-            codeTheme,
-            info,
-            literal
-        ),
+        text = literal,
         style = TextStyle(fontFamily = FontFamily.Monospace),
         color = MaterialTheme.colors.onBackground,
     )
@@ -44,14 +32,12 @@ internal fun MDFencedCodeBlock(
 internal fun MDIndentedCodeBlock(
     modifier: Modifier = Modifier,
     isParentDocument: Boolean,
-    literal : String,
+    literal: String,
 ) {
     val padding = if (isParentDocument) 8.dp else 0.dp
-    val prettifyParser = LocalPrettifyParser.current
-    val codeTheme = LocalCodeTheme.current
     Text(
         modifier = modifier.padding(bottom = padding, start = 8.dp),
-        text = parseCodeAsAnnotatedString(prettifyParser, codeTheme, "js", literal),
+        text = literal,
         style = TextStyle(fontFamily = FontFamily.Monospace),
         color = MaterialTheme.colors.onBackground,
     )

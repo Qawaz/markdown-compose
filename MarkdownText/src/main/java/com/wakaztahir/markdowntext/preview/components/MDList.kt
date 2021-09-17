@@ -97,6 +97,7 @@ private fun MDBulletListItem(
 
     val text = buildAnnotatedString {
         append(bulletMarker)
+        append(' ')
         appendContent()
     }
 

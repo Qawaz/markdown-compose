@@ -4,7 +4,6 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.MaterialTheme
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.buildAnnotatedString
@@ -34,11 +33,8 @@ internal fun MDHeading(
 
     val padding = if (isParentDocument) 8.dp else 0.dp
     Box(modifier = Modifier.padding(bottom = padding)) {
-        val text = remember {
-            buildAnnotatedString {
-                appendContent()
-                toAnnotatedString()
-            }
+        val text = buildAnnotatedString {
+            appendContent()
         }
 
         renderer.PreviewText(

@@ -8,8 +8,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
-import com.wakaztahir.codeeditor.highlight.theme.CodeThemeType
-import com.wakaztahir.markdowntext.common.LocalCodeTheme
 import com.wakaztahir.markdowntext.common.LocalCommonMarkParser
 import com.wakaztahir.markdowntext.common.LocalMarker
 import com.wakaztahir.markdowntext.preview.annotation.appendMarkdownContent
@@ -35,20 +33,14 @@ fun MarkdownPreview(
 ) {
     val parser = LocalCommonMarkParser.current
     val parsed = remember(markdown) { parser.parse(markdown) }
-    val isLight = MaterialTheme.colors.isLight
-    val codeTheme = remember(isLight) {
-        if (isLight) CodeThemeType.Default.theme() else CodeThemeType.Monokai.theme()
-    }
 
     CompositionLocalProvider(LocalPreviewRenderer provides renderer) {
-        CompositionLocalProvider(LocalCodeTheme provides codeTheme) {
-            CompositionLocalProvider(LocalMarker provides marker.apply {
-                this.colors = colors
-                this.typography = typography
-            }) {
-                Column(modifier = modifier) {
-                    MDBlockChildren(parent = parsed)
-                }
+        CompositionLocalProvider(LocalMarker provides marker.apply {
+            this.colors = colors
+            this.typography = typography
+        }) {
+            Column(modifier = modifier) {
+                MDBlockChildren(parent = parsed)
             }
         }
     }
@@ -159,7 +151,7 @@ internal fun PreviewListScope.MDListItems(listBlock: ListBlock) {
                     if (child is TaskListItemMarker && child.next !is BulletList && child.next !is OrderedList) {
                         if (this@MDListItems is BulletListScope) {
                             this@MDListItems.TaskListItem(child.isChecked) {
-                                appendMarkdownContent(marker, child.next)
+                                appendMarkdownContent(marker, child?.next)
                             }
                         }
                         child = child.next // skipping next item

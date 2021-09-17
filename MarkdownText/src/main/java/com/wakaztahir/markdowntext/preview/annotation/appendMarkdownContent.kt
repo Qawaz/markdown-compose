@@ -8,18 +8,20 @@ import org.commonmark.node.*
 /**
  * Appends Styles for all the children nodes of the [parent]
  */
-internal fun AnnotatedString.Builder.appendMarkdownContent(marker: Marker, parent: Node) {
-    var node = parent.firstChild
-    while (node != null) {
-        appendMarkdownNode(marker, node)
-        node = node.next
+internal fun AnnotatedString.Builder.appendMarkdownContent(marker: Marker, parent: Node?) {
+    if(parent!=null) {
+        var node = parent.firstChild
+        while (node != null) {
+            appendMarkdownNode(marker, node)
+            node = node.next
+        }
     }
 }
 
 /**
  * Appends styles for [node] and its children
  */
-internal fun AnnotatedString.Builder.appendMarkdownNode(marker: Marker, node: Node) {
+internal fun AnnotatedString.Builder.appendMarkdownNode(marker: Marker, node: Node?) {
     marker.apply {
         when (node) {
             is HardLineBreak -> append("\n")
