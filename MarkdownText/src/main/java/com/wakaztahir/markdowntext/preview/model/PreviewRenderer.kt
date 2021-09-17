@@ -88,6 +88,18 @@ open class PreviewRenderer {
     ) = MDOrderedList(isParentDocument = isParentDocument, content = content)
 
     @Composable
+    open fun PreviewHtmlInline(
+        isParentDocument: Boolean,
+        literal : String,
+    ) = MDHtmlInline(literal)
+
+    @Composable
+    open fun PreviewHtmlBlock(
+        isParentDocument: Boolean,
+        literal : String
+    ) = MDHtmlBlock(literal)
+
+    @Composable
     open fun PreviewTable(
         isParentDocument: Boolean,
         rows: MutableList<MutableList<AnnotatedString>>

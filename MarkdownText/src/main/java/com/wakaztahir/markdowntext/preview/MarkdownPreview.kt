@@ -117,12 +117,14 @@ internal fun MDBlock(node: Node) {
         is OrderedList -> renderer.PreviewOrderedList(isParentDocument = node.parent is Document) {
             MDListItems(listBlock = node)
         }
-        is HtmlInline -> {
-            //todo something with this
-        }
-        is HtmlBlock -> {
-            //todo something with this
-        }
+        is HtmlInline -> renderer.PreviewHtmlInline(
+            isParentDocument = node.parent is Document,
+            literal = node.literal,
+        )
+        is HtmlBlock -> renderer.PreviewHtmlBlock(
+            isParentDocument = node.parent is Document,
+            literal = node.literal
+        )
         is TableBlock -> {
 
             // rows contain list of columns
