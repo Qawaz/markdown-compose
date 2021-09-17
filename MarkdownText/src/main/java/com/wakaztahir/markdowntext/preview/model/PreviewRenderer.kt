@@ -1,33 +1,26 @@
 package com.wakaztahir.markdowntext.preview.model
 
+import androidx.compose.material.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.compositionLocalOf
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.AnnotatedString
+import androidx.compose.ui.text.TextStyle
+import com.wakaztahir.markdowntext.preview.components.MDText
 import com.wakaztahir.markdowntext.preview.components.*
 
 internal val LocalPreviewRenderer = compositionLocalOf { PreviewRenderer() }
 
-interface PreviewListScope
-
-interface BulletListScope : PreviewListScope {
-    @Composable
-    fun BulletListItem(bulletMarker: Char, appendContent: AnnotatedString.Builder.() -> Unit)
-
-    @Composable
-    fun TaskListItem(isChecked: Boolean, appendContent: AnnotatedString.Builder.() -> Unit)
-
-}
-
-interface OrderedListScope : PreviewListScope {
-    @Composable
-    fun OrderedListItem(
-        number: Int,
-        delimiter: Char,
-        appendContent: AnnotatedString.Builder.() -> Unit
-    )
-}
-
 open class PreviewRenderer {
+
+    @Composable
+    open fun PreviewText(
+        text: AnnotatedString,
+        modifier: Modifier = Modifier,
+        style: TextStyle,
+        color : Color = MaterialTheme.colors.onBackground,
+    ) = MDText(text = text,modifier = modifier,style = style,color = color)
 
     @Composable
     open fun PreviewHeading(

@@ -8,18 +8,15 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.unit.dp
-import com.wakaztahir.markdowntext.common.LocalMarker
-import com.wakaztahir.markdowntext.preview.MarkdownText
-import com.wakaztahir.markdowntext.preview.annotation.appendMarkdownContent
-import org.commonmark.node.Document
-import org.commonmark.node.Paragraph
+import com.wakaztahir.markdowntext.preview.model.LocalPreviewRenderer
 
 @Composable
 internal fun MDParagraph(
     modifier: Modifier = Modifier,
-    isParentDocument : Boolean,
-    appendContent : AnnotatedString.Builder.()->Unit,
+    isParentDocument: Boolean,
+    appendContent: AnnotatedString.Builder.() -> Unit,
 ) {
+    val renderer = LocalPreviewRenderer.current
     val padding = if (isParentDocument) 8.dp else 0.dp
     Box(modifier = modifier.padding(bottom = padding)) {
         val styledText = buildAnnotatedString {
@@ -28,6 +25,6 @@ internal fun MDParagraph(
             pop()
             toAnnotatedString()
         }
-        MarkdownText(styledText, style = MaterialTheme.typography.body1)
+        renderer.PreviewText(styledText, style = MaterialTheme.typography.body1)
     }
 }

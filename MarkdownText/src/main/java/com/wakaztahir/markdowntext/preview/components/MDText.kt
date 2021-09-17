@@ -1,4 +1,4 @@
-package com.wakaztahir.markdowntext.preview
+package com.wakaztahir.markdowntext.preview.components
 
 import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.material.MaterialTheme
@@ -15,7 +15,7 @@ import com.wakaztahir.markdowntext.common.LocalMarker
 import com.wakaztahir.markdowntext.preview.annotation.URLTag
 
 @Composable
-internal fun MarkdownText(
+internal fun MDText(
     text: AnnotatedString,
     modifier: Modifier = Modifier,
     style: TextStyle,

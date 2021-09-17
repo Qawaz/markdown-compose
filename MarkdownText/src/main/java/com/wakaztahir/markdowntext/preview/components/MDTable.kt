@@ -14,8 +14,8 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.unit.dp
 import com.wakaztahir.markdowntext.common.LocalMarker
-import com.wakaztahir.markdowntext.preview.MarkdownText
 import com.wakaztahir.markdowntext.preview.annotation.appendMarkdownContent
+import com.wakaztahir.markdowntext.preview.model.LocalPreviewRenderer
 import com.wakaztahir.markdowntext.utils.SimpleTableLayout
 import com.wakaztahir.markdowntext.utils.drawTableBorders
 import org.commonmark.ext.gfm.tables.*
@@ -96,6 +96,8 @@ internal fun MDTableCell(
     color: Color = MaterialTheme.colors.onBackground,
 ) {
 
+    val renderer = LocalPreviewRenderer.current
+
     val marker = LocalMarker.current
     val text = remember(node) {
         buildAnnotatedString {
@@ -104,9 +106,7 @@ internal fun MDTableCell(
         }
     }
 
-
-
-    MarkdownText(
+    renderer.PreviewText(
         modifier = modifier.padding(4.dp),
         text = text,
         style = style,

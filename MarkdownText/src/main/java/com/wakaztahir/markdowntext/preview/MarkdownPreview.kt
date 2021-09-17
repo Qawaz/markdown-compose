@@ -13,8 +13,13 @@ import com.wakaztahir.markdowntext.common.LocalCodeTheme
 import com.wakaztahir.markdowntext.common.LocalCommonMarkParser
 import com.wakaztahir.markdowntext.common.LocalMarker
 import com.wakaztahir.markdowntext.preview.annotation.appendMarkdownContent
+import com.wakaztahir.markdowntext.preview.components.BulletListScope
 import com.wakaztahir.markdowntext.preview.components.MDTable
-import com.wakaztahir.markdowntext.preview.model.*
+import com.wakaztahir.markdowntext.preview.components.OrderedListScope
+import com.wakaztahir.markdowntext.preview.components.PreviewListScope
+import com.wakaztahir.markdowntext.preview.model.LocalPreviewRenderer
+import com.wakaztahir.markdowntext.preview.model.Marker
+import com.wakaztahir.markdowntext.preview.model.PreviewRenderer
 import org.commonmark.ext.gfm.tables.TableBlock
 import org.commonmark.ext.task.list.items.TaskListItemMarker
 import org.commonmark.node.*
@@ -40,7 +45,6 @@ fun MarkdownPreview(
             CompositionLocalProvider(LocalMarker provides marker.apply {
                 this.colors = colors
                 this.typography = typography
-                this.preventBulletMarker = false
             }) {
                 Column(modifier = modifier) {
                     MDBlockChildren(parent = parsed)
@@ -121,10 +125,10 @@ internal fun MDBlock(node: Node) {
             MDListItems(listBlock = node)
         }
         is HtmlInline -> {
-
+            //todo something with this
         }
         is HtmlBlock -> {
-
+            //todo something with this
         }
         is TableBlock -> MDTable(node = node)
     }

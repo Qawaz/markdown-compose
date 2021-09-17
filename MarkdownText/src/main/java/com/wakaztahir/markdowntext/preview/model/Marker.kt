@@ -28,10 +28,8 @@ open class Marker constructor(
     internal var typography: Typography = Typography(),
 
     // Inline Text Content
-    var blocks: MutableMap<String, InlineBlock> = mutableMapOf(), //todo get rid of Node
-    var inlineContent: Map<String, InlineTextContent> = createDefaultInlineTextContent(blocks),
-    // Rendering Variables
-    var preventBulletMarker: Boolean = false // when task list marker (checkbox) is being rendered , next bullet marker is not supposed to render
+    var blocks: MutableMap<String, InlineBlock> = mutableMapOf(),
+    internal var inlineContent: Map<String, InlineTextContent> = createDefaultInlineTextContent(blocks),
 ) {
 
     open fun AnnotatedString.Builder.appendText(text: String) {

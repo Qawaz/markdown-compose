@@ -10,9 +10,27 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.unit.dp
-import com.wakaztahir.markdowntext.preview.MarkdownText
-import com.wakaztahir.markdowntext.preview.model.BulletListScope
-import com.wakaztahir.markdowntext.preview.model.OrderedListScope
+import com.wakaztahir.markdowntext.preview.model.LocalPreviewRenderer
+
+interface PreviewListScope
+
+interface BulletListScope : PreviewListScope {
+    @Composable
+    fun BulletListItem(bulletMarker: Char, appendContent: AnnotatedString.Builder.() -> Unit)
+
+    @Composable
+    fun TaskListItem(isChecked: Boolean, appendContent: AnnotatedString.Builder.() -> Unit)
+
+}
+
+interface OrderedListScope : PreviewListScope {
+    @Composable
+    fun OrderedListItem(
+        number: Int,
+        delimiter: Char,
+        appendContent: AnnotatedString.Builder.() -> Unit
+    )
+}
 
 @Composable
 fun MDBulletList(
@@ -74,12 +92,15 @@ private fun MDBulletListItem(
     bulletMarker: Char,
     appendContent: AnnotatedString.Builder.() -> Unit
 ) {
+
+    val renderer = LocalPreviewRenderer.current
+
     val text = buildAnnotatedString {
         append(bulletMarker)
         appendContent()
     }
 
-    MarkdownText(text = text, style = MaterialTheme.typography.body1)
+    renderer.PreviewText(text = text, style = MaterialTheme.typography.body1)
 }
 
 @Composable
@@ -87,13 +108,16 @@ private fun MDTaskListItem(
     isChecked: Boolean,
     appendContent: AnnotatedString.Builder.() -> Unit
 ) {
+
+    val renderer = LocalPreviewRenderer.current
+
     Row {
         Checkbox(
             checked = isChecked,
             onCheckedChange = {},
             enabled = false
         )
-        MarkdownText(
+        renderer.PreviewText(
             text = buildAnnotatedString {
                 append("\t")
                 appendContent()
@@ -109,10 +133,12 @@ private fun MDOrderedListItem(
     delimiter: Char,
     appendContent: AnnotatedString.Builder.() -> Unit
 ) {
+    val renderer = LocalPreviewRenderer.current
+
     val text = buildAnnotatedString {
         append("$number$delimiter ")
         appendContent()
     }
 
-    MarkdownText(text = text, style = MaterialTheme.typography.body1)
+    renderer.PreviewText(text = text, style = MaterialTheme.typography.body1)
 }

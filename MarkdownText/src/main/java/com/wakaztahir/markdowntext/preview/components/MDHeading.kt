@@ -9,21 +9,16 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.unit.dp
-import com.wakaztahir.markdowntext.common.LocalMarker
-import com.wakaztahir.markdowntext.preview.MDBlockChildren
-import com.wakaztahir.markdowntext.preview.MarkdownText
-import com.wakaztahir.markdowntext.preview.annotation.appendMarkdownContent
-import org.commonmark.node.Document
-import org.commonmark.node.Heading
+import com.wakaztahir.markdowntext.preview.model.LocalPreviewRenderer
 
 @Composable
 internal fun MDHeading(
-    isParentDocument : Boolean,
-    level : Int,
-    appendContent : AnnotatedString.Builder.()->Unit,
+    isParentDocument: Boolean,
+    level: Int,
+    appendContent: AnnotatedString.Builder.() -> Unit,
 ) {
 
-    val marker = LocalMarker.current
+    val renderer = LocalPreviewRenderer.current
 
     val style = when (level) {
         1 -> MaterialTheme.typography.h1
@@ -46,7 +41,7 @@ internal fun MDHeading(
             }
         }
 
-        MarkdownText(
+        renderer.PreviewText(
             text = text,
             style = style
         )
