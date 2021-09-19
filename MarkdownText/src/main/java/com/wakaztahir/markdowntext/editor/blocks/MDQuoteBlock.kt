@@ -1,9 +1,10 @@
 package com.wakaztahir.markdowntext.editor.blocks
 
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Modifier
 import com.wakaztahir.markdowntext.editor.model.QuoteBlock
 
 @Composable
-fun QuoteBlock.EditableQuote(){
+internal fun QuoteBlock.EditableQuote(modifier : Modifier){
 
 }

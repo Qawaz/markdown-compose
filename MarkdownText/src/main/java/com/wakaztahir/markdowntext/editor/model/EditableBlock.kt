@@ -1,19 +1,28 @@
 package com.wakaztahir.markdowntext.editor.model
 
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateListOf
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.setValue
+import androidx.compose.runtime.*
+import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.input.TextFieldValue
+import com.wakaztahir.markdowntext.editor.blocks.*
+import com.wakaztahir.markdowntext.editor.blocks.EditableImage
+import com.wakaztahir.markdowntext.editor.blocks.EditableTextBlock
+import com.wakaztahir.markdowntext.editor.blocks.MDHeadingBlock
+import com.wakaztahir.markdowntext.editor.blocks.MDParagraphBlock
 
-abstract class EditableBlock
+abstract class EditableBlock {
+    @Composable
+    abstract fun RenderBlock(modifier: Modifier)
+}
 
 /**
  * [text] contains styling for text in [AnnotatedString]
  */
 open class TextBlock(annotatedString: AnnotatedString = AnnotatedString("")) : EditableBlock() {
     var textValue = TextFieldValue(annotatedString = annotatedString)
+
+    @Composable
+    override fun RenderBlock(modifier: Modifier) = this.EditableTextBlock(modifier = modifier)
 }
 
 /**
@@ -23,18 +32,29 @@ open class TextBlock(annotatedString: AnnotatedString = AnnotatedString("")) : E
 class HeadingBlock(text: AnnotatedString = AnnotatedString(""), level: Int = 0) :
     TextBlock(text) {
     var level by mutableStateOf(level)
+
+    @Composable
+    override fun RenderBlock(modifier: Modifier) = this.MDHeadingBlock(modifier = modifier)
 }
 
 /**
  * [text] contains styling for child nodes only
  */
-class ParagraphBlock(text: AnnotatedString = AnnotatedString("")) :
-    TextBlock(text)
+class ParagraphBlock(text: AnnotatedString = AnnotatedString("")) : TextBlock(text){
+    @Composable
+    override fun RenderBlock(modifier : Modifier) = this.MDParagraphBlock(modifier = modifier)
+}
 
-class ImageBlock : EditableBlock()
+class ImageBlock : EditableBlock() {
+    @Composable
+    override fun RenderBlock(modifier: Modifier) = this.EditableImage(modifier = modifier)
+}
 
 class ListBlock : EditableBlock() {
     var items = mutableStateListOf<ListItem>()
+
+    @Composable
+    override fun RenderBlock(modifier: Modifier) = this.EditableList(modifier = modifier)
 }
 
 abstract class ListItem(indentationLevel: Int, annotatedString: AnnotatedString) {
@@ -69,6 +89,12 @@ class OrderedListItem(
     var delimiter by mutableStateOf(delimiter)
 }
 
-class CodeBlock : EditableBlock()
+class CodeBlock : EditableBlock() {
+    @Composable
+    override fun RenderBlock(modifier: Modifier) = this.EditableCode(modifier = modifier)
+}
 
-class QuoteBlock : EditableBlock()
+class QuoteBlock : EditableBlock() {
+    @Composable
+    override fun RenderBlock(modifier: Modifier) = this.EditableQuote(modifier = modifier)
+}

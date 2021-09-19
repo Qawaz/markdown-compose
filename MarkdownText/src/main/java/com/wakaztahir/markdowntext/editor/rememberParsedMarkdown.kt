@@ -32,15 +32,9 @@ class ParsedMarkdown(val marker: Marker) {
 @Composable
 fun rememberParsedMarkdown(
     markdown: String,
+    parsed: ParsedMarkdown = ParsedMarkdown(LocalMarker.current),
     colors: Colors = MaterialTheme.colors,
     typography: Typography = MaterialTheme.typography,
-    marker: Marker = LocalMarker.current,
-    parsed: ParsedMarkdown = ParsedMarkdown(
-        marker = marker.apply {
-            this.colors = colors
-            this.typography = typography
-        }
-    ),
     separateHeadingParagraph: Boolean = false,
     bulletListInsideTextBlock: Boolean = false,
     orderedListInsideTextBlock: Boolean = true,
@@ -49,6 +43,12 @@ fun rememberParsedMarkdown(
     val parser = LocalCommonMarkParser.current
 
     return parsed.apply {
+
+        this.marker.apply {
+            this.colors = colors
+            this.typography = typography
+        }
+
         val document = parser.parse(markdown)
 
         // Extracting blocks

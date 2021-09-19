@@ -27,8 +27,8 @@ val LocalMarker = compositionLocalOf { Marker() }
  * of individual components
  */
 open class Marker constructor(
-    internal var colors: Colors = lightColors(),
-    internal var typography: Typography = Typography(),
+    var colors: Colors = lightColors(),
+    var typography: Typography = Typography(),
 
     // Inline Text Content
     var blocks: MutableMap<String, InlineBlock> = mutableMapOf(),

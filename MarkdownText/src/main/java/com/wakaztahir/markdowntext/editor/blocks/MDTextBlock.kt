@@ -3,29 +3,26 @@ package com.wakaztahir.markdowntext.editor.blocks
 import androidx.compose.material.LocalTextStyle
 import androidx.compose.material.MaterialTheme
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Modifier
 import com.wakaztahir.markdowntext.editor.EditableMarkdown
 import com.wakaztahir.markdowntext.editor.model.HeadingBlock
 import com.wakaztahir.markdowntext.editor.model.ParagraphBlock
 import com.wakaztahir.markdowntext.editor.model.TextBlock
 
 @Composable
-fun TextBlock.EditableTextBlock() {
-    when (val block = this) {
-        is HeadingBlock -> MDHeadingBlock(block = block)
-        is ParagraphBlock -> MDParagraphBlock(block)
-        else -> {
-            EditableMarkdown(
-                block.textValue,
-                onUpdate = {
-                    block.textValue = it
-                }
-            )
+internal fun TextBlock.EditableTextBlock(modifier: Modifier) {
+    val block = this
+    EditableMarkdown(
+        block.textValue,
+        onUpdate = {
+            block.textValue = it
         }
-    }
+    )
 }
 
 @Composable
-private fun MDHeadingBlock(block: HeadingBlock) {
+internal fun HeadingBlock.MDHeadingBlock(modifier: Modifier) {
+    val block = this
     EditableMarkdown(
         block.textValue,
         onUpdate = {
@@ -44,7 +41,8 @@ private fun MDHeadingBlock(block: HeadingBlock) {
 }
 
 @Composable
-private fun MDParagraphBlock(block: ParagraphBlock) {
+internal fun ParagraphBlock.MDParagraphBlock(modifier: Modifier) {
+    val block = this
     EditableMarkdown(
         block.textValue,
         onUpdate = {

@@ -6,8 +6,6 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.ui.Modifier
-import com.wakaztahir.markdowntext.editor.blocks.*
-import com.wakaztahir.markdowntext.editor.model.*
 import com.wakaztahir.markdowntext.preview.model.LocalMarker
 
 @Composable
@@ -19,7 +17,7 @@ fun MarkdownEditor(
         CompositionLocalProvider(LocalMarker provides parsed.marker) {
             Column(modifier = modifier) {
                 parsed.items.forEach { block ->
-                    MDEditableBlock(block = block)
+                    block.RenderBlock(modifier = Modifier)
                 }
             }
         }
@@ -34,18 +32,7 @@ fun MarkdownEditor(
  */
 fun LazyListScope.markdownEditor(parsed: ParsedMarkdown) {
     items(parsed.items) { block ->
-        MDEditableBlock(block = block)
-    }
-}
-
-@Composable
-private fun MDEditableBlock(block: EditableBlock) {
-    when (block) {
-        is TextBlock -> block.EditableTextBlock()
-        is CodeBlock -> block.EditableCode()
-        is QuoteBlock -> block.EditableQuote()
-        is ListBlock -> block.EditableList()
-        is ImageBlock -> block.EditableImage()
+        block.RenderBlock(modifier = Modifier)
     }
 }
 

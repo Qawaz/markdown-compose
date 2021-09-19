@@ -6,6 +6,7 @@ import androidx.compose.material.Checkbox
 import androidx.compose.material.Icon
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Modifier
 import com.wakaztahir.markdowntext.editor.EditableMarkdown
 import com.wakaztahir.markdowntext.editor.model.BulletListItem
 import com.wakaztahir.markdowntext.editor.model.ListBlock
@@ -13,7 +14,7 @@ import com.wakaztahir.markdowntext.editor.model.OrderedListItem
 import com.wakaztahir.markdowntext.editor.model.TaskListItem
 
 @Composable
-fun ListBlock.EditableList() {
+internal fun ListBlock.EditableList(modifier: Modifier) {
     val list = this
     // todo make items draggable
     Column {
@@ -29,7 +30,7 @@ fun ListBlock.EditableList() {
 }
 
 @Composable
-fun BulletListItem.EditableListItem() {
+internal fun BulletListItem.EditableListItem() {
     val item = this
     Row {
         Text(text = "-> ")
@@ -43,12 +44,12 @@ fun BulletListItem.EditableListItem() {
 }
 
 @Composable
-fun OrderedListItem.EditableListItem() {
+internal fun OrderedListItem.EditableListItem() {
 
 }
 
 @Composable
-fun TaskListItem.EditableListItem() {
+internal fun TaskListItem.EditableListItem() {
     val item = this
     Row {
         Checkbox(
