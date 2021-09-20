@@ -4,12 +4,16 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.Checkbox
+import androidx.compose.material.Icon
 import androidx.compose.material.MaterialTheme
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.unit.dp
+import com.wakaztahir.markdowntext.R
 import com.wakaztahir.markdowntext.preview.model.LocalPreviewRenderer
 
 interface PreviewListScope
@@ -96,12 +100,18 @@ private fun MDBulletListItem(
     val renderer = LocalPreviewRenderer.current
 
     val text = buildAnnotatedString {
-        append(bulletMarker)
+//        append(bulletMarker)
         append(' ')
         appendContent()
     }
 
-    renderer.PreviewText(text = text, style = MaterialTheme.typography.body1)
+    Row(verticalAlignment = Alignment.CenterVertically) {
+        Icon(
+            painter = painterResource(id = R.drawable.circle_small),
+            contentDescription = null
+        )
+        renderer.PreviewText(text = text, style = MaterialTheme.typography.body1)
+    }
 }
 
 @Composable

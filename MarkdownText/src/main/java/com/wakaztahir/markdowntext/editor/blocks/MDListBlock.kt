@@ -6,7 +6,10 @@ import androidx.compose.material.Checkbox
 import androidx.compose.material.Icon
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.painterResource
+import com.wakaztahir.markdowntext.R
 import com.wakaztahir.markdowntext.editor.EditableMarkdown
 import com.wakaztahir.markdowntext.editor.model.BulletListItem
 import com.wakaztahir.markdowntext.editor.model.ListBlock
@@ -33,7 +36,10 @@ internal fun ListBlock.EditableList(modifier: Modifier) {
 internal fun BulletListItem.EditableListItem() {
     val item = this
     Row {
-        Text(text = "-> ")
+        Icon(
+            painter = painterResource(id = R.drawable.circle_small),
+            contentDescription =null
+        )
         EditableMarkdown(
             textValue = item.textValue,
             onUpdate = {
@@ -51,7 +57,7 @@ internal fun OrderedListItem.EditableListItem() {
 @Composable
 internal fun TaskListItem.EditableListItem() {
     val item = this
-    Row {
+    Row(verticalAlignment = Alignment.CenterVertically) {
         Checkbox(
             checked = item.isChecked,
             onCheckedChange = {

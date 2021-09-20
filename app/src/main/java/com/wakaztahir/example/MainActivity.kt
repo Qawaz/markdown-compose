@@ -25,6 +25,8 @@ import com.wakaztahir.codeeditor.highlight.theme.CodeThemeType
 import com.wakaztahir.codeeditor.highlight.utils.parseCodeAsAnnotatedString
 import com.wakaztahir.composejlatex.latexImageBitmap
 import com.wakaztahir.example.ui.theme.MarkdownTextFieldTheme
+import com.wakaztahir.markdowntext.editor.MarkdownEditor
+import com.wakaztahir.markdowntext.editor.rememberParsedMarkdown
 import com.wakaztahir.markdowntext.preview.MarkdownPreview
 import com.wakaztahir.markdowntext.preview.model.PreviewRenderer
 
@@ -35,98 +37,154 @@ class MainActivity : ComponentActivity() {
         setContent {
             MarkdownTextFieldTheme {
 
-                var markdown by remember {
-                    mutableStateOf(
-                        TextFieldValue(annotatedString = AnnotatedString(""))
-                    )
-                }
-
-                val codeParser = PrettifyParser()
-                val codeTheme =
-                    if (MaterialTheme.colors.isLight) CodeThemeType.Default.theme() else CodeThemeType.Monokai.theme()
 
                 Column(modifier = Modifier.verticalScroll(rememberScrollState())) {
 
-                    TextField(
-                        modifier = Modifier
-                            .height(200.dp)
-                            .fillMaxWidth(),
-                        value = markdown,
-                        onValueChange = {
-                            markdown = it.copy(
-                                annotatedString = parseCodeAsAnnotatedString(
-                                    codeParser,
-                                    codeTheme,
-                                    CodeLang.Markdown,
-                                    it.text
-                                )
-                            )
-                        }
-                    )
-
-                    MarkdownPreview(
-                        markdown = markdown.text,
-                        renderer = object : PreviewRenderer() {
-                            @Composable
-                            override fun PreviewFencedCodeBlock(
-                                isParentDocument: Boolean,
-                                info: String,
-                                literal: String,
-                                fenceChar: Char,
-                                fenceIndent: Int,
-                                fenceLength: Int
-                            ) {
-                                if(info!="latex") {
-                                    val code = buildAnnotatedString {
-                                        append(
-                                            parseCodeAsAnnotatedString(
-                                                codeParser,
-                                                codeTheme,
-                                                info,
-                                                literal
-                                            )
-                                        )
-                                    }
-
-                                    Text(
-                                        text = code,
-                                    )
-                                }else{
-                                    kotlin.runCatching {
-                                        latexImageBitmap(
-                                            latex = literal,
-                                            color = MaterialTheme.colors.onBackground
-                                        )
-                                    }.getOrNull()?.let {
-                                        Image(bitmap = it, contentDescription = null)
-                                    }
-                                }
-                            }
-
-                            @Composable
-                            override fun PreviewIndentedCodeBlock(
-                                isParentDocument: Boolean,
-                                literal: String
-                            ) {
-                                val code = buildAnnotatedString {
-                                    append(
-                                        parseCodeAsAnnotatedString(
-                                            codeParser,
-                                            codeTheme,
-                                            "js",
-                                            literal
-                                        )
-                                    )
-                                }
-
-                                Text(
-                                    text = code,
-                                )
-                            }
-                        }
-                    )
+                    CustomEditorWithTextField()
                 }
             }
         }
+    }
+}
+
+/**
+ * Renders a text field and compose editor vertically in a column
+ * with latex and syntax highlighting support
+ */
+@Composable
+fun CustomEditorWithTextField(){
+
+    var markdown by remember {
+        mutableStateOf(
+            TextFieldValue(annotatedString = AnnotatedString(""))
+        )
+    }
+
+    val parsed = rememberParsedMarkdown(markdown = markdown.text)
+
+    val codeParser = remember { PrettifyParser() }
+    val codeTheme =
+        if (MaterialTheme.colors.isLight) CodeThemeType.Default.theme() else CodeThemeType.Monokai.theme()
+
+    Column {
+        TextField(
+            modifier = Modifier
+                .height(200.dp)
+                .fillMaxWidth(),
+            value = markdown,
+            onValueChange = {
+                markdown = it.copy(
+                    annotatedString = parseCodeAsAnnotatedString(
+                        codeParser,
+                        codeTheme,
+                        CodeLang.Markdown,
+                        it.text
+                    )
+                )
+            }
+        )
+
+        MarkdownEditor(
+            parsed = parsed
+        )
+    }
+}
+
+/**
+ * Renders a text field and compose preview vertically in a column
+ * with latex and syntax highlighting support
+ */
+@Composable
+fun CustomPreviewWithTextField(){
+
+    var markdown by remember {
+        mutableStateOf(
+            TextFieldValue(annotatedString = AnnotatedString(""))
+        )
+    }
+
+    val codeParser = remember { PrettifyParser() }
+    val codeTheme =
+        if (MaterialTheme.colors.isLight) CodeThemeType.Default.theme() else CodeThemeType.Monokai.theme()
+
+    Column {
+        TextField(
+            modifier = Modifier
+                .height(200.dp)
+                .fillMaxWidth(),
+            value = markdown,
+            onValueChange = {
+                markdown = it.copy(
+                    annotatedString = parseCodeAsAnnotatedString(
+                        codeParser,
+                        codeTheme,
+                        CodeLang.Markdown,
+                        it.text
+                    )
+                )
+            }
+        )
+
+        MarkdownPreview(
+            markdown = markdown.text,
+            renderer = object : PreviewRenderer() {
+                @Composable
+                override fun PreviewFencedCodeBlock(
+                    isParentDocument: Boolean,
+                    info: String,
+                    literal: String,
+                    fenceChar: Char,
+                    fenceIndent: Int,
+                    fenceLength: Int
+                ) {
+                    if(info!="latex") {
+                        val code = buildAnnotatedString {
+                            append(
+                                parseCodeAsAnnotatedString(
+                                    codeParser,
+                                    codeTheme,
+                                    info,
+                                    literal
+                                )
+                            )
+                        }
+
+                        Text(
+                            text = code,
+                        )
+                    }else{
+                        kotlin.runCatching {
+                            latexImageBitmap(
+                                latex = literal,
+                                color = MaterialTheme.colors.onBackground
+                            )
+                        }.getOrNull()?.let {
+                            Image(bitmap = it, contentDescription = null)
+                        }
+                    }
+                }
+
+                @Composable
+                override fun PreviewIndentedCodeBlock(
+                    isParentDocument: Boolean,
+                    literal: String
+                ) {
+                    val code = buildAnnotatedString {
+                        append(
+                            parseCodeAsAnnotatedString(
+                                codeParser,
+                                codeTheme,
+                                "js",
+                                literal
+                            )
+                        )
+                    }
+
+                    Text(
+                        text = code,
+                    )
+                }
+            }
+        )
     }
 }
