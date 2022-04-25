@@ -70,7 +70,7 @@ fun EditorState.setText(text: String) {
     importText(text = text)
 }
 
-fun EditorState.importText(text: String) = blocks.add(TextBlock().apply { importText(text = text) })
+fun EditorState.importText(text: String) = blocks.add(TextBlock(text = text))
 
 fun EditorState.exportToText(): String {
     return blocks.joinToString("\n") { it.exportText(this@exportToText) }

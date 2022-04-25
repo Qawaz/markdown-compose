@@ -27,7 +27,7 @@ import org.burnoutcrew.reorderable.*
 
 val LocalEditor = compositionLocalOf { EditorState() }
 
-abstract class LazyEditorScope(val listState: LazyListState) {
+abstract class LazyEditorScope {
     abstract val state : EditorState
     internal abstract val reorderState: ReorderableState
     abstract fun Modifier.lazyEditor(): Modifier
@@ -41,7 +41,7 @@ fun ProvideLazyEditor(
 ) {
     val reorderState = rememberReorderState(listState = listState)
     CompositionLocalProvider(LocalEditor provides state) {
-        content(object : LazyEditorScope(listState) {
+        content(object : LazyEditorScope() {
 
             override val state: EditorState
                 get() = state

@@ -43,11 +43,11 @@ fun EditorTools(
             ToolsState.Creator -> {
                 CreatorTools(
                     onTextClick = {
-                        editorState.addBlock(block = TextBlock())
+                        editorState.addBlock(block = TextBlock(requestFocus = true))
                         state.value = ToolsState.Hidden
                     },
                     onListClick = {
-                        editorState.addBlock(block = ListItemBlock(true))
+                        editorState.addBlock(block = ListItemBlock(requestFocus = true))
                         state.value = ToolsState.Hidden
                     },
                     onMathClick = {

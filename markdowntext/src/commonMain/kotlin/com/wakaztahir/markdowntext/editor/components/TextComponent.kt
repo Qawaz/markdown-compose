@@ -7,6 +7,7 @@ import androidx.compose.material.Text
 import androidx.compose.material.TextFieldDefaults
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.input.TextFieldValue
 import com.wakaztahir.markdowntext.editor.model.blocks.TextBlock
@@ -44,7 +45,7 @@ fun TextBlock.TextComponent(modifier: Modifier) {
     }
 
     OutlinedTextField(
-        modifier = modifier,
+        modifier = modifier.focusRequester(focusRequester),
         value = textFieldValue,
         onValueChange = {
             textFieldValue = it.copy() // annotated string styles aren't being updated
@@ -74,4 +75,15 @@ fun TextBlock.TextComponent(modifier: Modifier) {
         ),
         textStyle = MaterialTheme.typography.body1
     )
+
+    LaunchedEffect(key1 = null, block = {
+        if (requestFocus) {
+            try {
+                focusRequester.requestFocus()
+                requestFocus = false
+            } catch (_: Exception) {
+                // Requests focus on launch
+            }
+        }
+    })
 }
