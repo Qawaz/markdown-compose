@@ -164,7 +164,7 @@ private fun ASTNode.unorderedList(
     level: Int = 0,
 ) {
     listItems(state = state, content = content, typography, colors, level = level) {
-        val blockItem = ListItemBlock()
+        val blockItem = ListItemBlock(false)
         val bullet = findChildOfType(MarkdownTokenTypes.LIST_BULLET)?.getTextInNode(content)
         if (bullet != null) {
             if (bullet.trim() == "*") {

@@ -14,11 +14,14 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Close
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
+import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.focus.onFocusChanged
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.input.key.Key
+import androidx.compose.ui.input.key.key
+import androidx.compose.ui.input.key.onKeyEvent
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.input.ImeAction
@@ -37,7 +40,7 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import org.burnoutcrew.reorderable.detectReorder
 
-@OptIn(ExperimentalFoundationApi::class)
+@OptIn(ExperimentalFoundationApi::class, ExperimentalComposeUiApi::class)
 @Composable
 fun ListItemBlock.ListItemComponent(
     modifier: Modifier = Modifier,
@@ -47,7 +50,6 @@ fun ListItemBlock.ListItemComponent(
 
     val state = LocalEditor.current
     val scope = rememberCoroutineScope()
-    val focusRequester = remember { FocusRequester() }
     var draggedPadding by remember(isIndented) {
         mutableStateOf(
             if (isIndented) {
@@ -113,6 +115,23 @@ fun ListItemBlock.ListItemComponent(
         )
         OutlinedTextField(
             modifier = Modifier.weight(1f)
+                .onKeyEvent {
+                    if (it.key == Key.Backspace && textFieldValue.text == "") {
+                        val blockIndex = state.blocks.indexOf(this@ListItemComponent)
+                        if (blockIndex - 1 >= 0) {
+                            try {
+                                val prevBlock = state.blocks[blockIndex - 1]
+                                if (prevBlock is ListItemBlock) {
+                                    prevBlock.focusRequester.requestFocus()
+                                }
+                            } catch (_: Exception) {
+                                //do nothing here
+                            }
+                        }
+                        state.blocks.remove(this@ListItemComponent)
+                        true
+                    } else false
+                }
                 .focusRequester(focusRequester = focusRequester)
                 .onFocusChanged {
                     showClose = it.hasFocus
@@ -152,8 +171,7 @@ fun ListItemBlock.ListItemComponent(
                 // Adding Text After Selection To New Item
                 state.blocks.add(
                     index = index + 1,
-                    ListItemBlock().apply {
-                        requestFocus = true
+                    ListItemBlock(requestFocus = true).apply {
                         text = if (textFieldValue.selection.collapsed) {
                             if (textFieldValue.selection.end < textFieldValue.text.length) {
                                 textFieldValue.text.substring(
@@ -197,12 +215,14 @@ fun ListItemBlock.ListItemComponent(
         }
     }
 
-    LaunchedEffect(key1 = requestFocus, block = {
+    LaunchedEffect(key1 = null, block = {
         if (requestFocus) {
-            kotlin.runCatching {
+            try {
                 focusRequester.requestFocus()
+                requestFocus = false
+            } catch (_: Exception) {
+                // Requests focus on launch
             }
-            requestFocus = false
         }
     })
 }

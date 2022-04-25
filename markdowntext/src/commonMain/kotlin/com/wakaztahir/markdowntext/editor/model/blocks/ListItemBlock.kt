@@ -3,13 +3,14 @@ package com.wakaztahir.markdowntext.editor.model.blocks
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.text.input.TextFieldValue
 import com.wakaztahir.markdowntext.editor.model.EditorBlock
 import com.wakaztahir.markdowntext.editor.states.EditorState
 import com.wakaztahir.markdowntext.editor.utils.toHtml
 import com.wakaztahir.markdowntext.editor.utils.toMarkdown
 
-class ListItemBlock : EditorBlock() {
+class ListItemBlock(internal var requestFocus : Boolean = false) : EditorBlock() {
 
     var textFieldValue by mutableStateOf(TextFieldValue())
     var text: String
@@ -19,8 +20,7 @@ class ListItemBlock : EditorBlock() {
         }
     var isChecked by mutableStateOf(false)
     var isIndented by mutableStateOf(false)
-
-    var requestFocus by mutableStateOf(false)
+    val focusRequester = FocusRequester()
 
     override fun exportText(state: EditorState): String {
         return text

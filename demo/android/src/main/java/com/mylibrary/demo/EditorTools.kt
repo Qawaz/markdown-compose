@@ -47,7 +47,7 @@ fun EditorTools(
                         state.value = ToolsState.Hidden
                     },
                     onListClick = {
-                        editorState.addBlock(block = ListItemBlock())
+                        editorState.addBlock(block = ListItemBlock(true))
                         state.value = ToolsState.Hidden
                     },
                     onMathClick = {
