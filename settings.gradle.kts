@@ -21,5 +21,5 @@ rootProject.name = "ComposeMarkdown"
 
 include(":demo:desktop")
 include(":demo:android")
-include(":markdowntext")
+include(":markpose")
 

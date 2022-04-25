@@ -11,7 +11,7 @@ kotlin {
         named("desktopMain") {
             dependencies {
                 implementation(compose.desktop.currentOs)
-                implementation(project(":markdowntext"))
+                implementation(project(":markpose"))
             }
         }
     }

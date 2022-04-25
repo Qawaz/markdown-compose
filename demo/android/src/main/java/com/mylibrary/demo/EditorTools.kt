@@ -13,12 +13,12 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.wakaztahir.markdowntext.editor.components.LocalEditor
-import com.wakaztahir.markdowntext.editor.model.blocks.CodeBlock
-import com.wakaztahir.markdowntext.editor.model.blocks.ListItemBlock
-import com.wakaztahir.markdowntext.editor.model.blocks.MathBlock
-import com.wakaztahir.markdowntext.editor.model.blocks.TextBlock
-import com.wakaztahir.markdowntext.editor.utils.*
+import com.wakaztahir.markpose.editor.components.LocalEditor
+import com.wakaztahir.markpose.editor.model.blocks.CodeBlock
+import com.wakaztahir.markpose.editor.model.blocks.ListItemBlock
+import com.wakaztahir.markpose.editor.model.blocks.MathBlock
+import com.wakaztahir.markpose.editor.model.blocks.TextBlock
+import com.wakaztahir.markpose.editor.utils.*
 
 enum class ToolsState {
     Hidden,

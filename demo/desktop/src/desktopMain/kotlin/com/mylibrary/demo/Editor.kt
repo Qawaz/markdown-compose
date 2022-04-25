@@ -14,13 +14,12 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import com.wakaztahir.markdowntext.editor.components.BlockComponent
-import com.wakaztahir.markdowntext.editor.components.ProvideLazyEditor
-import com.wakaztahir.markdowntext.editor.components.linkPreviews
-import com.wakaztahir.markdowntext.editor.components.refreshLinkPreviews
-import com.wakaztahir.markdowntext.editor.states.EditorState
+import com.wakaztahir.markpose.editor.components.BlockComponent
+import com.wakaztahir.markpose.editor.components.ProvideLazyEditor
+import com.wakaztahir.markpose.editor.components.linkPreviews
+import com.wakaztahir.markpose.editor.components.refreshLinkPreviews
+import com.wakaztahir.markpose.editor.states.EditorState
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
 @Composable
