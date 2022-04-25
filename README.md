@@ -1,7 +1,7 @@
 
 # Compose Markdown
 
-Compose Markdown is a jetpack compose extensible markdown rendering and editing library which uses CommonMark (java , markdown parsing library) to render composables
+Compose Markdown is a jetpack compose extensible markdown rendering library which uses CommonMark (java , markdown parsing library) to render composables
   
 ## Usage
   
