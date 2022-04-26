@@ -16,22 +16,20 @@ inline fun <T> List<T>.fastForEach(action: (T) -> Unit) {
     contract { callsInPlace(action) }
     val size = size
     if (size < 1) return
-    var i = -1
-    if(this is RandomAccess){
-        while(true){
-            if (++i < size)
-                action(this[i])
-            else break
+    if (this is RandomAccess) {
+        var i = 0
+        while (i < size) {
+            action(this[i])
+            i++
         }
-    }else {
-        while (true) {
-            val iterator = iterator()
-            if (iterator.hasNext())
-                action(iterator.next())
-            else break
+    } else {
+        val iterator = iterator()
+        while (iterator.hasNext()) {
+            action(iterator.next())
         }
     }
 }
+
 /**
  * Iterates through a [List] using the index and calls [action] for each item.
  * This does not allocate an iterator like [Iterable.forEachIndexed].
@@ -48,6 +46,7 @@ inline fun <T> List<T>.fastForEachIndexed(action: (Int, T) -> Unit) {
         action(index, item)
     }
 }
+
 /**
  * Returns `true` if all elements match the given [predicate].
  *
@@ -61,6 +60,7 @@ inline fun <T> List<T>.fastAll(predicate: (T) -> Boolean): Boolean {
     fastForEach { if (!predicate(it)) return false }
     return true
 }
+
 /**
  * Returns `true` if at least one element matches the given [predicate].
  *
@@ -74,6 +74,7 @@ inline fun <T> List<T>.fastAny(predicate: (T) -> Boolean): Boolean {
     fastForEach { if (predicate(it)) return true }
     return false
 }
+
 /**
  * Returns the first value that [predicate] returns `true` for or `null` if nothing matches.
  *
@@ -87,6 +88,7 @@ inline fun <T> List<T>.fastFirstOrNull(predicate: (T) -> Boolean): T? {
     fastForEach { if (predicate(it)) return it }
     return null
 }
+
 /**
  * Returns the sum of all values produced by [selector] function applied to each element in the
  * list.
