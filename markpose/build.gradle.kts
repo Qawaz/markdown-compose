@@ -12,11 +12,11 @@ group = "com.wakaztahir"
 version = property("version") as String
 
 android {
-    compileSdk = 31
+    compileSdk = 32
     sourceSets["main"].manifest.srcFile("src/androidMain/AndroidManifest.xml")
     defaultConfig {
         minSdk = 21
-        targetSdk = 31
+        targetSdk = 32
     }
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_1_8
@@ -94,7 +94,7 @@ afterEvaluate {
         repositories {
             maven {
                 name = "GithubPackages"
-                url = uri("https://maven.pkg.github.com/codeckle/compose-markdown")
+                url = uri("https://maven.pkg.github.com/Qawaz/compose-markdown")
                 try {
                     credentials {
                         username = (githubProperties["gpr.usr"] ?: System.getenv("GPR_USER")).toString()
