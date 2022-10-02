@@ -43,7 +43,7 @@ kotlin {
                 api(compose.material)
 
                 // Code Editor
-                implementation("com.wakaztahir:codeeditor:3.0.0")
+                implementation("com.wakaztahir:codeeditor:3.0.5")
 
                 // Markdown Processing
                 implementation("org.jetbrains:markdown:0.3.1")
@@ -52,7 +52,7 @@ kotlin {
                 implementation("org.burnoutcrew.composereorderable:reorderable:0.7.4")
 
                 // Link Previews Library
-                implementation("com.wakaztahir:linkpreview:1.0.1")
+                implementation("com.wakaztahir:linkpreview:1.0.4")
             }
         }
         val commonTest by getting {
