@@ -25,12 +25,11 @@ import com.wakaztahir.markpose.utils.MyIcons
 import com.wakaztahir.markpose.utils.getTimeMillis
 import kotlinx.coroutines.launch
 
-@OptIn(ExperimentalComposeUiApi::class, ExperimentalFoundationApi::class)
 @Composable
 fun MathBlock.MathComponent(
     modifier: Modifier = Modifier,
     parser: PrettifyParser = LocalPrettifyParser.current,
-    theme: CodeTheme = if (MaterialTheme.colors.isLight) CodeThemeType.Default.theme() else CodeThemeType.Monokai.theme(),
+    theme: CodeTheme = if (MaterialTheme.colors.isLight) CodeThemeType.Default.theme else CodeThemeType.Monokai.theme,
 ) {
     val state = LocalEditor.current
     val block = this

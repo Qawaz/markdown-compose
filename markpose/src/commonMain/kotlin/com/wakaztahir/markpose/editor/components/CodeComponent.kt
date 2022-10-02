@@ -19,12 +19,11 @@ import kotlinx.coroutines.launch
 
 val LocalPrettifyParser = compositionLocalOf { PrettifyParser() }
 
-@OptIn(ExperimentalComposeUiApi::class, ExperimentalFoundationApi::class)
 @Composable
 fun CodeBlock.CodeComponent(
     modifier: Modifier = Modifier,
     parser: PrettifyParser = LocalPrettifyParser.current,
-    theme: CodeTheme = if (MaterialTheme.colors.isLight) CodeThemeType.Default.theme() else CodeThemeType.Monokai.theme(),
+    theme: CodeTheme = if (MaterialTheme.colors.isLight) CodeThemeType.Default.theme else CodeThemeType.Monokai.theme,
 ) {
 
     val state = LocalEditor.current

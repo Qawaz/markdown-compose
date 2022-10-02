@@ -47,7 +47,7 @@ fun Code(
             val annotatedString = remember(code, lang, parser) {
                 parseCodeAsAnnotatedString(
                     parser,
-                    if (isLight) CodeThemeType.Default.theme() else CodeThemeType.Monokai.theme(),
+                    if (isLight) CodeThemeType.Default.theme else CodeThemeType.Monokai.theme,
                     lang ?: "js",
                     code
                 )
