@@ -1,10 +1,10 @@
 package com.wakaztahir.markdowncompose.editor.utils
 
 import androidx.compose.ui.text.input.TextFieldValue
-import com.wakaztahir.helpers.currentTimeMillis
 import com.wakaztahir.markdowncompose.editor.model.EditorBlock
 import com.wakaztahir.markdowncompose.editor.model.UndoRedoAction
 import com.wakaztahir.markdowncompose.editor.states.EditorState
+import com.wakaztahir.markdowncompose.utils.currentTimeMillis
 
 fun EditorState.addUndoAction(action: UndoRedoAction) {
     undoList.add(action)

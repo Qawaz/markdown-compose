@@ -5,11 +5,10 @@ plugins {
 }
 
 android {
-    compileSdk = 32
-
+    compileSdk = 33
     defaultConfig {
         minSdk = 21
-        targetSdk = 32
+        targetSdk = 33
     }
 
     compileOptions {
@@ -19,6 +18,6 @@ android {
 }
 
 dependencies {
-    implementation(project(":markpose"))
-    implementation("androidx.activity:activity-compose:1.4.0")
+    implementation(project(":demo:common"))
+    implementation("androidx.activity:activity-compose:1.6.1")
 }

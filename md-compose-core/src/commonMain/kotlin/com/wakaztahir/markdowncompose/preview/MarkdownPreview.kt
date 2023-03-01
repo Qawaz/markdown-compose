@@ -64,7 +64,7 @@ fun MarkdownPreview(
 private fun ASTNode.handleElement(
     configuration: MarkdownPreviewConfiguration,
     content: String,
-    color: Color = Color.Unspecified
+    color: Color
 ): Boolean {
     var handled = true
     when (type) {
@@ -117,24 +117,9 @@ private fun ASTNode.handleElement(
         )
 
         MarkdownElementTypes.BLOCK_QUOTE -> MarkdownBlockQuote(content, this, color = color)
-        MarkdownElementTypes.PARAGRAPH -> MarkdownParagraph(
-            content,
-            this,
-            color,
-        )
-
-        MarkdownElementTypes.ORDERED_LIST -> MDOrderedList(
-            content,
-            this,
-            color = color
-        )
-
-        MarkdownElementTypes.UNORDERED_LIST -> MDBulletList(
-            content,
-            this,
-            color = color,
-        )
-
+        MarkdownElementTypes.PARAGRAPH -> MarkdownParagraph(content, this, color)
+        MarkdownElementTypes.ORDERED_LIST -> MDOrderedList(configuration, content, this, color = color)
+        MarkdownElementTypes.UNORDERED_LIST -> MDBulletList(configuration, content, this, color = color)
         MarkdownElementTypes.IMAGE -> MDImage(content, this)
         MarkdownElementTypes.LINK_DEFINITION -> {
             val linkLabel =

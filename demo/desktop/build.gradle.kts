@@ -1,5 +1,3 @@
-import org.jetbrains.compose.compose
-
 plugins {
     kotlin("multiplatform")
     id("org.jetbrains.compose")
@@ -8,10 +6,10 @@ plugins {
 kotlin {
     jvm("desktop")
     sourceSets {
-        named("desktopMain") {
+        val desktopMain by getting {
             dependencies {
                 implementation(compose.desktop.currentOs)
-                implementation(project(":markpose"))
+                implementation(project(":demo:common"))
             }
         }
     }

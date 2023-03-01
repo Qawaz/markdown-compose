@@ -19,7 +19,6 @@ import androidx.compose.ui.platform.LocalUriHandler
 import androidx.compose.ui.text.*
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.wakaztahir.qawazlogger.logIt
 import com.wakaztahir.markdowncompose.preview.LocalMarkdownPreviewConfiguration
 import com.wakaztahir.markdowncompose.utils.TAG_IMAGE_URL
 import com.wakaztahir.markdowncompose.utils.TAG_URL
@@ -29,9 +28,8 @@ import com.wakaztahir.markdowncompose.utils.imagePainter
 internal fun MDText(
     text: AnnotatedString,
     modifier: Modifier = Modifier,
-    color: Color = Color.Unspecified,
+    color: Color,
     style: TextStyle = LocalTextStyle.current,
-
 ) {
     val uriHandler = LocalUriHandler.current
     val configuration = LocalMarkdownPreviewConfiguration.current
@@ -52,7 +50,7 @@ internal fun MDText(
                                     try {
                                         uriHandler.openUri(referenceLinkHandler.find(a.item))
                                     } catch (e: Exception) {
-                                        e.logIt()
+                                        e.printStackTrace()
                                     }
                                 }
                         }

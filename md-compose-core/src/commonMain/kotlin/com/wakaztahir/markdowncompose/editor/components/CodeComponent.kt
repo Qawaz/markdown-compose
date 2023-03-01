@@ -5,7 +5,6 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import com.wakaztahir.helpers.currentTimeMillis
 import com.wakaztahir.markdowncompose.editor.model.TextFieldValueBlock
 import com.wakaztahir.markdowncompose.editor.model.blocks.CodeBlock
 import com.wakaztahir.markdowncompose.editor.utils.textFieldUndoRedoAction

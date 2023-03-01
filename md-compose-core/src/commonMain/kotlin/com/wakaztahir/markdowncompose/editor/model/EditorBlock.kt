@@ -1,7 +1,7 @@
 package com.wakaztahir.markdowncompose.editor.model
 
 import com.wakaztahir.markdowncompose.editor.states.EditorState
-import com.wakaztahir.helpers.randomUUID
+import com.wakaztahir.markdowncompose.utils.randomUUID
 
 abstract class EditorBlock {
 

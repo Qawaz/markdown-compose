@@ -21,7 +21,7 @@ internal fun MarkdownBlockQuote(
     content: String,
     node: ASTNode,
     modifier: Modifier = Modifier,
-    color: Color = Color.Unspecified
+    color: Color
 ) {
     Box(modifier = modifier
         .drawBehind {

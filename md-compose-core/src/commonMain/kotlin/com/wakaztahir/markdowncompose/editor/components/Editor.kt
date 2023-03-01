@@ -16,7 +16,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.capitalize
 import androidx.compose.ui.text.intl.Locale
 import androidx.compose.ui.unit.dp
-import com.wakaztahir.qawazlogger.logIt
 import com.wakaztahir.markdowncompose.editor.model.EditorBlock
 import com.wakaztahir.markdowncompose.editor.model.blocks.CodeBlock
 import com.wakaztahir.markdowncompose.editor.model.blocks.ListItemBlock
@@ -48,11 +47,13 @@ fun EditorState.rememberReorderState(listState: LazyListState): ReorderableState
         onMove = { from, to ->
             val fromIndex = blocks.indexOfFirst { it.uuid == from.key }
             val toIndex = blocks.indexOfFirst { it.uuid == to.key }
-            runCatching { blocks.removeAt(fromIndex) }.onFailure {
-                it.logIt()
-            }.getOrNull()?.let {
-                blocks.add(minOf(maxOf(0, toIndex), blocks.size), it)
+            val block = try {
+                blocks.removeAt(fromIndex)
+            } catch(e : Exception){
+                e.printStackTrace()
+                null
             }
+            block?.let { blocks.add(minOf(maxOf(0, toIndex), blocks.size), it) }
         },
         listState = listState,
         canDragOver = { _, _ -> true }
@@ -75,10 +76,9 @@ fun rememberLazyEditorScope(
 
 @Composable
 fun ProvideLazyEditor(
-    state: EditorState,
     scope: LazyEditorScope,
-    content: @Composable LazyEditorScope.() -> Unit,
-) = CompositionLocalProvider(LocalEditor provides state) {
+    content: @Composable() (LazyEditorScope.() -> Unit),
+) = CompositionLocalProvider(LocalEditor provides scope.state) {
     content(scope)
 }
 

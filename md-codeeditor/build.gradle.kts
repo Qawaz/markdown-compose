@@ -40,15 +40,6 @@ kotlin {
 
                 // Code Editor
                 api("com.wakaztahir:codeeditor:3.1.1")
-//
-//                // Reorderable For List
-//                implementation("com.qawaz:reorderable:0.9.7")
-//
-//                // Link Previews Library
-//                implementation("com.wakaztahir:linkpreview:1.0.5")
-
-                // Compose Helpers
-//                api("com.wakaztahir:compose-helpers:${property("compose.helpers.version")}")
 
                 implementation(compose.runtime)
                 implementation(compose.foundation)
@@ -56,13 +47,7 @@ kotlin {
                 @OptIn(org.jetbrains.compose.ExperimentalComposeLibrary::class)
                 implementation(compose.material3)
 
-                // Kotlin Serialization
-//                implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:${property("serialization.version")}")
                 implementation("com.wakaztahir.compose-icons:materialdesignicons:1.0.1")
-//                implementation("com.qawaz.android.colorpicker:compose-color-picker:0.6.1")
-                implementation("com.wakaztahir:qawaz-logger:${property("qawaz.logger.version")}")
-//                implementation("dev.icerock.moko:resources:0.20.1")
-
 
             }
         }

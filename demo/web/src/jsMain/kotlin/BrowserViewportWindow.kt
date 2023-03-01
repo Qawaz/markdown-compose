@@ -58,7 +58,7 @@ fun BrowserViewportWindow(
         window.addEventListener("resize", {
             canvas.fillViewportSize()
             layer.layer.attachTo(canvas)
-            val scale = layer.layer.contentScale
+            val scale = 1f // layer.layer.contentScale
             layer.setSize((canvas.width / scale).toInt(), (canvas.height / scale).toInt())
             layer.layer.needRedraw()
         })

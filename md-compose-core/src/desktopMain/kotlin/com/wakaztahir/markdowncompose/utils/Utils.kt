@@ -5,7 +5,7 @@ import androidx.compose.ui.graphics.ImageBitmap
 import androidx.compose.ui.graphics.painter.BitmapPainter
 import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.graphics.toComposeImageBitmap
-import com.wakaztahir.qawazlogger.logIt
+import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import org.jetbrains.skia.Image
@@ -30,7 +30,7 @@ fun imagePainter(url: String, local: Boolean = false, circleCrop: Boolean = fals
                 Image.makeFromEncoded(File(url).inputStream().readBytes()).toComposeImageBitmap()
             )
         } catch (e: Exception) {
-            e.logIt()
+            e.printStackTrace()
             null
         }
     }
@@ -55,7 +55,10 @@ suspend fun loadPicture(url: String): ImageBitmap? = withContext(Dispatchers.IO)
         val input: InputStream = connection.inputStream
         Image.makeFromEncoded(input.readBytes()).toComposeImageBitmap()
     } catch (e: Exception) {
-        e.logIt()
+        e.printStackTrace()
         null
     }
 }
+
+internal actual fun currentTimeMillis(): Long = System.currentTimeMillis()
+internal actual val IODispatcher: CoroutineDispatcher get() = Dispatchers.IO

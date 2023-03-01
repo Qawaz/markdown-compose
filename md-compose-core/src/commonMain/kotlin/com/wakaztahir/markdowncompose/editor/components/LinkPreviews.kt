@@ -20,10 +20,10 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.wakaztahir.linkpreview.LinkPreview
 import com.wakaztahir.linkpreview.getLinkPreview
-import com.wakaztahir.helpers.IODispatcher
 import com.wakaztahir.markdowncompose.editor.model.blocks.ListItemBlock
 import com.wakaztahir.markdowncompose.editor.model.blocks.TextBlock
 import com.wakaztahir.markdowncompose.editor.states.EditorState
+import com.wakaztahir.markdowncompose.utils.IODispatcher
 import com.wakaztahir.markdowncompose.utils.TAG_URL
 import com.wakaztahir.markdowncompose.utils.imagePainter
 import kotlinx.coroutines.withContext

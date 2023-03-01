@@ -22,7 +22,7 @@ kotlin {
                 api(compose.foundation)
                 @OptIn(org.jetbrains.compose.ExperimentalComposeLibrary::class)
                 api(compose.material3)
-                implementation(project(":codeeditor"))
+                api(project(":md-compose-core"))
             }
         }
         val commonTest by getting {

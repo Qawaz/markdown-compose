@@ -11,6 +11,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.unit.dp
+import com.wakaztahir.markdowncompose.core.MarkdownPreviewConfiguration
 import com.wakaztahir.markdowncompose.core.annotation.buildMarkdownAnnotatedString
 import compose.icons.MaterialDesignIcons
 import compose.icons.materialdesignicons.CircleSmall
@@ -23,30 +24,42 @@ import org.intellij.markdown.flavours.gfm.GFMTokenTypes
 
 @Composable
 fun MarkdownListItems(
+    configuration: MarkdownPreviewConfiguration,
     content: String,
     node: ASTNode,
     modifier: Modifier = Modifier,
     level: Int = 0,
-    color: Color = Color.Unspecified,
+    color: Color,
     item: @Composable (child: ASTNode) -> Unit,
 ) {
-    Column(modifier = modifier.padding(start = (8.dp) * level)) {
-        for(child in node.children){
+    Column(modifier = modifier.padding(start = (16.dp) * level)) {
+        for (child in node.children) {
             when (child.type) {
                 MarkdownElementTypes.LIST_ITEM -> {
                     item(child)
                     if (child.children.isNotEmpty()) {
-                        MarkdownListItems(node = child, level = level, content = content, item = item)
+                        MarkdownListItems(
+                            configuration,
+                            node = child,
+                            level = level,
+                            content = content,
+                            color = color,
+                            item = item
+                        )
                     }
                 }
+
                 MarkdownElementTypes.ORDERED_LIST -> MDOrderedList(
+                    configuration,
                     content,
                     child,
                     modifier,
                     level + 1,
                     color
                 )
+
                 MarkdownElementTypes.UNORDERED_LIST -> MDBulletList(
+                    configuration,
                     content,
                     child,
                     modifier,
@@ -60,37 +73,17 @@ fun MarkdownListItems(
 
 @Composable
 fun MDBulletList(
+    configuration: MarkdownPreviewConfiguration,
     content: String,
     node: ASTNode,
     modifier: Modifier = Modifier,
     level: Int = 0,
-    color: Color = Color.Unspecified,
+    color: Color,
 ) {
-    MarkdownListItems(content, node, modifier, level, color) { child ->
+    MarkdownListItems(configuration, content, node, modifier, level, color) { child ->
         Row(Modifier.fillMaxWidth(), verticalAlignment = Alignment.CenterVertically) {
-            val bullet = child.findChildOfType(MarkdownTokenTypes.LIST_BULLET)?.getTextInNode(content)
-            if (bullet != null) {
-                if (bullet.trim() == "*") {
-                    Icon(
-                        modifier = Modifier.offset(x = (-8).dp),
-                        imageVector = MaterialDesignIcons.CircleSmall,
-                        contentDescription = null
-                    )
-                } else if (bullet.trim() == "-") {
-                    val checkbox = child.findChildOfType(GFMTokenTypes.CHECK_BOX)?.getTextInNode(content)?.trim()
-                    if (checkbox != null) {
-                        if (checkbox == "[ ]" || checkbox == "[]") {
-                            Checkbox(checked = false, onCheckedChange = null, enabled = false)
-                            Spacer(Modifier.width(8.dp))
-                        } else if (checkbox == "[x]") {
-                            Checkbox(checked = true, onCheckedChange = null, enabled = false)
-                            Spacer(Modifier.width(8.dp))
-                        }
-                    } else {
-                        Text("$bullet")
-                    }
-                }
-            }
+
+            // text inside the list item
             val text = buildAnnotatedString {
                 pushStyle(MaterialTheme.typography.bodyMedium.toSpanStyle())
                 buildMarkdownAnnotatedString(
@@ -100,9 +93,49 @@ fun MDBulletList(
                 )
                 pop()
             }
+
+            val bulletNode = child.findChildOfType(MarkdownTokenTypes.LIST_BULLET)
+            val bullet = bulletNode?.getTextInNode(content)?.trim()
+            if (bullet != null) {
+                if (bullet == "*") {
+                    Icon(
+                        modifier = Modifier.offset(x = (-8).dp),
+                        imageVector = MaterialDesignIcons.CircleSmall,
+                        tint = color,
+                        contentDescription = null
+                    )
+                } else if (bullet == "-") {
+                    val checkboxNode = child.findChildOfType(GFMTokenTypes.CHECK_BOX)
+                    val checked = when (checkboxNode?.getTextInNode(content)?.trim()) {
+                        "[ ]", "[]" -> false
+                        "[x]" -> true
+                        else -> null
+                    }
+                    if (checked != null) {
+                        Checkbox(
+                            checked = checked,
+                            onCheckedChange = {
+                                configuration.onCheckboxClick?.invoke(
+                                    it,
+                                    content.substring(startIndex = 0, endIndex = checkboxNode!!.startOffset) +
+                                            (if (it) "[x] " else "[ ] ") +
+                                            content.substring(startIndex = checkboxNode.endOffset)
+                                )
+                            },
+                            enabled = configuration.onCheckboxClick != null
+                        )
+                        Spacer(Modifier.width(4.dp))
+                    } else {
+                        Text("$bullet", color = color)
+                    }
+                } else {
+                    println(bullet)
+                }
+            }
+
             MDText(
                 text,
-                modifier.offset(x = if (bullet != null && bullet.trim() == "*") -(12).dp else 0.dp),
+                modifier.offset(x = if (bullet != null && bullet == "*") -(12).dp else 0.dp),
                 style = MaterialTheme.typography.bodyMedium,
                 color = color
             )
@@ -112,15 +145,16 @@ fun MDBulletList(
 
 @Composable
 fun MDOrderedList(
+    configuration: MarkdownPreviewConfiguration,
     content: String,
     node: ASTNode,
     modifier: Modifier = Modifier,
     level: Int = 0,
     color: Color = Color.Unspecified
 ) {
-    MarkdownListItems(content, node, modifier, level, color) { child ->
+    MarkdownListItems(configuration, content, node, modifier, level, color) { child ->
         Row(Modifier.fillMaxWidth()) {
-            Text("${child.findChildOfType(MarkdownTokenTypes.LIST_NUMBER)?.getTextInNode(content)} ")
+            Text("${child.findChildOfType(MarkdownTokenTypes.LIST_NUMBER)?.getTextInNode(content)} ",color = color)
             val text = buildAnnotatedString {
                 pushStyle(MaterialTheme.typography.bodyMedium.toSpanStyle())
                 buildMarkdownAnnotatedString(
@@ -134,5 +168,3 @@ fun MDOrderedList(
         }
     }
 }
-
-

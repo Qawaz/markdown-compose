@@ -6,12 +6,12 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.input.TextFieldValue
-import com.wakaztahir.helpers.IODispatcher
-import com.wakaztahir.helpers.currentTimeMillis
 import com.wakaztahir.markdowncompose.editor.model.blocks.TextBlock
 import com.wakaztahir.markdowncompose.editor.utils.TextFormatter
 import com.wakaztahir.markdowncompose.editor.utils.textFieldUndoRedoAction
 import com.wakaztahir.markdowncompose.editor.utils.updateState
+import com.wakaztahir.markdowncompose.utils.IODispatcher
+import com.wakaztahir.markdowncompose.utils.currentTimeMillis
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch

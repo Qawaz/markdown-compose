@@ -10,7 +10,8 @@ class MarkdownPreviewConfiguration(
     val parser: MarkdownParser = MarkdownParser(GFMFlavourDescriptor()),
     val referenceLinkHandler: ReferenceLinkHandler = ReferenceLinkHandlerImpl(),
     val modify: AnnotatedString.Builder.(AnnotatedString) -> Unit = { append(it) },
-    val openLinksOnClick: Boolean = true
+    val openLinksOnClick: Boolean = true,
+    val onCheckboxClick : ((isChecked : Boolean,updatedMarkdown : String)->Unit)? = null,
 ) {
 
     private val _extensions: HashMap<IElementType, Extension> = hashMapOf()
