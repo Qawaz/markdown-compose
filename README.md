@@ -5,6 +5,30 @@ with out app [Timeline](https://play.google.com/store/apps/details?id=com.wakazt
 
 ## [Live Preview](https://qawaz.github.io/markdown-compose)
 
+To get the library please use github packages
+
+```kotlin
+implementation("com.wakaztahir:md-compose:core:$latestVersion")
+```
+
+And in your repositories
+
+```kotlin
+maven("https://maven.pkg.github.com/Qawaz/markdown-compose") {
+    name = "GithubPackages"
+    try {
+        // GPR_USER is your github usernme
+        // GPR_API_KEY is your github personal access token
+        credentials {
+            username = (System.getenv("GPR_USER")).toString()
+            password = (System.getenv("GPR_API_KEY")).toString()
+        }
+    } catch (ex: Exception) {
+        ex.printStackTrace()
+    }
+}
+```
+
 ## Preview
 
 - [x] Headings,Paragraphs

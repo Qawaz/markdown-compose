@@ -4,19 +4,10 @@ plugins {
     id("com.android.library")
     kotlin("plugin.serialization")
     id("maven-publish")
-//    id("plugin.multiplatform-resources")
 }
 
 group = "com.wakaztahir"
-version = "1.0.2"
-
-//multiplatformResources {
-//    multiplatformResourcesPackage = "com.wakaztahir.markdowncompose.mdmathjax" // required
-//    multiplatformResourcesClassName = "Res" // optional, default MR
-//    multiplatformResourcesVisibility = dev.icerock.gradle.MRVisibility.Internal // optional, default Public
-//    iosBaseLocalizationRegion = "en" // optional, default "en"
-//    multiplatformResourcesSourceSet = "commonMain"  // optional, default "commonMain"
-//}
+version = property("version") as String
 
 kotlin {
     android {

@@ -10,7 +10,6 @@ import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.platform.LocalContext
 import com.wakaztahir.mathjax.JLatexMathBitmapBuilder
 import com.wakaztahir.mathjax.LatexAlignment
-import com.wakaztahir.qawazlogger.logIt
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 
@@ -38,7 +37,7 @@ actual fun MathJax(modifier: Modifier, latex: String, color: Color) {
                     backgroundColor = null,
                 ).asImageBitmap()
             } catch (e: Exception) {
-                e.logIt(message = "error while making latex bitmap", report = true)
+                e.printStackTrace()
             }
         }
     }

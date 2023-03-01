@@ -9,7 +9,7 @@ plugins {
 }
 
 group = "com.wakaztahir"
-version = "1.0.2"
+version = property("version") as String
 
 kotlin {
     android {

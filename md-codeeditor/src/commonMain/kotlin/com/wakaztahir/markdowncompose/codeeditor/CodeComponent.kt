@@ -11,10 +11,6 @@ import com.wakaztahir.codeeditor.prettify.PrettifyParser
 import com.wakaztahir.codeeditor.theme.CodeTheme
 import com.wakaztahir.codeeditor.theme.CodeThemeType
 import com.wakaztahir.codeeditor.utils.parseCodeAsAnnotatedString
-import com.wakaztahir.helpers.DropdownMenu
-import com.wakaztahir.helpers.DropdownMenuItem
-import com.wakaztahir.helpers.ExposedDropdownMenu
-import com.wakaztahir.helpers.currentTimeMillis
 import com.wakaztahir.markdowncompose.editor.components.LocalEditor
 import com.wakaztahir.markdowncompose.editor.model.blocks.CodeBlock
 import com.wakaztahir.markdowncompose.editor.utils.textFieldUndoRedoAction

@@ -11,7 +11,6 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.zIndex
-import com.wakaztahir.helpers.currentTimeMillis
 import com.wakaztahir.markdowncompose.editor.components.LocalEditor
 import com.wakaztahir.markdowncompose.editor.model.blocks.MathBlock
 import com.wakaztahir.markdowncompose.editor.utils.textFieldUndoRedoAction
