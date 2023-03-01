@@ -17,8 +17,8 @@ And in your repositories
 maven("https://maven.pkg.github.com/Qawaz/markdown-compose") {
     name = "GithubPackages"
     try {
-        // GPR_USER is your github usernme
-        // GPR_API_KEY is your github personal access token
+        // GPR_USER is your GitHub username
+        // GPR_API_KEY is your GitHub personal access token
         credentials {
             username = (System.getenv("GPR_USER")).toString()
             password = (System.getenv("GPR_API_KEY")).toString()
