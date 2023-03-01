@@ -26,7 +26,7 @@ pluginManagement {
         kotlin("plugin.serialization").version(extra["kotlin.version"] as String).apply(false)
     }
 }
-rootProject.name = "ComposeMarkdown"
+rootProject.name = "MarkdownCompose"
 
 include(":demo:android")
 include(":demo:desktop")
