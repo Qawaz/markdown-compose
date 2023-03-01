@@ -6,9 +6,88 @@
     <script src="skiko.js"></script>
 </head>
 <body>
-<div>
-    <canvas id="ComposeTarget" width="600" height="600"></canvas>
+<script>
+    onWasmReady(()=>{
+        document.getElementById("LoadingScreen").style.display = "none";
+    })
+</script>
+<div id="LoadingScreen">
+    <div class="lds-ring"><div></div><div></div><div></div><div></div></div>
 </div>
+<canvas id="ComposeTarget" width="600" height="600"></canvas>
+<style>
+        html,body {
+            margin : 0 !important;
+            padding : 0 !important;
+            overflow : hidden;
+            width : 100%;
+            height : 100%;
+        }
+
+        #LoadingScreen {
+            z-index: 99;
+            width: 100%;
+            height: 100%;
+            position:absolute;
+            top:0;
+            right:0;
+            left:0;
+            bottom:0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            background:#161616;
+        }
+
+        #ComposeTarget {
+            z-index: 100;
+            outline:none;
+        }
+
+        /** CSS Spinner Styles **/
+        .lds-ring {
+            display: inline-block;
+            position: relative;
+            width: 80px;
+            height: 80px;
+        }
+
+        .lds-ring div {
+            box-sizing: border-box;
+            display: block;
+            position: absolute;
+            width: 64px;
+            height: 64px;
+            margin: 8px;
+            border: 8px solid #fff;
+            border-radius: 50%;
+            animation: lds-ring 1.2s cubic-bezier(0.5, 0, 0.5, 1) infinite;
+            border-color: #fff transparent transparent transparent;
+        }
+
+        .lds-ring div:nth-child(1) {
+            animation-delay: -0.45s;
+        }
+
+        .lds-ring div:nth-child(2) {
+            animation-delay: -0.3s;
+        }
+
+        .lds-ring div:nth-child(3) {
+            animation-delay: -0.15s;
+        }
+
+        @keyframes lds-ring {
+            0% {
+                transform: rotate(0deg);
+            }
+
+            100% {
+                transform: rotate(360deg);
+            }
+        }
+    </style>
 <script src="web.js"></script>
 </body>
 </html>
