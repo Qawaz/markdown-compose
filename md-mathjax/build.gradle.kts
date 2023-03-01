@@ -99,11 +99,15 @@ android {
 
 publishing {
     repositories {
-        maven("https://maven.pkg.github.com/Qawaz/timeline-android") {
-            name = "TimelineGitHubPackages"
-            credentials {
-                username = (System.getenv("GPR_USER"))!!.toString()
-                password = (System.getenv("GPR_API_KEY"))!!.toString()
+        maven("https://maven.pkg.github.com/Qawaz/markdown-compose") {
+            name = "GithubPackages"
+            try {
+                credentials {
+                    username = (System.getenv("GPR_USER")).toString()
+                    password = (System.getenv("GPR_API_KEY")).toString()
+                }
+            } catch (ex: Exception) {
+                ex.printStackTrace()
             }
         }
     }

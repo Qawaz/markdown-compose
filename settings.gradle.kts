@@ -4,7 +4,7 @@ pluginManagement {
         gradlePluginPortal()
         mavenCentral()
         maven("https://maven.pkg.jetbrains.space/public/p/compose/dev")
-        maven("https://maven.pkg.github.com/Qawaz/compose-markdown") {
+        maven("https://maven.pkg.github.com/Qawaz/markdown-compose") {
             name = "GithubPackages"
             try {
                 credentials {
