@@ -207,7 +207,7 @@ private fun ASTNode.listItems(
     }
 }
 
-private fun ASTNode.unorderedList(
+internal fun ASTNode.unorderedList(
     state: EditorState,
     content: String,
     typography: Typography,
@@ -304,7 +304,7 @@ private fun ASTNode.unorderedList(
     }
 }
 
-private fun ASTNode.orderedList(
+internal fun ASTNode.orderedList(
     state: EditorState,
     content: String,
     typography: Typography,

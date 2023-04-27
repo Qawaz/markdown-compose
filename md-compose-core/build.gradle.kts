@@ -32,7 +32,7 @@ kotlin {
                 api("org.jetbrains:markdown:0.3.1")
 
                 // Reorder-able For List
-                api("com.qawaz:reorderable:0.9.7")
+                api("com.qawaz:reorderable:0.9.8")
 
                 // Link Previews Library
                 implementation("com.wakaztahir:linkpreview:1.0.5")
@@ -48,7 +48,7 @@ kotlin {
                 implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:${property("serialization.version")}")
                 implementation("com.wakaztahir.compose-icons:materialdesignicons:1.0.1")
 
-                implementation("com.godaddy.android.colorpicker:compose-color-picker:0.7.0")
+                implementation("com.qawaz.android.colorpicker:compose-color-picker:0.6.2")
 
 
             }
@@ -63,19 +63,17 @@ kotlin {
                 // Coroutines
                 implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.6.4")
                 // Coil Compose
-                implementation("io.coil-kt:coil-compose:1.4.0")
-                // Math Jax for Android
-                implementation("com.wakaztahir:mathjax:3.0.1")
+                implementation("io.coil-kt:coil-compose:2.3.0")
             }
         }
         val desktopMain by getting {
             dependencies {
-                implementation("org.scilab.forge:jlatexmath:1.0.7")
+
             }
         }
-        named("jsMain") {
+        val jsMain by getting {
             dependencies {
-                api(compose.web.core)
+
             }
         }
     }
@@ -89,21 +87,5 @@ android {
     }
     defaultConfig {
         minSdk = 21
-    }
-}
-
-publishing {
-    repositories {
-        maven("https://maven.pkg.github.com/Qawaz/markdown-compose") {
-            name = "GithubPackages"
-            try {
-                credentials {
-                    username = (System.getenv("GPR_USER")).toString()
-                    password = (System.getenv("GPR_API_KEY")).toString()
-                }
-            } catch (ex: Exception) {
-                ex.printStackTrace()
-            }
-        }
     }
 }

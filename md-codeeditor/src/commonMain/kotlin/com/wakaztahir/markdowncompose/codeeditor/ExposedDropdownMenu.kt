@@ -10,7 +10,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Shape
-import androidx.compose.ui.input.pointer.PointerIconDefaults
+import androidx.compose.ui.input.pointer.PointerIcon
 import androidx.compose.ui.input.pointer.pointerHoverIcon
 import androidx.compose.ui.text.TextStyle
 
@@ -57,7 +57,7 @@ internal fun ExposedDropdownMenuField(
 ) {
     if (outlined) {
         OutlinedTextField(
-            modifier = modifier.pointerHoverIcon(icon = PointerIconDefaults.Hand,overrideDescendants = true),
+            modifier = modifier.pointerHoverIcon(icon = PointerIcon.Hand,overrideDescendants = true),
             value = text,
             onValueChange = { },
             readOnly = true,
@@ -76,7 +76,7 @@ internal fun ExposedDropdownMenuField(
         )
     } else {
         TextField(
-            modifier = modifier.pointerHoverIcon(icon = PointerIconDefaults.Hand,overrideDescendants = true),
+            modifier = modifier.pointerHoverIcon(icon = PointerIcon.Hand,overrideDescendants = true),
             value = text,
             onValueChange = { },
             readOnly = true,

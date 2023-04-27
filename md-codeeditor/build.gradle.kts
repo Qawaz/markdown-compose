@@ -30,7 +30,7 @@ kotlin {
                 api(project(":md-compose-core"))
 
                 // Code Editor
-                api("com.wakaztahir:codeeditor:3.1.1")
+                api("com.wakaztahir:codeeditor:3.1.2")
 
                 implementation(compose.runtime)
                 implementation(compose.foundation)
@@ -49,10 +49,7 @@ kotlin {
         }
         val androidMain by getting {
             dependencies {
-                // Coroutines
-//                implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.6.4")
-                // Coil Compose
-//                implementation("io.coil-kt:coil-compose:1.4.0")
+
             }
         }
         val desktopMain by getting {
@@ -60,9 +57,9 @@ kotlin {
 
             }
         }
-        named("jsMain") {
+        val jsMain by getting {
             dependencies {
-                api(compose.web.core)
+
             }
         }
     }
@@ -76,21 +73,5 @@ android {
     }
     defaultConfig {
         minSdk = 21
-    }
-}
-
-publishing {
-    repositories {
-        maven("https://maven.pkg.github.com/Qawaz/markdown-compose") {
-            name = "GithubPackages"
-            try {
-                credentials {
-                    username = (System.getenv("GPR_USER")).toString()
-                    password = (System.getenv("GPR_API_KEY")).toString()
-                }
-            } catch (ex: Exception) {
-                ex.printStackTrace()
-            }
-        }
     }
 }
