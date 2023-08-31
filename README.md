@@ -1,7 +1,7 @@
 # Markdown Compose
 
 An awesome markdown viewer & editor that works on Web,JVM and Android. This library is used
-with out app [Timeline](https://play.google.com/store/apps/details?id=com.wakaztahir.timeline) , A note taking app , so development decisions will be made based on that.
+with our app [Timeline](https://play.google.com/store/apps/details?id=com.wakaztahir.timeline) , A note taking app.
 
 ## [Live Preview](https://qawaz.github.io/markdown-compose)
 
