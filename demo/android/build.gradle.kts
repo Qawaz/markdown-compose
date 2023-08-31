@@ -5,15 +5,18 @@ plugins {
 }
 
 android {
-    compileSdk = 33
+    namespace = "com.mylibrary.demo"
+    compileSdk = 34
     defaultConfig {
         minSdk = 21
         targetSdk = 33
     }
-
     compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_11
-        targetCompatibility = JavaVersion.VERSION_11
+        sourceCompatibility = JavaVersion.VERSION_17
+        targetCompatibility = JavaVersion.VERSION_17
+    }
+    kotlinOptions {
+        jvmTarget = "17"
     }
 }
 

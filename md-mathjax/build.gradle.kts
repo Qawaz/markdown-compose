@@ -10,12 +10,12 @@ group = "com.wakaztahir"
 version = property("version") as String
 
 kotlin {
-    android {
+    androidTarget {
         publishLibraryVariants("release")
     }
     jvm("desktop") {
         compilations.all {
-            kotlinOptions.jvmTarget = "1.8"
+            kotlinOptions.jvmTarget = "17"
         }
     }
     js(IR) {
@@ -64,7 +64,7 @@ kotlin {
 }
 
 android {
-    compileSdk = 33
+    compileSdk = 34
     sourceSets["main"].manifest.srcFile("src/androidMain/AndroidManifest.xml")
     sourceSets["main"].apply {
         res.srcDir(File(buildDir, "generated/moko/androidMain/res"))
@@ -72,4 +72,5 @@ android {
     defaultConfig {
         minSdk = 21
     }
+    namespace = "com.wakaztahir.markdowncompose.mathjax"
 }

@@ -158,14 +158,19 @@ fun ListItemBlock.ListItemComponent(
                     updateLinkPreviews()
                 }
             },
-            colors = TextFieldDefaults.outlinedTextFieldColors(
-                unfocusedBorderColor = Color.Transparent,
-                focusedBorderColor = Color.Transparent,
-                textColor = if (isChecked) {
+            colors = OutlinedTextFieldDefaults.colors(
+                focusedTextColor = if (isChecked) {
                     MaterialTheme.colorScheme.onBackground.copy(.6f)
                 } else {
                     MaterialTheme.colorScheme.onBackground
-                }
+                },
+                unfocusedTextColor = if (isChecked) {
+                    MaterialTheme.colorScheme.onBackground.copy(.6f)
+                } else {
+                    MaterialTheme.colorScheme.onBackground
+                },
+                focusedBorderColor = Color.Transparent,
+                unfocusedBorderColor = Color.Transparent,
             ),
             textStyle = TextStyle.Companion.Default.copy(textDecoration = if (isChecked) TextDecoration.LineThrough else null),
             keyboardOptions = KeyboardOptions(imeAction = ImeAction.Next),

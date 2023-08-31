@@ -5,10 +5,7 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
-import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.OutlinedTextField
-import androidx.compose.material3.TextFieldDefaults
+import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
@@ -30,8 +27,9 @@ fun MDEditorEditor(modifier: Modifier = Modifier) {
                 modifier = Modifier.weight(1f).fillMaxHeight(),
                 value = markdown,
                 onValueChange = { markdown = it },
-                colors = TextFieldDefaults.outlinedTextFieldColors(
-                    textColor = MaterialTheme.colorScheme.onBackground
+                colors = OutlinedTextFieldDefaults.colors(
+                    focusedTextColor = MaterialTheme.colorScheme.onBackground,
+                    unfocusedTextColor = MaterialTheme.colorScheme.onBackground,
                 )
             )
             MarkdownEditor(
@@ -50,14 +48,14 @@ fun MarkdownEditor(modifier: Modifier = Modifier, markdown: String) {
     val state = remember { EditorState() }
 
 
-    LaunchedEffect(markdown){
-        state.setMarkdown(markdown = markdown,colors = colors,typography = typography)
+    LaunchedEffect(markdown) {
+        state.setMarkdown(markdown = markdown, colors = colors, typography = typography)
     }
 
     val listState = rememberLazyListState()
     val scope = rememberLazyEditorScope(state = state, listState = listState)
     ProvideLazyEditor(scope) {
-        LazyColumn(modifier = modifier,state = listState) {
+        LazyColumn(modifier = modifier, state = listState) {
             items(state.blocks) { block ->
                 BlockComponent(block = block)
             }

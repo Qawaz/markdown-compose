@@ -64,10 +64,11 @@ fun TextBlock.TextComponent(modifier: Modifier) {
         placeholder = {
             Text(text = "Note", color = MaterialTheme.colorScheme.onBackground.copy(.4f))
         },
-        colors = TextFieldDefaults.outlinedTextFieldColors(
+        colors = OutlinedTextFieldDefaults.colors(
+            focusedTextColor = MaterialTheme.colorScheme.onBackground,
+            unfocusedTextColor = MaterialTheme.colorScheme.onBackground,
             focusedBorderColor = Color.Transparent,
             unfocusedBorderColor = Color.Transparent,
-            textColor = MaterialTheme.colorScheme.onBackground
         ),
         textStyle = MaterialTheme.typography.bodyMedium
     )

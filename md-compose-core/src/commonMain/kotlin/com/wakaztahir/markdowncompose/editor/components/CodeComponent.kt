@@ -19,7 +19,6 @@ fun CodeBlock.DefaultCodeComponent(modifier: Modifier) {
     this@DefaultCodeComponent.DefaultCodeComponent(modifier = modifier, onRemove = { state.blocks.remove(this) })
 }
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun TextFieldValueBlock.DefaultCodeComponent(modifier: Modifier = Modifier, onRemove: () -> Unit) {
 
@@ -53,7 +52,7 @@ fun TextFieldValueBlock.DefaultCodeComponent(modifier: Modifier = Modifier, onRe
                     )
                 }
             },
-            colors = TextFieldDefaults.outlinedTextFieldColors(
+            colors = OutlinedTextFieldDefaults.colors(
                 focusedBorderColor = Color.Transparent,
                 unfocusedBorderColor = Color.Transparent,
             )

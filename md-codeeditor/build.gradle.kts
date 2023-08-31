@@ -10,12 +10,12 @@ group = "com.wakaztahir"
 version = property("version") as String
 
 kotlin {
-    android {
+    androidTarget {
         publishLibraryVariants("release")
     }
     jvm("desktop") {
         compilations.all {
-            kotlinOptions.jvmTarget = "1.8"
+            kotlinOptions.jvmTarget = "17"
         }
     }
     js(IR) {
@@ -30,7 +30,7 @@ kotlin {
                 api(project(":md-compose-core"))
 
                 // Code Editor
-                api("com.wakaztahir:codeeditor:3.1.2")
+                api("com.wakaztahir:codeeditor:3.1.3")
 
                 implementation(compose.runtime)
                 implementation(compose.foundation)
@@ -66,7 +66,8 @@ kotlin {
 }
 
 android {
-    compileSdk = 33
+    namespace = "com.wakaztahir.markdowncompose.codeeditor"
+    compileSdk = 34
     sourceSets["main"].manifest.srcFile("src/androidMain/AndroidManifest.xml")
     sourceSets["main"].apply {
         res.srcDir(File(buildDir, "generated/moko/androidMain/res"))

@@ -23,6 +23,14 @@ fun EditorState.exportToHtml(): String {
     return html
 }
 
+fun AnnotatedString.toHtml(nestedChildren: Boolean): String {
+    return this.toWrappers(nestedChildren = nestedChildren).joinToString("") { it.toHTML() }
+}
+
+fun AnnotatedString.toMarkdown(nestedChildren: Boolean): String {
+    return this.toWrappers(nestedChildren = nestedChildren).joinToString("") { it.toMarkdown() }
+}
+
 /** converts annotated string to html **/
 fun AnnotatedString.toHtml(): String {
 
@@ -57,19 +65,19 @@ fun AnnotatedString.toHtml(): String {
 }
 
 /** appends the starting html for given [style] **/
-private fun startHtml(style: SpanStyle): String = buildString {
+internal fun startHtml(style: SpanStyle): String = buildString {
     with(style) {
-        if (fontWeight != null && fontWeight!!.weight > 400) append("<b>")
-        if (fontStyle == FontStyle.Italic) append("<i>")
+        if (fontWeight != null && fontWeight!!.weight > 400) append("<strong>")
+        if (fontStyle == FontStyle.Italic) append("<em>")
         if (textDecoration == TextDecoration.LineThrough) append("<s>")
     }
 }
 
 /** appends the ending html for given [style] **/
-private fun endHtml(style: SpanStyle): String = buildString {
+internal fun endHtml(style: SpanStyle): String = buildString {
     with(style) {
-        if (fontWeight != null && fontWeight!!.weight > 400) append("</b>")
-        if (fontStyle == FontStyle.Italic) append("</i>")
         if (textDecoration == TextDecoration.LineThrough) append("</s>")
+        if (fontStyle == FontStyle.Italic) append("</em>")
+        if (fontWeight != null && fontWeight!!.weight > 400) append("</strong>")
     }
 }

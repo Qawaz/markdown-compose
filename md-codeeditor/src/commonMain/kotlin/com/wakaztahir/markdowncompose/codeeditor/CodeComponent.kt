@@ -14,7 +14,6 @@ import com.wakaztahir.codeeditor.utils.parseCodeAsAnnotatedString
 import com.wakaztahir.markdowncompose.editor.components.LocalEditor
 import com.wakaztahir.markdowncompose.editor.model.blocks.CodeBlock
 import com.wakaztahir.markdowncompose.editor.utils.textFieldUndoRedoAction
-import com.wakaztahir.markdowncompose.utils.*
 import compose.icons.MaterialDesignIcons
 import compose.icons.materialdesignicons.TrashCanOutline
 import kotlinx.coroutines.Job
@@ -70,12 +69,12 @@ fun CodeBlock.CodeComponent(
         }
 
         LaunchedEffect(key1 = lang, block = {
-            textFieldValue = textFieldValue.copy(
+            value = value.copy(
                 annotatedString = parseCodeAsAnnotatedString(
                     parser = parser,
                     theme = theme,
                     lang = block.lang,
-                    code = textFieldValue.text
+                    code = value.text
                 )
             )
         })
@@ -86,9 +85,9 @@ fun CodeBlock.CodeComponent(
 
         OutlinedTextField(
             modifier = Modifier.fillMaxWidth(),
-            value = textFieldValue,
+            value = value,
             onValueChange = {
-                textFieldValue = it.copy(
+                value = it.copy(
                     annotatedString = parseCodeAsAnnotatedString(
                         parser = parser,
                         theme = theme,
@@ -100,8 +99,8 @@ fun CodeBlock.CodeComponent(
                 scope.launch {
                     state.textFieldUndoRedoAction(
                         lastUndoRedoSaveTime = lastUndoRedoTime,
-                        getCurrentTextFieldValue = { textFieldValue },
-                        updateTextFieldValue = { newValue -> textFieldValue = newValue },
+                        getCurrentTextFieldValue = { value },
+                        updateTextFieldValue = { newValue -> value = newValue },
                         updateUndoRedoTime = { time -> lastUndoRedoTime = time }
                     )
                 }

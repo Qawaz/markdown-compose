@@ -2,19 +2,17 @@ package com.wakaztahir.common
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
-import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.OutlinedTextField
-import androidx.compose.material3.TextFieldDefaults
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
+import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.wakaztahir.markdowncompose.core.MarkdownPreviewConfiguration
 import com.wakaztahir.markdowncompose.preview.MarkdownPreview
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun MDPreviewEditor(modifier : Modifier = Modifier) {
+fun MDPreviewEditor(modifier: Modifier = Modifier) {
     Box(modifier = modifier.fillMaxSize().background(color = MaterialTheme.colorScheme.background)) {
         Row(modifier = Modifier.fillMaxWidth().padding(8.dp), horizontalArrangement = Arrangement.SpaceBetween) {
             var markdown by remember { mutableStateOf(InitialMarkdown) }
@@ -22,12 +20,13 @@ fun MDPreviewEditor(modifier : Modifier = Modifier) {
                 modifier = Modifier.weight(1f).fillMaxHeight(),
                 value = markdown,
                 onValueChange = { markdown = it },
-                colors = TextFieldDefaults.outlinedTextFieldColors(
-                    textColor = MaterialTheme.colorScheme.onBackground
+                colors = OutlinedTextFieldDefaults.colors(
+                    focusedTextColor = MaterialTheme.colorScheme.onBackground,
+                    unfocusedTextColor = MaterialTheme.colorScheme.onBackground,
                 )
             )
             MarkdownPreview(
-                modifier = Modifier.weight(1f).padding(horizontal = 16.dp, vertical = 8.dp).fillMaxHeight(),
+                modifier = Modifier.weight(1f).padding(horizontal = 16.dp, vertical = 8.dp).fillMaxHeight().verticalScroll(rememberScrollState()),
                 markdown = markdown,
                 configuration = remember {
                     MarkdownPreviewConfiguration(

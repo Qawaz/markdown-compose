@@ -12,12 +12,12 @@ group = "com.wakaztahir"
 version = property("version") as String
 
 kotlin {
-    android {
+    androidTarget {
         publishLibraryVariants("release")
     }
     jvm("desktop") {
         compilations.all {
-            kotlinOptions.jvmTarget = "1.8"
+            kotlinOptions.jvmTarget = "17"
         }
     }
     js(IR) {
@@ -61,7 +61,7 @@ kotlin {
         val androidMain by getting {
             dependencies {
                 // Coroutines
-                implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.6.4")
+                implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.7.2")
                 // Coil Compose
                 implementation("io.coil-kt:coil-compose:2.3.0")
             }
@@ -80,12 +80,17 @@ kotlin {
 }
 
 android {
-    compileSdk = 33
+    namespace = "com.wakaztahir.markdowncompose.core"
+    compileSdk = 34
     sourceSets["main"].manifest.srcFile("src/androidMain/AndroidManifest.xml")
     sourceSets["main"].apply {
         res.srcDir(File(buildDir, "generated/moko/androidMain/res"))
     }
     defaultConfig {
         minSdk = 21
+    }
+    compileOptions {
+        sourceCompatibility = JavaVersion.VERSION_17
+        targetCompatibility = JavaVersion.VERSION_17
     }
 }
