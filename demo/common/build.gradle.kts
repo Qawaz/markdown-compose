@@ -2,6 +2,7 @@ plugins {
     kotlin("multiplatform")
     id("org.jetbrains.compose")
     id("com.android.library")
+    kotlin("plugin.serialization")
 }
 
 kotlin {
@@ -23,6 +24,7 @@ kotlin {
                 @OptIn(org.jetbrains.compose.ExperimentalComposeLibrary::class)
                 api(compose.material3)
                 api(project(":md-compose-core"))
+                implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:${property("serialization.version")}")
             }
         }
         val commonTest by getting {

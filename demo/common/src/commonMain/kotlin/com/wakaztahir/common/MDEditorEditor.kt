@@ -1,3 +1,5 @@
+@file:Suppress("unused")
+
 package com.wakaztahir.common
 
 import androidx.compose.foundation.background
@@ -7,20 +9,33 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
+import androidx.compose.runtime.saveable.Saver
+import androidx.compose.runtime.saveable.SaverScope
+import androidx.compose.runtime.saveable.listSaver
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.text.SpanStyle
+import androidx.compose.ui.text.buildAnnotatedString
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.unit.dp
 import com.wakaztahir.markdowncompose.editor.components.*
+import com.wakaztahir.markdowncompose.editor.model.blocks.TextBlock
+import com.wakaztahir.markdowncompose.editor.serialization.polymorphicEditorBlockSerializer
 import com.wakaztahir.markdowncompose.editor.states.EditorState
 import com.wakaztahir.markdowncompose.editor.utils.exportToMarkdown
 import com.wakaztahir.markdowncompose.editor.utils.toMarkdown
 import com.wakaztahir.markdowncompose.editor.utils.setMarkdown
 import kotlinx.coroutines.delay
+import kotlinx.serialization.encodeToString
+import kotlinx.serialization.json.Json
+import kotlinx.serialization.modules.SerializersModule
 
 @Composable
 fun MDEditorEditor(modifier: Modifier = Modifier) {
     Column(modifier = modifier.fillMaxSize().background(color = MaterialTheme.colorScheme.background)) {
-        MarkdownToEditor()
+        EditorOnly()
     }
 }
 
@@ -56,6 +71,40 @@ private fun MarkdownToEditor() {
 
             LazyColumn(
                 modifier = Modifier.weight(1f).padding(horizontal = 16.dp, vertical = 8.dp).fillMaxHeight(),
+                state = listState
+            ) {
+                items(state.blocks) { block ->
+                    BlockComponent(block = block)
+                }
+            }
+        }
+    }
+}
+
+@Composable
+private fun EditorOnly() {
+    val listState = rememberLazyListState()
+    val state = remember {
+        EditorState().apply {
+            this.blocks.add(TextBlock(TextFieldValue(buildAnnotatedString {
+                append("There's nothing can console me but my darling ")
+                pushStyle(SpanStyle(fontWeight = FontWeight.Bold))
+                append("human")
+                pop()
+                append(" bold")
+            })))
+        }
+    }
+    val scope = rememberLazyEditorScope(state, listState)
+    ProvideLazyEditor(scope) {
+        Column {
+            EditorTools(
+                state = remember {
+                    State()
+                }
+            )
+            LazyColumn(
+                modifier = Modifier.padding(horizontal = 16.dp, vertical = 8.dp).fillMaxHeight(),
                 state = listState
             ) {
                 items(state.blocks) { block ->
@@ -114,6 +163,7 @@ private fun EditorToMarkdown() {
                 markdown = if (newMarkdownConverter) {
                     state.toMarkdown()
                 } else {
+                    @Suppress("DEPRECATION")
                     state.exportToMarkdown()
                 }
                 delay(1000)
