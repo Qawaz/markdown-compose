@@ -38,6 +38,10 @@ class CodeBlock(
         return """${"\n"}```${lang}${"\n"}$value${"\n"}```${"\n"}"""
     }
 
+    override fun exportMarkdownNew(state: EditorState): String {
+        return """${"\n"}```${lang}${"\n"}$value${"\n"}```${"\n"}"""
+    }
+
     override fun exportHTML(state: EditorState): String {
         return "<pre><code class='language-${lang.lowercase()}'>$value</code></pre>"
     }

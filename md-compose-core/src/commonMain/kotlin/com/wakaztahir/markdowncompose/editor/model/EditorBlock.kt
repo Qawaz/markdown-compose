@@ -13,6 +13,7 @@ abstract class EditorBlock {
 
     abstract fun exportText(state: EditorState): String
     abstract fun exportMarkdown(state: EditorState): String
+    abstract fun exportMarkdownNew(state : EditorState) : String
     abstract fun exportHTML(state: EditorState): String
 
 }

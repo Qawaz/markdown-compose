@@ -38,6 +38,10 @@ class MathBlock(
         return """${"\n"}```latex${"\n"}$latex${"\n"}```${"\n"}"""
     }
 
+    override fun exportMarkdownNew(state: EditorState): String {
+        return """${"\n"}```latex${"\n"}$latex${"\n"}```${"\n"}"""
+    }
+
     override fun exportHTML(state: EditorState): String {
         return "<div id='math'>$latex</div>"
     }

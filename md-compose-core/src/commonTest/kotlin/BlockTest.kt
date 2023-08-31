@@ -23,7 +23,7 @@ class BlockTest {
     fun testCodeBlock() {
         val block = CodeBlock("js", "let x = 5")
         assertEquals("""<pre><code class='language-js'>let x = 5</code></pre>""", block.exportHTML(state))
-        assertEquals("""${"\n"}```js${"\n"}let x = 5${"\n"}```${"\n"}""", block.exportMarkdown(state))
+        assertEquals("""${"\n"}```js${"\n"}let x = 5${"\n"}```${"\n"}""", block.exportMarkdownNew(state))
         assertEquals("""Code (js) : let x = 5${"\n"}""", block.exportText(state))
         assertEquals("""{"lang":"js","code":"let x = 5"}""", json.encodeToString(block))
         assertEquals(json.decodeFromString("""{"lang":"js","code":"let x = 5"}"""), block)
@@ -33,17 +33,19 @@ class BlockTest {
     fun testTextBlock() {
         val block = TextBlock("this is my text")
         assertEquals("""this is my text""", block.exportHTML(state))
-        assertEquals("""this is my text""", block.exportMarkdown(state))
+        assertEquals("""this is my text""", block.exportMarkdownNew(state))
         assertEquals("""this is my text""", block.exportText(state))
-        assertEquals("""{"text":"this is my text"}""", json.encodeToString(block))
-        assertEquals(json.decodeFromString("""{"text":"this is my text"}"""), block)
+        assertEquals("""{"text":{"children":[{"type":"text","text":"this is my text"}]}}""", json.encodeToString(block))
+        val deserializedBlock = json.decodeFromString<TextBlock>("""{"text":{"children":[{"type":"text","text":"this is my text"}]}}""")
+        assertEquals(deserializedBlock, block)
+        assertEquals(deserializedBlock.textValue, block.textValue)
     }
 
     @Test
     fun testMathBlock() {
         val block = MathBlock("x = 5")
         assertEquals("""<div id='math'>x = 5</div>""", block.exportHTML(state))
-        assertEquals("""${"\n"}```latex${"\n"}x = 5${"\n"}```${"\n"}""", block.exportMarkdown(state))
+        assertEquals("""${"\n"}```latex${"\n"}x = 5${"\n"}```${"\n"}""", block.exportMarkdownNew(state))
         assertEquals("""Latex : x = 5${"\n"}""", block.exportText(state))
         assertEquals("""{"latex":"x = 5"}""", json.encodeToString(block))
         assertEquals(json.decodeFromString("""{"latex":"x = 5"}"""), block)
@@ -53,15 +55,25 @@ class BlockTest {
     fun testListItemBlock() {
         val block = ListItemBlock("My first list item")
         assertEquals("""<li>My first list item</li>""", block.exportHTML(state))
-        assertEquals(""" - [ ] My first list item""", block.exportMarkdown(state))
+        assertEquals(""" - [ ] My first list item""", block.exportMarkdownNew(state))
         assertEquals("""My first list item""", block.exportText(state))
         assertEquals(
-            """{"value":"My first list item","is_checked":false,"indentation":0}""",
+            """{"value":{"children":[{"type":"text","text":"My first list item"}]},"is_checked":false,"indentation":0}""",
             json.encodeToString(block)
         )
+        val deserializedBlock = json.decodeFromString<ListItemBlock>("""{"value":{"children":[{"type":"text","text":"My first list item"}]},"is_checked":false,"indentation":0}""")
         assertEquals(
-            json.decodeFromString("""{"value":"My first list item","is_checked":false,"indentation":0}"""),
+            deserializedBlock,
             block
+        )
+        assertEquals(
+            deserializedBlock.text,
+            block.text
+        )
+        block.isIndented = true
+        assertEquals(
+            """{"value":{"children":[{"type":"text","text":"My first list item"}]},"is_checked":false,"indentation":1}""",
+            json.encodeToString(block)
         )
     }
 

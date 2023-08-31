@@ -12,6 +12,12 @@ fun EditorState.exportToMarkdown(): String {
     }
 }
 
+fun EditorState.exportToMarkdownNew(): String {
+    return blocks.joinToString("\n") {
+        it.exportMarkdownNew(this)
+    }
+}
+
 /** converts annotated string to markdown **/
 //fun AnnotatedString.toMarkdown(): String {
 //    var markdown = ""
@@ -71,14 +77,16 @@ fun AnnotatedString.toMarkdown(): String {
 
     var index = text.length
 
-    for(it in sortedStyles){
+    for (it in sortedStyles) {
         val mark = when (it) {
             is EditorStyle.SpanStyleContainer -> {
                 if (!it.isStarting) endMarkdown(it.spanStyle) else startMarkdown(it.spanStyle)
             }
+
             is EditorStyle.LinkStyle -> {
                 if (it.isStarting) "[" else "](${it.link})"
             }
+
             is EditorStyle.LineBreak -> "\n"
         }
         markdown = mark + text.substring(it.index, index) + markdown

@@ -1,4 +1,3 @@
-import com.wakaztahir.markdowncompose.editor.utils.*
 import com.wakaztahir.markdowncompose.editor.wrapper.*
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
@@ -8,7 +7,7 @@ import kotlinx.serialization.modules.subclass
 import kotlin.test.Test
 import kotlin.test.assertEquals
 
-class SerializationTest {
+class WrapperSerialization {
 
 
     val json = Json {

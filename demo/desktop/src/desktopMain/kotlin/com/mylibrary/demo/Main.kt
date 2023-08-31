@@ -11,18 +11,22 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.window.singleWindowApplication
+import com.wakaztahir.common.MDEditorEditor
 import com.wakaztahir.common.MDPreviewEditor
 import com.wakaztahir.common.rememberColorScheme
 
 fun main() = singleWindowApplication(title = "Markdown Editor") {
     MaterialTheme(rememberColorScheme()) {
-        val scrollState = rememberScrollState()
+//        val scrollState = rememberScrollState()
         Box(modifier = Modifier.fillMaxSize()) {
-            MDPreviewEditor(modifier = Modifier.fillMaxSize().verticalScroll(scrollState))
-            VerticalScrollbar(
-                modifier = Modifier.align(Alignment.CenterEnd).fillMaxHeight(),
-                adapter = rememberScrollbarAdapter(scrollState = scrollState),
+            MDEditorEditor(
+
             )
+//            MDPreviewEditor(modifier = Modifier.fillMaxSize())
+//            VerticalScrollbar(
+//                modifier = Modifier.align(Alignment.CenterEnd).fillMaxHeight(),
+//                adapter = rememberScrollbarAdapter(scrollState = scrollState),
+//            )
         }
     }
 }

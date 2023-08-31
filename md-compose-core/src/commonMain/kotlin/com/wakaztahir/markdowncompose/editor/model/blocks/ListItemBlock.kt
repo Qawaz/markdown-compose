@@ -10,6 +10,7 @@ import com.wakaztahir.markdowncompose.editor.model.EditorBlock
 import com.wakaztahir.markdowncompose.editor.model.TextFieldValueBlock
 import com.wakaztahir.markdowncompose.editor.serialization.MutableStateSerializer
 import com.wakaztahir.markdowncompose.editor.serialization.TFVAsTextSerializer
+import com.wakaztahir.markdowncompose.editor.serialization.TFVAsWrapperSerializer
 import com.wakaztahir.markdowncompose.editor.states.EditorState
 import com.wakaztahir.markdowncompose.editor.utils.toHtml
 import com.wakaztahir.markdowncompose.editor.utils.toMarkdown
@@ -22,7 +23,7 @@ class ListItemBlock(
     @Transient
     internal var requestFocus: Boolean = false,
     @Serializable(with = MutableStateSerializer::class)
-    private val value: MutableState<@Serializable(with = TFVAsTextSerializer::class) TextFieldValue>,
+    private val value: MutableState<@Serializable(with = TFVAsWrapperSerializer::class) TextFieldValue>,
     @Serializable(with = MutableStateSerializer::class)
     @SerialName("is_checked")
     val isCheckedState: MutableState<Boolean>,
@@ -87,6 +88,12 @@ class ListItemBlock(
         val index = state.blocks.indexOf(this)
         val notFirstListItem = if (index > 0) state.blocks[index - 1] is ListItemBlock else false
         return (if (isIndented && notFirstListItem) "\t" else "") + " - " + (if (isChecked) "[x]" else "[ ]") + " " + textFieldValue.annotatedString.toMarkdown()
+    }
+
+    override fun exportMarkdownNew(state: EditorState): String {
+        val index = state.blocks.indexOf(this)
+        val notFirstListItem = if (index > 0) state.blocks[index - 1] is ListItemBlock else false
+        return (if (isIndented && notFirstListItem) "\t" else "") + " - " + (if (isChecked) "[x]" else "[ ]") + " " + textFieldValue.annotatedString.toMarkdown(true)
     }
 
     override fun exportHTML(state: EditorState): String {

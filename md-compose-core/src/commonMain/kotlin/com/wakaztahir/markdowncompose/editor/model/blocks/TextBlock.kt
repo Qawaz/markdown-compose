@@ -13,7 +13,7 @@ import com.wakaztahir.markdowncompose.editor.utils.toMarkdown
 import com.wakaztahir.markdowncompose.core.annotation.buildMarkdownAnnotatedString
 import com.wakaztahir.markdowncompose.editor.model.TextFieldValueBlock
 import com.wakaztahir.markdowncompose.editor.serialization.MutableStateSerializer
-import com.wakaztahir.markdowncompose.editor.serialization.TFVAsTextSerializer
+import com.wakaztahir.markdowncompose.editor.serialization.TFVAsWrapperSerializer
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.Transient
@@ -24,7 +24,7 @@ import org.intellij.markdown.parser.MarkdownParser
 class TextBlock(
     @SerialName("text")
     @Serializable(with = MutableStateSerializer::class)
-    val value: MutableState<@Serializable(with = TFVAsTextSerializer::class) TextFieldValue>,
+    val value: MutableState<@Serializable(with = TFVAsWrapperSerializer::class) TextFieldValue>,
     @Transient
     internal var requestFocus: Boolean = false
 ) : EditorBlock(), TextFieldValueBlock {
@@ -56,6 +56,10 @@ class TextBlock(
 
     override fun exportMarkdown(state: EditorState): String {
         return textFieldValue.annotatedString.toMarkdown()
+    }
+
+    override fun exportMarkdownNew(state: EditorState): String {
+        return textFieldValue.annotatedString.toMarkdown(true)
     }
 
     override fun exportHTML(state: EditorState): String {
