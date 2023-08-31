@@ -3,7 +3,6 @@ package com.wakaztahir.common
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material3.*
@@ -14,7 +13,7 @@ import androidx.compose.ui.unit.dp
 import com.wakaztahir.markdowncompose.editor.components.*
 import com.wakaztahir.markdowncompose.editor.states.EditorState
 import com.wakaztahir.markdowncompose.editor.utils.exportToMarkdown
-import com.wakaztahir.markdowncompose.editor.utils.exportToMarkdownNew
+import com.wakaztahir.markdowncompose.editor.utils.toMarkdown
 import com.wakaztahir.markdowncompose.editor.utils.setMarkdown
 import kotlinx.coroutines.delay
 
@@ -113,7 +112,7 @@ private fun EditorToMarkdown() {
 
             suspend fun autoMarkdownIt() {
                 markdown = if (newMarkdownConverter) {
-                    state.exportToMarkdownNew()
+                    state.toMarkdown()
                 } else {
                     state.exportToMarkdown()
                 }

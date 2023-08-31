@@ -18,6 +18,7 @@ import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.Transient
 
+@SerialName("list-item")
 @Serializable
 class ListItemBlock(
     @Transient
@@ -90,7 +91,7 @@ class ListItemBlock(
         return (if (isIndented && notFirstListItem) "\t" else "") + " - " + (if (isChecked) "[x]" else "[ ]") + " " + textFieldValue.annotatedString.toMarkdown()
     }
 
-    override fun exportMarkdownNew(state: EditorState): String {
+    override fun toMarkdown(state: EditorState): String {
         val index = state.blocks.indexOf(this)
         val notFirstListItem = if (index > 0) state.blocks[index - 1] is ListItemBlock else false
         return (if (isIndented && notFirstListItem) "\t" else "") + " - " + (if (isChecked) "[x]" else "[ ]") + " " + textFieldValue.annotatedString.toMarkdown(true)
@@ -106,7 +107,7 @@ class ListItemBlock(
 
         if (indentation != other.indentation) return false
         if (isChecked != other.isChecked) return false
-        if (text != other.text) return false
+        if (textFieldValue != other.textFieldValue) return false
 
         return true
     }
@@ -114,7 +115,7 @@ class ListItemBlock(
     override fun hashCode(): Int {
         var result = indentation
         result = 31 * result + isChecked.hashCode()
-        result = 31 * result + text.hashCode()
+        result = 31 * result + textFieldValue.hashCode()
         return result
     }
 

@@ -11,6 +11,7 @@ import com.wakaztahir.markdowncompose.editor.states.EditorState
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
+@SerialName("math")
 @Serializable
 class MathBlock(
     @SerialName("latex")
@@ -38,7 +39,7 @@ class MathBlock(
         return """${"\n"}```latex${"\n"}$latex${"\n"}```${"\n"}"""
     }
 
-    override fun exportMarkdownNew(state: EditorState): String {
+    override fun toMarkdown(state: EditorState): String {
         return """${"\n"}```latex${"\n"}$latex${"\n"}```${"\n"}"""
     }
 

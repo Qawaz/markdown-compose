@@ -21,7 +21,6 @@ import org.intellij.markdown.ast.ASTNode
 import org.intellij.markdown.ast.findChildOfType
 import org.intellij.markdown.ast.getTextInNode
 
-
 val LocalMarkdownPreviewConfiguration = staticCompositionLocalOf<MarkdownPreviewConfiguration> {
     error("CompositionLocal MarkdownPreviewConfiguration not present")
 }

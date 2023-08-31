@@ -145,9 +145,4 @@ class AnnotatedStringHTMLTest {
         }
     }
 
-    @Test
-    fun testHeading() {
-
-    }
-
 }

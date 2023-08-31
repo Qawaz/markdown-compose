@@ -8,8 +8,10 @@ import com.wakaztahir.markdowncompose.editor.model.TextFieldValueBlock
 import com.wakaztahir.markdowncompose.editor.serialization.MutableStateSerializer
 import com.wakaztahir.markdowncompose.editor.serialization.TFVAsTextSerializer
 import com.wakaztahir.markdowncompose.editor.states.EditorState
+import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
+@SerialName("code")
 @Serializable
 class CodeBlock(
     var lang: String,
@@ -38,7 +40,7 @@ class CodeBlock(
         return """${"\n"}```${lang}${"\n"}$value${"\n"}```${"\n"}"""
     }
 
-    override fun exportMarkdownNew(state: EditorState): String {
+    override fun toMarkdown(state: EditorState): String {
         return """${"\n"}```${lang}${"\n"}$value${"\n"}```${"\n"}"""
     }
 

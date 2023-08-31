@@ -6,15 +6,17 @@ import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.style.TextDecoration
 import com.wakaztahir.markdowncompose.editor.states.EditorState
 
+@Deprecated("use toMarkdown", replaceWith = ReplaceWith("this.toMarkdown()"))
 fun EditorState.exportToMarkdown(): String {
     return blocks.joinToString("\n") {
+        @Suppress("DEPRECATION")
         it.exportMarkdown(this)
     }
 }
 
-fun EditorState.exportToMarkdownNew(): String {
+fun EditorState.toMarkdown(): String {
     return blocks.joinToString("\n") {
-        it.exportMarkdownNew(this)
+        it.toMarkdown(this)
     }
 }
 

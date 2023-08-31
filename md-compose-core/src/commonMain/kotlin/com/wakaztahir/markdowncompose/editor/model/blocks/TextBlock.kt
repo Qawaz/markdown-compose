@@ -14,14 +14,18 @@ import com.wakaztahir.markdowncompose.core.annotation.buildMarkdownAnnotatedStri
 import com.wakaztahir.markdowncompose.editor.model.TextFieldValueBlock
 import com.wakaztahir.markdowncompose.editor.serialization.MutableStateSerializer
 import com.wakaztahir.markdowncompose.editor.serialization.TFVAsWrapperSerializer
+import kotlinx.coroutines.withContext
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.Transient
 import org.intellij.markdown.flavours.gfm.GFMFlavourDescriptor
 import org.intellij.markdown.parser.MarkdownParser
 
+typealias TextBlock = ParagraphBlock
+
+@SerialName("paragraph")
 @Serializable
-class TextBlock(
+class ParagraphBlock(
     @SerialName("text")
     @Serializable(with = MutableStateSerializer::class)
     val value: MutableState<@Serializable(with = TFVAsWrapperSerializer::class) TextFieldValue>,
@@ -58,7 +62,7 @@ class TextBlock(
         return textFieldValue.annotatedString.toMarkdown()
     }
 
-    override fun exportMarkdownNew(state: EditorState): String {
+    override fun toMarkdown(state: EditorState): String {
         return textFieldValue.annotatedString.toMarkdown(true)
     }
 
@@ -83,14 +87,13 @@ class TextBlock(
     override fun equals(other: Any?): Boolean {
         if (this === other) return true
         if (other !is TextBlock) return false
-
-        if (textValue != other.textValue) return false
+        if (textFieldValue != other.textFieldValue) return false
 
         return true
     }
 
     override fun hashCode(): Int {
-        return textValue.hashCode()
+        return textFieldValue.hashCode()
     }
 
 
