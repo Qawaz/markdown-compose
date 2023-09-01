@@ -8,6 +8,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.input.TextFieldValue
 import com.wakaztahir.markdowncompose.editor.model.blocks.TextBlock
 import com.wakaztahir.markdowncompose.editor.utils.TextFormatter
+import com.wakaztahir.markdowncompose.editor.utils.differ
 import com.wakaztahir.markdowncompose.editor.utils.textFieldUndoRedoAction
 import com.wakaztahir.markdowncompose.editor.utils.updateState
 import com.wakaztahir.markdowncompose.utils.IODispatcher
@@ -43,7 +44,7 @@ fun TextBlock.TextComponent(modifier: Modifier) {
         modifier = modifier.focusRequester(focusRequester),
         value = textFieldValue,
         onValueChange = {
-            textFieldValue = it.copy() // annotated string styles aren't being updated
+            textFieldValue = differ(textFieldValue, it)
             scope.launch {
                 state.textFieldUndoRedoAction(
                     lastUndoRedoSaveTime = lastUndoRedoSaveTime,

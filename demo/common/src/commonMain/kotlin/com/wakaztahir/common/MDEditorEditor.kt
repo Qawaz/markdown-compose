@@ -7,6 +7,8 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Refresh
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.runtime.saveable.Saver
@@ -21,6 +23,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.unit.dp
 import com.wakaztahir.markdowncompose.editor.components.*
+import com.wakaztahir.markdowncompose.editor.model.EditorBlock
 import com.wakaztahir.markdowncompose.editor.model.blocks.TextBlock
 import com.wakaztahir.markdowncompose.editor.serialization.polymorphicEditorBlockSerializer
 import com.wakaztahir.markdowncompose.editor.states.EditorState
@@ -35,7 +38,7 @@ import kotlinx.serialization.modules.SerializersModule
 @Composable
 fun MDEditorEditor(modifier: Modifier = Modifier) {
     Column(modifier = modifier.fillMaxSize().background(color = MaterialTheme.colorScheme.background)) {
-        EditorOnly()
+        EditorToJson()
     }
 }
 
@@ -110,6 +113,93 @@ private fun EditorOnly() {
                 items(state.blocks) { block ->
                     BlockComponent(block = block)
                 }
+            }
+        }
+    }
+}
+
+@Composable
+private fun EditorToJson() {
+
+    val listState = rememberLazyListState()
+    val state = remember { EditorState() }
+    val scope = rememberLazyEditorScope(state, listState)
+    var jsonToEditor by remember { mutableStateOf(false) }
+
+    ProvideLazyEditor(scope) {
+
+        Box {
+            EditorTools(state = remember { State() })
+            IconButton(modifier = Modifier.align(Alignment.CenterEnd), onClick = { jsonToEditor = !jsonToEditor }) {
+                Icon(
+                    imageVector = Icons.Default.Refresh,
+                    tint = MaterialTheme.colorScheme.onBackground,
+                    contentDescription = null
+                )
+            }
+        }
+
+        @Composable
+        fun RowScope.Editor() {
+            LazyColumn(
+                modifier = Modifier.weight(1f).padding(horizontal = 16.dp, vertical = 8.dp).fillMaxHeight(),
+                state = listState
+            ) {
+                items(state.blocks) { block ->
+                    BlockComponent(block = block)
+                }
+            }
+        }
+
+        @Composable
+        fun RowScope.Field() {
+            val json = Json {
+                serializersModule = SerializersModule { polymorphicEditorBlockSerializer() }
+            }
+            var jsonStr by remember { mutableStateOf("") }
+
+            suspend fun autoMarkdownIt() {
+                if (jsonToEditor) {
+                    try {
+                        val blocks = json.decodeFromString<List<EditorBlock>>(jsonStr)
+                        state.blocks.clear()
+                        state.blocks.addAll(blocks)
+                    } catch (e: Exception) {
+                        e.printStackTrace()
+                    }
+                } else {
+                    jsonStr = json.encodeToString(state.blocks.toList())
+                }
+                delay(1000)
+                autoMarkdownIt()
+            }
+
+            LaunchedEffect(null) {
+                autoMarkdownIt()
+            }
+
+            OutlinedTextField(
+                modifier = Modifier.weight(1f).fillMaxHeight(),
+                value = jsonStr,
+                onValueChange = { jsonStr = it },
+                readOnly = !jsonToEditor,
+                colors = OutlinedTextFieldDefaults.colors(
+                    focusedTextColor = MaterialTheme.colorScheme.onBackground,
+                    unfocusedTextColor = MaterialTheme.colorScheme.onBackground,
+                )
+            )
+        }
+
+        Row(
+            modifier = Modifier.fillMaxWidth().padding(8.dp),
+            horizontalArrangement = Arrangement.SpaceBetween,
+        ) {
+            if (jsonToEditor) {
+                Field()
+                Editor()
+            } else {
+                Editor()
+                Field()
             }
         }
     }

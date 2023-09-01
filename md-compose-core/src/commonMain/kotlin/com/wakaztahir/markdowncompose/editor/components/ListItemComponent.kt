@@ -29,6 +29,7 @@ import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.unit.dp
 import com.wakaztahir.markdowncompose.editor.model.blocks.ListItemBlock
 import com.wakaztahir.markdowncompose.editor.utils.TextFormatter
+import com.wakaztahir.markdowncompose.editor.utils.differ
 import com.wakaztahir.markdowncompose.editor.utils.textFieldUndoRedoAction
 import com.wakaztahir.markdowncompose.editor.utils.updateState
 import com.wakaztahir.markdowncompose.utils.IODispatcher
@@ -141,7 +142,7 @@ fun ListItemBlock.ListItemComponent(
                 },
             value = textFieldValue,
             onValueChange = {
-                textFieldValue = it
+                textFieldValue = differ(textFieldValue, it)
                 scope.launch {
                     state.textFieldUndoRedoAction(
                         lastUndoRedoSaveTime = lastUndoRedoTime,
