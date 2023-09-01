@@ -69,10 +69,11 @@ android {
     namespace = "com.wakaztahir.markdowncompose.codeeditor"
     compileSdk = 34
     sourceSets["main"].manifest.srcFile("src/androidMain/AndroidManifest.xml")
-    sourceSets["main"].apply {
-        res.srcDir(File(buildDir, "generated/moko/androidMain/res"))
-    }
     defaultConfig {
         minSdk = 21
+    }
+    compileOptions {
+        sourceCompatibility = JavaVersion.VERSION_17
+        targetCompatibility = JavaVersion.VERSION_17
     }
 }

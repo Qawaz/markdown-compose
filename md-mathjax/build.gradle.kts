@@ -45,7 +45,7 @@ kotlin {
         val androidMain by getting {
             dependencies {
                 // Coroutines
-                implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.6.4")
+                implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.7.2")
                 // Math Jax for Android
                 implementation("com.wakaztahir:mathjax:3.0.1")
             }
@@ -57,20 +57,21 @@ kotlin {
         }
         named("jsMain") {
             dependencies {
-                api(compose.web.core)
+//                api(compose.web.core)
             }
         }
     }
 }
 
 android {
+    namespace = "com.wakaztahir.markdowncompose.mathjax"
     compileSdk = 34
     sourceSets["main"].manifest.srcFile("src/androidMain/AndroidManifest.xml")
-    sourceSets["main"].apply {
-        res.srcDir(File(buildDir, "generated/moko/androidMain/res"))
-    }
     defaultConfig {
         minSdk = 21
     }
-    namespace = "com.wakaztahir.markdowncompose.mathjax"
+    compileOptions {
+        sourceCompatibility = JavaVersion.VERSION_17
+        targetCompatibility = JavaVersion.VERSION_17
+    }
 }

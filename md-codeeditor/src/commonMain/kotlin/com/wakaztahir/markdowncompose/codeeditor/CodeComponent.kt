@@ -69,12 +69,12 @@ fun CodeBlock.CodeComponent(
         }
 
         LaunchedEffect(key1 = lang, block = {
-            value = value.copy(
+            code.value = code.value.copy(
                 annotatedString = parseCodeAsAnnotatedString(
                     parser = parser,
                     theme = theme,
                     lang = block.lang,
-                    code = value.text
+                    code = code.value.text
                 )
             )
         })
@@ -85,9 +85,9 @@ fun CodeBlock.CodeComponent(
 
         OutlinedTextField(
             modifier = Modifier.fillMaxWidth(),
-            value = value,
+            value = code.value,
             onValueChange = {
-                value = it.copy(
+                code.value = it.copy(
                     annotatedString = parseCodeAsAnnotatedString(
                         parser = parser,
                         theme = theme,
@@ -99,13 +99,13 @@ fun CodeBlock.CodeComponent(
                 scope.launch {
                     state.textFieldUndoRedoAction(
                         lastUndoRedoSaveTime = lastUndoRedoTime,
-                        getCurrentTextFieldValue = { value },
-                        updateTextFieldValue = { newValue -> value = newValue },
+                        getCurrentTextFieldValue = { code.value },
+                        updateTextFieldValue = { newValue -> code.value = newValue },
                         updateUndoRedoTime = { time -> lastUndoRedoTime = time }
                     )
                 }
             },
-            colors = TextFieldDefaults.outlinedTextFieldColors(
+            colors = OutlinedTextFieldDefaults.colors(
                 focusedBorderColor = Color.Transparent,
                 unfocusedBorderColor = Color.Transparent,
             )
