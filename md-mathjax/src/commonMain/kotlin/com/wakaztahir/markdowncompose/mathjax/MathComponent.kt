@@ -108,9 +108,9 @@ fun MathBlock.MathComponent(
                     placeholder = {
                         Text(text = "Latex", color = MaterialTheme.colorScheme.onBackground.copy(.4f))
                     },
-                    colors = TextFieldDefaults.outlinedTextFieldColors(
+                    colors = OutlinedTextFieldDefaults.colors(
                         focusedBorderColor = Color.Transparent,
-                        unfocusedBorderColor = Color.Transparent
+                        unfocusedBorderColor = Color.Transparent,
                     )
                 )
             }

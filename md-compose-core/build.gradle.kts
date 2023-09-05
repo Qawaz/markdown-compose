@@ -48,7 +48,7 @@ kotlin {
                 implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:${property("serialization.version")}")
                 implementation("com.wakaztahir.compose-icons:materialdesignicons:1.0.1")
 
-                implementation("com.qawaz.android.colorpicker:compose-color-picker:0.6.2")
+                implementation("com.qawaz.colorpicker:color-picker:${property("colorpicker.version")}")
 
 
             }
